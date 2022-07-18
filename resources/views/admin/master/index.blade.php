@@ -95,7 +95,7 @@
     <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
-                <form action="{{ route($route_ . '.hapus') }}" method="POST" class="d-inline">
+                <form action="{{ route($route_ . '.delete') }}" method="POST" class="d-inline">
                     @method('delete')
                     @csrf
                     <div class="modal-body">
@@ -120,7 +120,7 @@
             var id = $("#id_edit").val();
             var name = $("#name_edit").val();
             $.ajax({
-                url: 'golongan/' + id,
+                url: '{{ $route_ }}' + '/' + id,
                 type: "PATCH",
                 data: {
                     name: name,
@@ -130,8 +130,8 @@
                 dataType: 'json',
                 success: function(data) {
 
-                    $('#formedit').trigger("reset");
-                    $('#editModal').modal('hide');
+                    // $('#formedit').trigger("reset");
+                    // $('#editModal').modal('hide');
                     window.location.reload(true);
                 }
             });

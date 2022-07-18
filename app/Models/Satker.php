@@ -13,8 +13,8 @@ class Satker extends Model
 
     
 
-    public function pimpinan()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'pimpinan_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }

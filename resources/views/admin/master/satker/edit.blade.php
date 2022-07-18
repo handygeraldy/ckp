@@ -7,7 +7,7 @@
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
             <li class="breadcrumb-item text-gray-800">Master</li>
             <li class="breadcrumb-item text-gray-800">Satker</li>
-            <li class="breadcrumb-item text-gray-800">Create</li>
+            <li class="breadcrumb-item text-gray-800">Edit</li>
         </ol>
     </div>
 
@@ -17,7 +17,8 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('satker.store') }}" method="post">
+                    <form action="{{ route('satker.update', $satker->id) }}" method="POST">
+                        @method('patch')
                         @csrf
                         {{-- nama --}}
                         <div class="row mb-2">
@@ -25,7 +26,7 @@
                                 <label class="col-form-label" for="name">Nama Satker</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" id="name" name="name" value="{{ old('name') }}"
+                                <input type="text" id="name" name="name" value="{{ old('name') ?? $satker->name }}"
                                     class="form-control @error('name') is-invalid @enderror" required>
                                 @error('name')
                                     <div class="invalid-feedback">
@@ -43,7 +44,7 @@
                                 <select class="form-control select2 @error('user_id') is-invalid @enderror" name="user_id" id="user_id" required>
                                     <option value="" disabled selected>== Pilih Pimpinan ==</option>
                                     @foreach ($user as $u)
-                                        <option value="{{ $u->id }}" {{ $u->id == old('user_id') ? 'selected' : '' }}>{{ $u->name }}</option>
+                                        <option value="{{ $u->id }}" {{ $u->id == (old('user_id') ?? $satker->user_id) ? 'selected' : '' }}>{{ $u->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('user_id')
@@ -56,7 +57,7 @@
                         {{-- submit --}}
                         <div class="row mt-5">
                             <div class="col">
-                                <a href="{{ route('satker.index') }}" class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('satker.index') }}" class="btn btn-secondary">Kembali</a>
                                 <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i> Simpan</button>
                             </div>
                         </div>

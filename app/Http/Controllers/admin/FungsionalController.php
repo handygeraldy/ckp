@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Fungsional;
 
 class FungsionalController extends Controller
 {
@@ -14,7 +15,13 @@ class FungsionalController extends Controller
      */
     public function index()
     {
-        //
+        $dt = Fungsional::where('is_delete','!=','1')->get();
+        return view('admin.master.index', [
+            'dt' => $dt,
+            'title' => 'Master Fungsional',
+            'text_' => 'Fungsional',
+            'route_' => 'fungsional',
+        ]);
     }
 
     /**
@@ -35,7 +42,12 @@ class FungsionalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+        Fungsional::create($validated);
+        alert()->success('Sukses', 'Berhasil menambah fungsional');
+        return redirect()->route('fungsional.index');
     }
 
     /**
@@ -69,7 +81,14 @@ class FungsionalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $res = Fungsional::where('id', $id)->update(
+            ['name'=> $request->name]);
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil mengubah fungsional');
+        } else {
+            alert()->error('ERROR', 'Gagal mengubah fungsional');
+        }
+        return response()->json(true);
     }
 
     /**
@@ -81,5 +100,18 @@ class FungsionalController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function softDelete(Request $request)
+    {
+        $id = $request->value_id;
+        $res = Fungsional::where('id', $id)->update(
+            ['is_delete'=>'1']);
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil menghapus fungsional');
+        } else {
+            alert()->error('ERROR', 'Gagal menghapus fungsional');
+        }
+        return redirect()->route('fungsional.index');
     }
 }

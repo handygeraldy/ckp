@@ -39,4 +39,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function satker()
+    {
+        return $this->belongsTo(Satker::class);
+    }
+
+    public function golongan()
+    {
+        return $this->belongsTo(Golongan::class);
+    }
+
+    public function fungsional()
+    {
+        return $this->belongsTo(Fungsional::class);
+    }
 }

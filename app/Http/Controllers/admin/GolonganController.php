@@ -103,7 +103,6 @@ class GolonganController extends Controller
 
     public function softDelete(Request $request)
     {
-        // soft delete
         $id = $request->value_id;
         $res = Golongan::where('id', $id)->update(
             ['is_delete'=>'1']);

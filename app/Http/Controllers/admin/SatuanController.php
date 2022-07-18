@@ -15,7 +15,7 @@ class SatuanController extends Controller
      */
     public function index()
     {
-        $dt = Satuan::all();
+        $dt = Satuan::where('is_delete','!=','1')->get();
         return view('admin.master.index', [
             'dt' => $dt,
             'title' => 'Master Satuan',
@@ -24,6 +24,7 @@ class SatuanController extends Controller
         ]);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -31,7 +32,6 @@ class SatuanController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -42,7 +42,12 @@ class SatuanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+        Satuan::create($validated);
+        alert()->success('Sukses', 'Berhasil menambah satuan');
+        return redirect()->route('satuan.index');
     }
 
     /**
@@ -76,7 +81,14 @@ class SatuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $res = Satuan::where('id', $id)->update(
+            ['name'=> $request->name]);
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil mengubah satuan');
+        } else {
+            alert()->error('ERROR', 'Gagal mengubah satuan');
+        }
+        return response()->json(true);
     }
 
     /**
@@ -87,6 +99,19 @@ class SatuanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+    }
+
+    public function softDelete(Request $request)
+    {
+        $id = $request->value_id;
+        $res = Satuan::where('id', $id)->update(
+            ['is_delete'=>'1']);
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil menghapus satuan');
+        } else {
+            alert()->error('ERROR', 'Gagal menghapus satuan');
+        }
+        return redirect()->route('satuan.index');
     }
 }

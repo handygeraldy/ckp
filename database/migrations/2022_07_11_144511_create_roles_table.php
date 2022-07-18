@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFungsionalsTable extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateFungsionalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fungsionals', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('kolom_kredit', 30)->nullable();
-            $table->enum('is_delete', ['1', '0'])->default('0');
+            $table->string('name');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -28,6 +27,6 @@ class CreateFungsionalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fungsionals');
+        Schema::dropIfExists('roles');
     }
 }

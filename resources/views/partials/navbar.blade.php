@@ -1,7 +1,7 @@
 <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('index') }}">
         <div class="sidebar-brand-icon">
-            <img src="{{ asset('/img/logo-bps.svg') }}">
+            {{-- <img src="{{ asset('/img/logo-bps.svg') }}"> --}}
         </div>
     </a>
     <hr class="sidebar-divider my-0">
@@ -17,7 +17,7 @@
             <span>Master</span></a>
         <ul class="nav nav-list collapse" id="submaster">
             <li class="nav-item {{ Request::is('kredit*') ? 'active' : '' }}"><a href="{{ route('kredit.index') }}"
-                    class="nav-link"><i class="fas fa-tasks"></i> Angka Kredit</a></li>
+                    class="nav-link" ><i class="fas fa-tasks"></i> Angka Kredit</a></li>
             <li class="nav-item {{ Request::is('golongan*') ? 'active' : '' }}"><a href="{{ route('golongan.index') }}"
                     class="nav-link"><i class="fas fa-tasks"></i> Golongan</a></li>
             <li class="nav-item {{ Request::is('fungsional*') ? 'active' : '' }}"><a href="{{ route('fungsional.index') }}"
@@ -26,6 +26,8 @@
                     class="nav-link"><i class="fas fa-tasks"></i> Satuan Kerja</a></li>
             <li class="nav-item {{ Request::is('satuan*') ? 'active' : '' }}"><a href="{{ route('satuan.index') }}"
                     class="nav-link"><i class="fas fa-tasks"></i> Satuan Kegiatan</a></li>
+            <li class="nav-item {{ Request::is('user*') ? 'active' : '' }}"><a href="{{ route('user.index') }}"
+                class="nav-link"><i class="fas fa-tasks"></i> User</a></li>
         </ul>
     </li>
     <li class="nav-item {{ Request::is('input*') ? 'active' : '' }}">

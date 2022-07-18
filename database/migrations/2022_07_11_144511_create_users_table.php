@@ -23,8 +23,9 @@ class CreateUsersTable extends Migration
             $table->foreignId('fungsional_id');
             $table->string('password');
             $table->enum('is_delete', ['1', '0'])->default('0');
+            $table->foreignId('role_id');
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 

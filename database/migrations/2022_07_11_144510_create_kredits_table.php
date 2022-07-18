@@ -17,7 +17,6 @@ class CreateKreditsTable extends Migration
             $table->id();     
             $table->string('kode', 4);
             $table->string('tingkat', 10);
-            $table->string('kode_tingkat', 1);
             $table->string('kode_perka', 9);
             $table->string('kode_unsur', 3);
             $table->string('unsur', 40);
