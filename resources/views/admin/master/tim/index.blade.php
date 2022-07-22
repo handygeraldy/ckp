@@ -5,7 +5,8 @@
         <h1 class="h3 mb-0">{{ $title }}</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-gray-800">Ckp</li>
+            <li class="breadcrumb-item text-gray-800">Master</li>
+            <li class="breadcrumb-item text-gray-800">{{ $text_ }}</li>
         </ol>
     </div>
 
@@ -15,8 +16,8 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col text-right">
-                            <a href="{{ route('ckp.create') }}" class="btn btn-primary"><i
-                                    class="fa fa-plus-circle mr-2"></i>Buat CKP</a>
+                            <a href="{{ route('tim.create') }}" class="btn btn-primary"><i
+                                    class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
                         </div>
                     </div>
                 </div>
@@ -26,12 +27,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Bulan</th>
-                                    <th>Jumlah Kegiatan</th>
-                                    <th>Nilai Kuantitas</th>
-                                    <th>Nilai Kualitas</th>
-                                    <th>Nilai Akhir</th>
-                                    <th>Angka Kredit</th>
+                                    <th>Nama</th>
+                                    <th>Satker</th>
+                                    <th>Ketua</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -39,12 +37,9 @@
                                 @foreach ($dt as $key => $d)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ $d->name }}</td>
+                                        <td>{{ $d->satker->name }}</td>
+                                        <td>{{ $d->user->name }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
@@ -70,7 +65,7 @@
                     @method('delete')
                     @csrf
                     <div class="modal-body">
-                        <h3 class="text-center">Hapus CKP ini?</h3>
+                        <h3 class="text-center">Hapus {{ $route_ }} ini?</h3>
                         <input type="hidden" id="value_id" name="value_id">
                     </div>
                     <div class="modal-footer justify-content-around pt-0 border-top-0">

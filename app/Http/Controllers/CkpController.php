@@ -23,11 +23,10 @@ class CkpController extends Controller
         $dt = Ckp::where('is_delete','!=','1')
         // ->where('users_id',Auth::user()->id)
         ->get();
-        return view('admin.master.user.index', [
+        return view('CKP.index', [
             'dt' => $dt,
-            'title' => 'Master User',
-            'text_' => 'User',
-            'route_' => 'user',
+            'title' => 'CKP Saya',
+            'route_' => 'ckp',
         ]);
     }
 
@@ -103,5 +102,18 @@ class CkpController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function softDelete(Request $request)
+    {
+        $id = $request->value_id;
+        $res = Ckp::where('id', $id)->update(
+            ['is_delete'=>'1']);
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil menghapus CKP');
+        } else {
+            alert()->error('ERROR', 'Gagal menghapus CKP');
+        }
+        return redirect()->route('user.index');
     }
 }
