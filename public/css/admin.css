@@ -559,12 +559,14 @@ a:focus {
     background-color: #fff!important;
     -webkit-box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15)!important;
     box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15)!important;
-    z-index: 0
+    z-index: 0;
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
 }
 
 .sidebar .nav-item {
     position: relative;
-    margin-bottom: -15px
+    margin-bottom: -5px
 }
 
 .sidebar .nav-item:last-child {
@@ -605,8 +607,8 @@ a:focus {
     border-radius: .35rem;
     -webkit-box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15);
     box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15);
-    transition: all .2s ease-in-out;
-    -webkit-transition: all .2s ease-in-out
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out
 }
 
 .sidebar .nav-item .collapsing {
@@ -823,12 +825,12 @@ a:focus {
         min-width: 100vw
     }
     .sidebar.toggled {
-        width: 100vw!important;
+        width: 50vw!important;
         transition: all .3s ease-in-out;
         -webkit-transition: all .3s ease-in-out
     }
     .sidebar.toggled .nav-item {
-        margin-left: -1rem;
+        /* margin-left: -1rem; */
         position: relative;
         margin-bottom: -15px
     }

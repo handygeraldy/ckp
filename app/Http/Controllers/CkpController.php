@@ -8,6 +8,7 @@ use App\Models\Tim;
 use App\Models\Satker;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class CkpController extends Controller
@@ -19,6 +20,15 @@ class CkpController extends Controller
      */
     public function index()
     {
+        $dt = Ckp::where('is_delete','!=','1')
+        // ->where('users_id',Auth::user()->id)
+        ->get();
+        return view('admin.master.user.index', [
+            'dt' => $dt,
+            'title' => 'Master User',
+            'text_' => 'User',
+            'route_' => 'user',
+        ]);
     }
 
     /**
