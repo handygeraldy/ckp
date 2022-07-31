@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CkpController;
+use App\Http\Controllers\tim\Penilaian;
 use App\Http\Controllers\admin\TimController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\KreditController;
@@ -39,5 +40,5 @@ Route::resource('satker', SatkerController::class);
 Route::resource('satuan', SatuanController::class);
 Route::resource('user', UserController::class);
 Route::resource('tim', TimController::class);
-
 Route::resource('ckp', CkpController::class);
+Route::resource('nilai', Penilaian::class);

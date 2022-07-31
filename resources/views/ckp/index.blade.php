@@ -39,12 +39,12 @@
                                 @foreach ($dt as $key => $d)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ $d->bulan . '-' . $d->tahun }}</td>
+                                        <td>{{ $d->jml_kegiatan }}</td>
+                                        <td>{{ $d->avg_kuantitas }}</td>
+                                        <td>{{ $d->avg_kualitas }}</td>
+                                        <td>{{ $d->nilai_akhir }}</td>
+                                        <td>{{ $d->angka_kredit }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"

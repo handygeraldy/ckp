@@ -19,8 +19,8 @@ class CreateCkpsTable extends Migration
             $table->string('bulan',2);
             $table->foreignId('satker_id');
             $table->foreignId('user_id');
-            $table->integer('jml_kegiatan');
-            $table->float('avg_kuantitas', 5, 2);
+            $table->integer('jml_kegiatan')->nullable();
+            $table->float('avg_kuantitas', 5, 2)->nullable();
             $table->float('avg_kualitas', 5, 2)->nullable();
             $table->float('nilai_akhir', 5, 2)->nullable();
             $table->float('angka_kredit', 5, 2)->nullable();

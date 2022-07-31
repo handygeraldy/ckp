@@ -23,8 +23,8 @@ class CreateKegiatansTable extends Migration
             $table->foreignId('satuan_id');
             $table->integer('jml_target');
             $table->integer('jml_realisasi');
-            $table->float('nilai_kegiatan', 5, 2);
-            $table->foreignId('kredit_id');
+            $table->float('nilai_kegiatan', 5, 2)->nullable();
+            $table->foreignId('kredit_id')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });

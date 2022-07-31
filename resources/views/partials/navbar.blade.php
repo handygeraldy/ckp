@@ -39,4 +39,10 @@
             <span>Kegiatan Saya</span>
         </a>
     </li>
+    <li class="nav-item {{ Request::is('nilai*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('nilai.index') }}">
+            <i class="fas fa-map-marker-edit"></i>
+            <span>Penilaian</span>
+        </a>
+    </li>
 </ul>

@@ -50,7 +50,7 @@
                                     <label class="col-form-label" for="kegiatan">Kegiatan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" id="kegiatan" name="kegiatan"
+                                    <input type="text" name="kegiatan[]"
                                         class="form-control @error('kegiatan') is-invalid @enderror" required>
                                     @error('kegiatan')
                                         <div class="invalid-feedback">
@@ -65,10 +65,10 @@
                                     <label class="col-form-label" for="tim">Tim</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control select2" name="tim" id="tim" required>
+                                    <select class="form-control select2" name="tim[]" required>
                                         <option value="" disabled selected>== Pilih Tim ==</option>
                                         @foreach ($tim as $t)
-                                            <option value="{{ $t->id }}">{{ $t->tim }}</option>
+                                            <option value="{{ $t->id }}">{{ $t->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -79,7 +79,7 @@
                                     <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" id="tgl_mulai" name="tgl_mulai"
+                                    <input type="date" name="tgl_mulai[]"
                                         class="form-control" required>
                                     @error('tgl_mulai')
                                         <div class="invalid-feedback">
@@ -94,7 +94,7 @@
                                     <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" id="tgl_selesai" name="tgl_selesai"
+                                    <input type="date" name="tgl_selesai[]"
                                         class="form-control" required>
                                     @error('tgl_selesai')
                                         <div class="invalid-feedback">
@@ -109,10 +109,10 @@
                                     <label class="col-form-label" for="satuan">Satuan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control select2" name="satuan" id="satuan" required>
+                                    <select class="form-control select2" name="satuan[]" required>
                                         <option value="" disabled selected>== Pilih Satuan ==</option>
                                         @foreach ($satuan as $s)
-                                            <option value="{{ $s->id }}">{{ $s->nama_satuan }}</option>
+                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -134,7 +134,7 @@
                                     <label class="col-form-label" for="realisasi">Jumlah Realisasi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" id="realisasi" name="realisasi"
+                                    <input type="number" name="realisasi[]"
                                         class="form-control" required
                                         value="{{ $ckp->realisasi ?? '' }}">
                                 </div>
@@ -145,7 +145,7 @@
                                     <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control select2" name="kredit_id" id="kredit_id" required>
+                                    <select class="form-control select2" name="kredit_id[]">
                                         <option value="" disabled selected>== Pilih Butir ==</option>
                                         @foreach ($butir as $b)
                                             <option value="{{ $b->id }}">{{ $b->uraian }}</option>
@@ -159,7 +159,7 @@
                                     <label class="col-form-label" for="ket">Keterangan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="ket" id="ket" required>
+                                    <input type="text" class="form-control" name="ket[]">
                                        
                                 </div>
                             </div>
@@ -194,13 +194,13 @@
         <div class="card mt-2">
             <div class="card-body">
                 <div>
-                    {{-- kegiatan --}}
+                    
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="kegiatan">Kegiatan</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" id="kegiatan" name="kegiatan"
+                            <input type="text" name="kegiatan[]"
                                 class="form-control @error('kegiatan') is-invalid @enderror" required>
                             @error('kegiatan')
                                 <div class="invalid-feedback">
@@ -208,28 +208,26 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>                            
-                    {{-- tim --}}
+                    </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="tim">Tim</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2" name="tim" id="tim" required>
+                            <select class="form-control select2" name="tim[]" required>
                                 <option value="" disabled selected>== Pilih Tim ==</option>
                                 @foreach ($tim as $t)
-                                    <option value="{{ $t->id }}">{{ $t->tim }}</option>
+                                    <option value="{{ $t->id }}">{{ $t->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                    </div>                     
-                    {{-- tgl_mulai --}}
+                    </div>        
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="date" id="tgl_mulai" name="tgl_mulai"
+                            <input type="date" name="tgl_mulai[]"
                                 class="form-control" required>
                             @error('tgl_mulai')
                                 <div class="invalid-feedback">
@@ -238,13 +236,12 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- tgl_selesai --}}
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="date" id="tgl_selesai" name="tgl_selesai"
+                            <input type="date" name="tgl_selesai[]"
                                 class="form-control" required>
                             @error('tgl_selesai')
                                 <div class="invalid-feedback">
@@ -252,50 +249,46 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>                            
-                    {{-- satuan --}}
+                    </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="satuan">Satuan</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2" name="satuan" id="satuan" required>
+                            <select class="form-control select2" name="satuan[]" required>
                                 <option value="" disabled selected>== Pilih Satuan ==</option>
                                 @foreach ($satuan as $s)
-                                    <option value="{{ $s->id }}">{{ $s->nama_satuan }}</option>
+                                    <option value="{{ $s->id }}">{{ $s->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    {{-- Target --}}
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="target">Jumlah Target</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="number" id="target" name="target"
+                            <input type="number" name="target[]"
                                 class="form-control" required
                                 value="{{ $ckp->target ?? '' }}">
                         </div>
                     </div>
-                    {{-- Realisasi --}}
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="realisasi">Jumlah Realisasi</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="number" id="realisasi" name="realisasi"
+                            <input type="number" name="realisasi[]"
                                 class="form-control" required
                                 value="{{ $ckp->realisasi ?? '' }}">
                         </div>
                     </div>
-                    {{-- Kode Butir Kegiatan --}}
                     <div class="row mb-2">
                         <div class="col-md-2">
                             <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2" name="kredit_id" id="kredit_id" required>
+                            <select class="form-control select2" name="kredit_id[]">
                                 <option value="" disabled selected>== Pilih Butir ==</option>
                                 @foreach ($butir as $b)
                                     <option value="{{ $b->id }}">{{ $b->uraian }}</option>
@@ -303,9 +296,18 @@
                             </select>
                         </div>
                     </div>
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="ket">Keterangan</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="ket[]">
+                               
+                        </div>
+                    </div>
                 </div>
                 
-            <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
+                <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
                 class="fa fa-times"></i></button>   
             </div>
         </div>
