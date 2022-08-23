@@ -5,7 +5,7 @@
         <h1 class="h3 mb-0">{{ $title }}</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-gray-800">CKP</li>
+            <li class="breadcrumb-item text-gray-800">Lihat CKP</li>
         </ol>
     </div>
 
@@ -13,12 +13,18 @@
         <div class="col-lg-12 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="col text-right">
-                            <a href="{{ route('ckp.create') }}" class="btn btn-primary"><i
-                                    class="fa fa-plus-circle mr-2"></i>Buat CKP</a>
-                        </div>
-                    </div>
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="table-borderless">
+                                <td></td>
+                                <td></td>
+                                <td class="text-right" colspan="8">{{ $spj->details->no_sk ? $spj->details->no_sk : "(No. SK belum diinput)" }}</td>
+                            </tr>
+                            <tr class="table-borderless text-center">
+                                <td colspan="9"><b>BUKTI PENERIMAAN UANG</b></td>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

@@ -6,13 +6,10 @@ use Carbon\Carbon;
 use App\Models\Ckp;
 use App\Models\Tim;
 use App\Models\Kredit;
-use App\Models\Satker;
 use App\Models\Satuan;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 
 class CkpController extends Controller
 {
@@ -68,20 +65,23 @@ class CkpController extends Controller
         $bulan = Carbon::createFromFormat('Y-m-d', $validated['bulan'] . '-01')->format('m');
         $tahun = Carbon::createFromFormat('Y-m-d', $validated['bulan'] . '-01')->format('Y');
         $jml_kegiatan = count($request->kegiatan);
-        // sementara, filter user id
-        $ckp_lama = DB::table('ckps')
+
+        // sementara, nanti where user id
+        $q = DB::table('ckps')
         ->where('bulan', $bulan)
-        ->where('tahun', $tahun)
-        ->first();
-        $sas = count($request->target);
-        dd($sas);
+        ->where('tahun', $tahun);
+
+        $ckp_lama = $q->first();
         if ($ckp_lama == null){
             $ckp = new Ckp();
             $ckp->bulan = $bulan;
             $ckp->tahun = $tahun;
             $ckp->satker_id = 3100;
-            $ckp->user_id = 1; //sementara
-    
+            $ckp->user_id = 'd5faa50e-2284-11ed-9f62-ace010187172'; //sementara
+            $ckp->jml_kegiatan = $jml_kegiatan;
+            $ckp->avg_kuantitas = array_sum(array_map(function ($a, $b) { return round($a / $b * 100, 2); }, $request->realisasi, $request->target)) / $jml_kegiatan; 
+            // angka kredit
+
             $ckp->save();
             for ($i = 0; $i < $jml_kegiatan; $i++) {
                 $kegiatan = new Kegiatan();
@@ -100,7 +100,6 @@ class CkpController extends Controller
                 }
                 $ckp->kegiatan()->save($kegiatan);
             }
-            // hitung nilai
         } else {
             for ($i = 0; $i < $jml_kegiatan; $i++) {
                 $kegiatan = new Kegiatan();
@@ -121,6 +120,17 @@ class CkpController extends Controller
                 $kegiatan->save();
             }
             // hitung nilai
+            $hitung = DB::table('kegiatans')
+            ->select(DB::raw('COUNT(id) as jml_kegiatan, AVG(jml_realisasi / jml_target * 100) as avg_kuantitas'))
+            ->where('ckp_id', $ckp_lama->id)
+            ->groupBy('ckp_id')
+            ->first();
+            $q->update(
+                [
+                    'jml_kegiatan'=> $hitung->jml_kegiatan,
+                    'avg_kuantitas'=> $hitung->avg_kuantitas,
+                ]
+                );
         }
     
         alert()->success('Sukses', 'ckp berhasil diinput');
@@ -135,7 +145,13 @@ class CkpController extends Controller
      */
     public function show($id)
     {
-        //
+        $ckp = Ckp::where('id', $id)->first();
+        $kegiatan = Kegiatan::where('ckp_id', $id)->get();
+        return view('ckp.show', [
+            "title" => "Lihat CKP",
+            "ckp" => $ckp,
+            "kegiatan" => $kegiatan,
+        ]);
     }
 
     /**

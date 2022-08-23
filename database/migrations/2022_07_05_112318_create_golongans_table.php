@@ -16,8 +16,6 @@ class CreateGolongansTable extends Migration
         Schema::create('golongans', function (Blueprint $table) {
             $table->id();
             $table->string('name', 10);
-            $table->enum('is_delete', ['1', '0'])->default('0');
-            $table->timestamps();
         });
     }
     

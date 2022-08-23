@@ -14,19 +14,26 @@ class CreateKegiatansTable extends Migration
     public function up()
     {
         Schema::create('kegiatans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('ckp_id');
-            $table->foreignId('tim_id');
+            $table->uuid('id')->primary();
+            $table->uuid('ckp_id');
+            $table->unsignedBigInteger('tim_id');
+            $table->unsignedBigInteger('kegiatan_tim_id')->nullable();
             $table->string('name');
             $table->date('tgl_mulai');
             $table->date('tgl_selesai');
-            $table->foreignId('satuan_id');
+            $table->unsignedBigInteger('satuan_id');
             $table->integer('jml_target');
             $table->integer('jml_realisasi');
             $table->float('nilai_kegiatan', 5, 2)->nullable();
-            $table->foreignId('kredit_id')->nullable();
+            $table->unsignedBigInteger('kredit_id')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
+
+            $table->foreign('ckp_id')->references('id')->on('ckps');
+            $table->foreign('tim_id')->references('id')->on('tims');
+            $table->foreign('kegiatan_tim_id')->references('id')->on('kegiatan_tims');
+            $table->foreign('satuan_id')->references('id')->on('satuans');
+            $table->foreign('kredit_id')->references('id')->on('kredits');
         });
     }
 

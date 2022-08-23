@@ -123,7 +123,7 @@
                                     <label class="col-form-label" for="target">Jumlah Target</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" id="target" name="target"
+                                    <input type="number" name="target[]"
                                         class="form-control" required
                                         value="{{ $ckp->target ?? '' }}">
                                 </div>

@@ -71,7 +71,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto text-gray-800">
-                        <strong>© Handy Geraldy <?= date('Y') ?>.</strong>
+                        <strong>© PMSS <?= date('Y') ?>.</strong>
                     </div>
                 </div>
             </footer>

@@ -15,10 +15,11 @@ class CreateFungsionalsTable extends Migration
     {
         Schema::create('fungsionals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('jafung_id');
             $table->string('name', 100);
             $table->string('kolom_kredit', 30)->nullable();
-            $table->enum('is_delete', ['1', '0'])->default('0');
-            $table->timestamps();
+
+            $table->foreign('jafung_id')->references('id')->on('jafungs');
         });
     }
     /**

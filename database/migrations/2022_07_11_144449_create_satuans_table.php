@@ -16,8 +16,6 @@ class CreateSatuansTable extends Migration
         Schema::create('satuans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('is_delete', ['1', '0'])->default('0');
-            $table->timestamps();
         });
     }
 

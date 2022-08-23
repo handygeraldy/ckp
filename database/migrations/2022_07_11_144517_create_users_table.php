@@ -14,18 +14,24 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->char('nip', 18)->unique();
             $table->string('name')->nullable();
             $table->string('email')->nullable();            
-            $table->foreignId('satker_id');
-            $table->foreignId('golongan_id');
-            $table->foreignId('fungsional_id');
+            $table->unsignedBigInteger('satker_id');
+            $table->unsignedBigInteger('tim_utama');
+            $table->unsignedBigInteger('golongan_id');
+            $table->unsignedBigInteger('fungsional_id');
             $table->string('password');
             $table->enum('is_delete', ['1', '0'])->default('0');
-            $table->foreignId('role_id');
+            $table->unsignedBigInteger('role_id');
             $table->timestamps();
-            // $table->softDeletes();
+
+            $table->foreign('satker_id')->references('id')->on('satkers');
+            $table->foreign('tim_utama')->references('id')->on('tims');
+            $table->foreign('golongan_id')->references('id')->on('golongans');
+            $table->foreign('fungsional_id')->references('id')->on('fungsionals');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

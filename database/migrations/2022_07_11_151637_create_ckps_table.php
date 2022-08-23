@@ -14,11 +14,11 @@ class CreateCkpsTable extends Migration
     public function up()
     {
         Schema::create('ckps', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('tahun',4);
             $table->string('bulan',2);
-            $table->foreignId('satker_id');
-            $table->foreignId('user_id');
+            $table->unsignedBigInteger('satker_id');
+            $table->uuid('user_id');
             $table->integer('jml_kegiatan')->nullable();
             $table->float('avg_kuantitas', 5, 2)->nullable();
             $table->float('avg_kualitas', 5, 2)->nullable();
@@ -26,6 +26,9 @@ class CreateCkpsTable extends Migration
             $table->float('angka_kredit', 5, 2)->nullable();
             $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
+
+            $table->foreign('satker_id')->references('id')->on('satkers');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

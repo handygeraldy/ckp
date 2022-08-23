@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTimsTable extends Migration
+class CreateKegiatanTimsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateTimsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tims', function (Blueprint $table) {
+        Schema::create('kegiatan_tims', function (Blueprint $table) {
             $table->id();
-            $table->string('name',100);            
-            $table->foreignId('satker_id');
-            $table->foreignId('user_id');
-            $table->enum('is_delete', ['1', '0'])->default('0');
+            $table->unsignedBigInteger('tim_id');
+            $table->string('name')->nullable();
             $table->timestamps();
+
+            $table->foreign('tim_id')->references('id')->on('tims');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateTimsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tims');
+        Schema::dropIfExists('kegiatan_tims');
     }
 }

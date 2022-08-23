@@ -16,9 +16,6 @@ class CreateSatkersTable extends Migration
         Schema::create('satkers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_id')->onDelete('set null');
-            $table->enum('is_delete', ['1', '0'])->default('0');
-            $table->timestamps();
         });
     }
 

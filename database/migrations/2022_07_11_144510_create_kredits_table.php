@@ -15,7 +15,7 @@ class CreateKreditsTable extends Migration
     {
         Schema::create('kredits', function (Blueprint $table) {
             $table->id();     
-            $table->string('kode', 4);
+            $table->unsignedBigInteger('jafung_id');
             $table->string('tingkat', 10);
             $table->string('kode_perka', 9);
             $table->string('kode_unsur', 3);
@@ -36,6 +36,8 @@ class CreateKreditsTable extends Migration
             $table->decimal('utama', 6, 4);
             $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
+
+            $table->foreign('jafung_id')->references('id')->on('jafungs');
         });
     }
 
