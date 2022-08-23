@@ -11,7 +11,7 @@ class SatkerController extends Controller
 {
     public function index()
     {        
-        $dt = Satker::where('is_delete','!=','1')->get();
+        $dt = Satker::all();
         return view('admin.master.satker.index', [
             'dt' => $dt,
             'title' => 'Master Satker',
@@ -112,18 +112,5 @@ class SatkerController extends Controller
     public function destroy($id)
     {
         
-    }
-
-    public function softDelete(Request $request)
-    {
-        $id = $request->value_id;
-        $res = Satker::where('id', $id)->update(
-            ['is_delete'=>'1']);
-        if ($res) {
-            alert()->success('Sukses', 'Berhasil menghapus satker');
-        } else {
-            alert()->error('ERROR', 'Gagal menghapus satker');
-        }
-        return redirect()->route('satker.index');
     }
 }

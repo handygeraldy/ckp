@@ -98,6 +98,25 @@
                             @enderror
                             </div>
                         </div>
+                        {{-- Tim Utama --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="tim_utama">Tim Utama</label>
+                            </div>
+                            <div class="col-md-10">
+                                <select class="form-control select2 @error('tim_utama') is-invalid @enderror" name="tim_utama" id="satker_id" required>
+                                    <option value="" disabled selected>== Pilih Tim Utama ==</option>
+                                    @foreach ($tim as $i)
+                                        <option value="{{ $i->id }}" {{ $i->id == old('tim_utama') ? 'selected' : '' }}>{{ $i->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('tim_utama')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            </div>
+                        </div>
                         {{-- Golongan --}}
                         <div class="row mb-2">
                             <div class="col-md-2">

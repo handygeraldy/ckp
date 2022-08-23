@@ -15,7 +15,7 @@ class SatuanController extends Controller
      */
     public function index()
     {
-        $dt = Satuan::where('is_delete','!=','1')->get();
+        $dt = Satuan::all();
         return view('admin.master.index', [
             'dt' => $dt,
             'title' => 'Master Satuan',
@@ -101,17 +101,5 @@ class SatuanController extends Controller
     {
         
     }
-
-    public function softDelete(Request $request)
-    {
-        $id = $request->value_id;
-        $res = Satuan::where('id', $id)->update(
-            ['is_delete'=>'1']);
-        if ($res) {
-            alert()->success('Sukses', 'Berhasil menghapus satuan');
-        } else {
-            alert()->error('ERROR', 'Gagal menghapus satuan');
-        }
-        return redirect()->route('satuan.index');
-    }
+    
 }

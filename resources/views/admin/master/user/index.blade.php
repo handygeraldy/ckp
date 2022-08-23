@@ -31,6 +31,7 @@
                                     <th>NIP</th>
                                     <th>Email</th>
                                     <th>Satker</th>
+                                    <th>Tim Utama</th>
                                     <th>Golongan</th>
                                     <th>Fungsional</th>
                                     <th></th>
@@ -44,6 +45,7 @@
                                         <td class="text-left">{{ $d->nip }}</td>
                                         <td>{{ $d->email }}</td>
                                         <td>{{ $d->satker->name }}</td>
+                                        <td>{{ $d->tim->name }}</td>
                                         <td>{{ $d->golongan->name }}</td>
                                         <td>{{ $d->fungsional->name }}</td>
                                         <td style="min-width: 100px;">

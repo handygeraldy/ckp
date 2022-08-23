@@ -15,7 +15,7 @@ class GolonganController extends Controller
      */
     public function index()
     {        
-        $dt = Golongan::where('is_delete','!=','1')->get();
+        $dt = Golongan::all();
         return view('admin.master.index', [
             'dt' => $dt,
             'title' => 'Master Golongan',
@@ -99,18 +99,5 @@ class GolonganController extends Controller
     public function destroy($id)
     {
         
-    }
-
-    public function softDelete(Request $request)
-    {
-        $id = $request->value_id;
-        $res = Golongan::where('id', $id)->update(
-            ['is_delete'=>'1']);
-        if ($res) {
-            alert()->success('Sukses', 'Berhasil menghapus golongan');
-        } else {
-            alert()->error('ERROR', 'Gagal menghapus golongan');
-        }
-        return redirect()->route('golongan.index');
     }
 }

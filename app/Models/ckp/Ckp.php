@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ckp;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,10 +11,10 @@ class Ckp extends Model
 
     protected $guarded = ['id'];
 
-    public function kegiatan()
-    {
-        return $this->hasMany(kegiatan::class);
-    }
+    // public function kegiatan()
+    // {
+    //     return $this->hasMany(kegiatan::class);
+    // }
 
     public function satker()
     {

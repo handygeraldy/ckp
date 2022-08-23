@@ -9,6 +9,7 @@ use App\Models\Fungsional;
 use App\Models\Golongan;
 use App\Models\Role;
 use App\Models\Satker;
+use App\Models\Tim;
 
 class UserController extends Controller
 {
@@ -30,13 +31,15 @@ class UserController extends Controller
      */
     public function create()
     {
-        $satker = Satker::where('is_delete','!=','1')->get(['id','name']);
-        $golongan = Golongan::where('is_delete','!=','1')->get(['id','name']);
-        $fungsional = Fungsional::where('is_delete','!=','1')->get(['id','name']);
+        $satker = Satker::get(['id','name']);
+        $tim = Tim::get(['id','name']);
+        $golongan = Golongan::get(['id','name']);
+        $fungsional = Fungsional::get(['id','name']);
         $role = Role::where('id','>',1)->get(['id','name']);
         return view('admin.master.user.create', [
             'title' => 'Tambah User',
             'satker' => $satker,
+            'tim' => $tim,
             'golongan' => $golongan,
             'fungsional' => $fungsional,
             'role' => $role,
@@ -57,6 +60,7 @@ class UserController extends Controller
             'email' => 'required|unique:users',
             'password' => 'required',
             'satker_id' => 'required',
+            'tim_utama' => 'required',
             'golongan_id' => 'required',
             'fungsional_id' => 'required',
             'role_id' => 'required',
@@ -88,14 +92,16 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::where('id', $id)->first();
-        $satker = Satker::where('is_delete','!=','1')->get(['id','name']);
-        $golongan = Golongan::where('is_delete','!=','1')->get(['id','name']);
-        $fungsional = Fungsional::where('is_delete','!=','1')->get(['id','name']);
+        $satker = Satker::get(['id','name']);
+        $tim = Tim::get(['id','name']);
+        $golongan = Golongan::get(['id','name']);
+        $fungsional = Fungsional::get(['id','name']);
         $role = Role::where('id','>',1)->get(['id','name']);
         return view('admin.master.user.edit', [
             'title' => 'Edit User',
             'user' => $user,
             'satker' => $satker,
+            'tim' => $tim,
             'golongan' => $golongan,
             'fungsional' => $fungsional,
             'role' => $role,
@@ -116,6 +122,7 @@ class UserController extends Controller
             'nip' => 'required|unique:users,nip,' . $id,
             'email' => 'required|unique:users,email,' . $id,
             'satker_id' => 'required',
+            'tim_utama' => 'required',
             'golongan_id' => 'required',
             'fungsional_id' => 'required',
             'role_id' => 'required',

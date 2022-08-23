@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\ckp;
 
+use App\Models\Tim;
+use App\Models\Kredit;
+use App\Models\Satuan;
+use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Fungsional;
 
-class FungsionalController extends Controller
+class KegiatanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +18,7 @@ class FungsionalController extends Controller
      */
     public function index()
     {
-        $dt = Fungsional::all();
-        return view('admin.master.index', [
-            'dt' => $dt,
-            'title' => 'Master Fungsional',
-            'text_' => 'Fungsional',
-            'route_' => 'fungsional',
-        ]);
+        //
     }
 
     /**
@@ -42,13 +39,7 @@ class FungsionalController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required',
-            'jafung_id' => 'required',
-        ]);
-        Fungsional::create($validated);
-        alert()->success('Sukses', 'Berhasil menambah fungsional');
-        return redirect()->route('fungsional.index');
+        //
     }
 
     /**
@@ -70,7 +61,18 @@ class FungsionalController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kegiatan = Kegiatan::where('id', $id)->first();
+        $tim = Tim::all();
+        $satuan = Satuan::all();
+        $butir = Kredit::all();
+        
+        return view('ckp.kegiatan.edit', [
+            'title' => 'Edit Kegiatan',
+            'kegiatan' => $kegiatan,
+            'tim' => $tim,
+            'satuan' => $satuan,
+            'butir' => $butir,
+        ]);
     }
 
     /**
@@ -82,17 +84,7 @@ class FungsionalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $res = Fungsional::where('id', $id)->update(
-            [
-                'name'=> $request->name,
-                'jafung_id'=> $request->jafung_id,
-        ]);
-        if ($res) {
-            alert()->success('Sukses', 'Berhasil mengubah fungsional');
-        } else {
-            alert()->error('ERROR', 'Gagal mengubah fungsional');
-        }
-        return response()->json(true);
+        //
     }
 
     /**

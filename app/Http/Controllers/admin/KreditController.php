@@ -10,7 +10,7 @@ class KreditController extends Controller
 {
     public function index()
     {        
-        $dt = Kredit::where('is_delete','!=','1')->limit(10)->get();
+        $dt = Kredit::all();
         return view('admin.master.kredit.index', [
             'dt' => $dt,
             'title' => 'Master Angka Kredit',

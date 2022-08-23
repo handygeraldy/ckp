@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ckp;
 
 use Carbon\Carbon;
-use App\Models\Ckp;
+use App\Models\ckp\Ckp;
 use App\Models\Tim;
 use App\Models\Kredit;
 use App\Models\Satuan;
-use App\Models\Kegiatan;
+use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class CkpController extends Controller
 {
@@ -25,7 +26,7 @@ class CkpController extends Controller
             ->orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
             ->get();
-        return view('CKP.index', [
+        return view('ckp.index', [
             'dt' => $dt,
             'title' => 'CKP Saya',
             'route_' => 'ckp',
@@ -149,6 +150,7 @@ class CkpController extends Controller
         $kegiatan = Kegiatan::where('ckp_id', $id)->get();
         return view('ckp.show', [
             "title" => "Lihat CKP",
+            "route_" => "kegiatan",
             "ckp" => $ckp,
             "kegiatan" => $kegiatan,
         ]);

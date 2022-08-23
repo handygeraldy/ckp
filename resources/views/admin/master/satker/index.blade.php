@@ -42,9 +42,6 @@
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                     class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
-                                                        class="fas fa-trash-alt"></i></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -56,32 +53,10 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <form action="{{ route($route_ . '.delete') }}" method="POST" class="d-inline">
-                    @method('delete')
-                    @csrf
-                    <div class="modal-body">
-                        <h3 class="text-center">Hapus {{ $route_ }} ini?</h3>
-                        <input type="hidden" id="value_id" name="value_id">
-                    </div>
-                    <div class="modal-footer justify-content-around pt-0 border-top-0">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
     <script>
         $(document).ready(function() {
             $('#tabel').DataTable();
-        });
-
-        $(document).on("click", ".hapusModal", function() {
-            var value_id = $(this).data('id');
-            $(".modal-body #value_id").val(value_id);
         });
     </script>
 @endsection

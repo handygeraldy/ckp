@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\tim;
+namespace App\Http\Controllers\tim\ckp;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

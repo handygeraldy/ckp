@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Golongan extends Model
 {
     use HasFactory;
-
+    
+    public $timestamps = false;
     protected $guarded = ['id'];
 }
