@@ -7,6 +7,7 @@ use App\Models\Kredit;
 use App\Models\Satuan;
 use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class KegiatanController extends Controller
@@ -65,7 +66,7 @@ class KegiatanController extends Controller
         $tim = Tim::all();
         $satuan = Satuan::all();
         $butir = Kredit::all();
-        
+
         return view('ckp.kegiatan.edit', [
             'title' => 'Edit Kegiatan',
             'kegiatan' => $kegiatan,
@@ -84,7 +85,44 @@ class KegiatanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'tim_id' => 'required',
+            'tgl_mulai' => 'required',
+            'tgl_selesai' => 'required',
+            'satuan_id' => 'required',
+            'jml_target' => 'required',
+            'jml_realisasi' => 'required',
+            'kredit_id' => 'nullable',
+            'keterangan' => 'nullable',
+            'angka_kredit' => 'required',
+        ]);
+        $res = Kegiatan::where('id', $id)->update($validated);
+
+        // hitung ckp
+        $hitung = DB::table('kegiatans')
+            ->select(DB::raw('COUNT(id) as jml_kegiatan, AVG(jml_realisasi / jml_target * 100) as avg_kuantitas, AVG(nilai_kegiatan) as avg_kualitas, SUM(angka_kredit) AS sum_angka_kredit'))
+            ->where('ckp_id', $request->ckp_id)
+            ->groupBy('ckp_id')
+            ->first();
+
+        DB::table('ckps')
+            ->where('id', $request->ckp_id)
+            ->update(
+                [
+                    'jml_kegiatan' => $hitung->jml_kegiatan,
+                    'avg_kuantitas' => $hitung->avg_kuantitas,
+                    'avg_kualitas' => $hitung->avg_kualitas,
+                    'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
+                    'angka_kredit' => $hitung->sum_angka_kredit,
+                ]
+            );
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil mengubah kegiatan');
+        } else {
+            alert()->error('ERROR', 'Gagal mengubah kegiatan');
+        }
+        return redirect()->route('ckp.index');
     }
 
     /**
@@ -96,5 +134,36 @@ class KegiatanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->value_id;
+        $res = Kegiatan::where('id', $id)->delete();
+        // hitung ckp
+        $hitung = DB::table('kegiatans')
+            ->select(DB::raw('COUNT(id) as jml_kegiatan, AVG(jml_realisasi / jml_target * 100) as avg_kuantitas, AVG(nilai_kegiatan) as avg_kualitas, SUM(angka_kredit) AS sum_angka_kredit'))
+            ->where('ckp_id', $request->ckp_id)
+            ->groupBy('ckp_id')
+            ->first();
+        // dd($hitung);
+        DB::table('ckps')
+            ->where('id', $request->ckp_id)
+            ->update(
+                [
+                    'jml_kegiatan' => $hitung->jml_kegiatan,
+                    'avg_kuantitas' => $hitung->avg_kuantitas,
+                    'avg_kualitas' => $hitung->avg_kualitas,
+                    'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
+                    'angka_kredit' => $hitung->sum_angka_kredit,
+                ]
+            );
+
+        if ($res) {
+            alert()->success('Sukses', 'Berhasil menghapus Kegiatan');
+        } else {
+            alert()->error('ERROR', 'Gagal menghapus Kegiatan');
+        }
+        return redirect()->route('ckp.index');
     }
 }

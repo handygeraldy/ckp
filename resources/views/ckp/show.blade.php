@@ -13,7 +13,7 @@
         <div class="col-lg-12 mb-4">
             <div class="card">
                 <h4 class="text-center my-4"><b>CAPAIAN KINERJA PEGAWAI TAHUN
-                    {{ $ckp->tahun }}</b></h4>
+                        {{ $ckp->tahun }}</b></h4>
                 <div class="card-header">
                     <table id="CKP-header" class="table table-borderless">
                         <tbody>
@@ -38,19 +38,19 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tabel" class="table table-hover table-striped">
+                        <table id="tabel" class="table table-hover table-striped table-bordered">
                             <thead class="text-center">
                                 <tr>
                                     <th class="align-middle" rowspan="2">No</th>
-                                    <th class="align-middle" rowspan="2">Tanggal Mulai</th>
-                                    <th class="align-middle" rowspan="2">Tanggal Selesai</th>
+                                    <th class="align-middle" rowspan="2" style="min-width: 150px">Tanggal Mulai</th>
+                                    <th class="align-middle" rowspan="2" style="min-width: 150px">Tanggal Selesai</th>
                                     <th class="align-middle" rowspan="2">Tim</th>
-                                    <th class="align-middle" rowspan="2">Uraian Kegiatan</th>
-                                    <th class="align-middle" rowspan="2">Satuan</th>
+                                    <th class="align-middle" rowspan="2" style="min-width: 500px">Uraian Kegiatan</th>
+                                    <th class="align-middle" rowspan="2" style="min-width: 200px">Satuan</th>
                                     <th class="align-middle" colspan="3">Kuantitas</th>
                                     <th class="align-middle" rowspan="2">Tingkat Kualitas (%)</th>
                                     <th class="align-middle" rowspan="2">Kode Butir Kegiatan</th>
-                                    {{-- <th class="align-middle" rowspan="2">Angka Kredit</th> --}}
+                                    <th class="align-middle" rowspan="2">Angka Kredit</th>
                                     <th class="align-middle" rowspan="2">Keterangan</th>
                                     <th class="align-middle" rowspan="2"></th>
                                 </tr>
@@ -69,28 +69,51 @@
                                         <td>{{ $d->tim->name }}</td>
                                         <td>{{ $d->name }}</td>
                                         <td>{{ $d->satuan->name }}</td>
-                                        <td>{{ $d->jml_target }}</td>
-                                        <td>{{ $d->jml_realisasi }}</td>
-                                        <td>{{ $d->jml_realisasi / $d->jml_target * 100 }}</td>
-                                        <td>{{ $d->nilai_kegiatan }}</td>
-                                        <td>{{ $d->kredit->kode_perka }}</td>
-                                        {{-- <td>{{ $d->kredit }}</td> --}}
+                                        <td class="text-right">{{ $d->jml_target }}</td>
+                                        <td class="text-right">{{ $d->jml_realisasi }}</td>
+                                        <td class="text-right">{{ ($d->jml_realisasi / $d->jml_target) * 100 }}</td>
+                                        <td class="text-right">{{ $d->nilai_kegiatan }}</td>
+                                        <td>{{ $d->kredit_id ? $d->kredit->kode_perka : '-' }}</td>
+                                        <td class="text-right">{{ $d->angka_kredit }}</td>
                                         <td>{{ $d->keterangan }}</td>
-                                        <td class= "text-right" style="min-width: 100px;">
+                                        <td class="text-right" style="min-width: 100px;">
                                             <div class="row">
-                                                @if ($d->kegiatan_tim_id == Null)
-                                                <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                @if ($d->kegiatan_tim_id == null)
+                                                    <a href="{{ route($route_ . '.edit', $d->id) }}"
+                                                        class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
                                                 @endif
                                                 <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
+                                                    data-id="{{ $d->id }}" data-ckp="{{ $d->ckp_id }}" data-toggle="modal"><i
                                                         class="fas fa-trash-alt"></i></a>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
+                                <tr>
+                                    <td colspan="8" class="text-center"><b></b></td>
+                                    <td colspan="3"></td>
+                                    <td class="text-right"><b>{{ $ckp->angka_kredit }}</b></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" class="text-center"><b>RATA-RATA</b></td>
+                                    <td class="text-right"><b>{{ $ckp->avg_kuantitas }}</b></td>
+                                    <td class="text-right"><b>{{ $ckp->avg_kualitas }}</b></td>
+                                    <td colspan="4"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" class="text-center"><b>CAPAIAN KINERJA PEGAWAI (CKP)</b></td>
+                                    <td colspan="2" class="text-center"><b>{{ $ckp->nilai_akhir }}</b></td>
+                                    <td colspan="4"></td>
+                                </tr>
+
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col">
+                        <a href="{{ URL::previous() }}" class="btn btn-primary">Kembali</a>
                     </div>
                 </div>
             </div>
@@ -105,6 +128,7 @@
                     <div class="modal-body">
                         <h3 class="text-center">Hapus kegiatan ini?</h3>
                         <input type="hidden" id="value_id" name="value_id">
+                        <input type="hidden" id="ckp_id" name="ckp_id">
                     </div>
                     <div class="modal-footer justify-content-around pt-0 border-top-0">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -115,13 +139,12 @@
         </div>
     </div>
     <script>
-        // $(document).ready(function() {
-        //     $('#tabel').DataTable();
-        // });
 
         $(document).on("click", ".hapusModal", function() {
             var value_id = $(this).data('id');
             $(".modal-body #value_id").val(value_id);
+            var ckp_id = $(this).data('ckp');
+            $(".modal-body #ckp_id").val(ckp_id);
         });
     </script>
 @endsection

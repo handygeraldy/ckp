@@ -26,6 +26,7 @@ class CreateKegiatansTable extends Migration
             $table->integer('jml_realisasi');
             $table->float('nilai_kegiatan', 5, 2)->nullable();
             $table->unsignedBigInteger('kredit_id')->nullable();
+            $table->float('angka_kredit', 5, 2)->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
 

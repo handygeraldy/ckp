@@ -62,10 +62,10 @@
                             {{-- tim --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
-                                    <label class="col-form-label" for="tim">Tim</label>
+                                    <label class="col-form-label" for="tim_id">Tim</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control select2" name="tim[]" required>
+                                    <select class="form-control select2" name="tim_id[]" required>
                                         <option value="" disabled selected>== Pilih Tim ==</option>
                                         @foreach ($tim as $t)
                                             <option value="{{ $t->id }}">{{ $t->name }}</option>
@@ -106,10 +106,10 @@
                             {{-- satuan --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
-                                    <label class="col-form-label" for="satuan">Satuan</label>
+                                    <label class="col-form-label" for="satuan_id">Satuan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control select2" name="satuan[]" required>
+                                    <select class="form-control select2" name="satuan_id[]" required>
                                         <option value="" disabled selected>== Pilih Satuan ==</option>
                                         @foreach ($satuan as $s)
                                             <option value="{{ $s->id }}">{{ $s->name }}</option>
@@ -120,10 +120,10 @@
                             {{-- Target --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
-                                    <label class="col-form-label" for="target">Jumlah Target</label>
+                                    <label class="col-form-label" for="jml_target">Jumlah Target</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" name="target[]"
+                                    <input type="number" name="jml_target[]"
                                         class="form-control" required
                                         value="{{ $ckp->target ?? '' }}">
                                 </div>
@@ -131,10 +131,10 @@
                             {{-- Realisasi --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
-                                    <label class="col-form-label" for="realisasi">Jumlah Realisasi</label>
+                                    <label class="col-form-label" for="jml_realisasi">Jumlah Realisasi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" name="realisasi[]"
+                                    <input type="number" name="jml_realisasi[]"
                                         class="form-control" required
                                         value="{{ $ckp->realisasi ?? '' }}">
                                 </div>
@@ -148,18 +148,29 @@
                                     <select class="form-control select2" name="kredit_id[]">
                                         <option value="" disabled selected>== Pilih Butir ==</option>
                                         @foreach ($butir as $b)
-                                            <option value="{{ $b->id }}">{{ $b->uraian }}</option>
+                                            <option value="{{ $b->id }}">{{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            {{-- angka kredit --}}
+                            <div class="row mb-2">
+                                <div class="col-md-2">
+                                    <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="number" name="angka_kredit[]"
+                                        class="form-control" required
+                                        value="{{ $ckp->angka_kredit ?? 0 }}" min="0" step=".0001">
                                 </div>
                             </div>
                             {{-- Keterangan --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
-                                    <label class="col-form-label" for="ket">Keterangan</label>
+                                    <label class="col-form-label" for="keterangan">Keterangan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="ket[]">
+                                    <input type="text" class="form-control" name="keterangan[]">
                                        
                                 </div>
                             </div>
@@ -211,10 +222,10 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="tim">Tim</label>
+                            <label class="col-form-label" for="tim_id">Tim</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2" name="tim[]" required>
+                            <select class="form-control select2" name="tim_id[]" required>
                                 <option value="" disabled selected>== Pilih Tim ==</option>
                                 @foreach ($tim as $t)
                                     <option value="{{ $t->id }}">{{ $t->name }}</option>
@@ -252,10 +263,10 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="satuan">Satuan</label>
+                            <label class="col-form-label" for="satuan_id">Satuan</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2" name="satuan[]" required>
+                            <select class="form-control select2" name="satuan_id[]" required>
                                 <option value="" disabled selected>== Pilih Satuan ==</option>
                                 @foreach ($satuan as $s)
                                     <option value="{{ $s->id }}">{{ $s->name }}</option>
@@ -275,10 +286,10 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="realisasi">Jumlah Realisasi</label>
+                            <label class="col-form-label" for="jml_realisasi">Jumlah Realisasi</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="number" name="realisasi[]"
+                            <input type="number" name="jml_realisasi[]"
                                 class="form-control" required
                                 value="{{ $ckp->realisasi ?? '' }}">
                         </div>
@@ -291,17 +302,27 @@
                             <select class="form-control select2" name="kredit_id[]">
                                 <option value="" disabled selected>== Pilih Butir ==</option>
                                 @foreach ($butir as $b)
-                                    <option value="{{ $b->id }}">{{ $b->uraian }}</option>
+                                    <option value="{{ $b->id }}">{{$b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="ket">Keterangan</label>
+                            <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="ket[]">
+                            <input type="number" name="angka_kredit[]"
+                                class="form-control" required
+                                value="{{ $ckp->angka_kredit ?? 0 }}" min="0" step=".0001">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="keterangan">Keterangan</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="keterangan[]">
                                
                         </div>
                     </div>

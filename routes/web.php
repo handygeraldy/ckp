@@ -29,7 +29,7 @@ Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('k
 Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
 Route::delete('tim/delete', [TimController::class, 'softDelete'])->name('tim.delete');
 Route::delete('ckp/delete', [CkpController::class, 'softDelete'])->name('ckp.delete');
-Route::delete('kegiatan/delete', [KegiatanController::class, 'softDelete'])->name('kegiatan.delete');
+Route::delete('kegiatan/delete', [KegiatanController::class, 'delete'])->name('kegiatan.delete');
 
 Route::resource('kredit', KreditController::class);
 Route::resource('golongan', GolonganController::class);
