@@ -65,7 +65,7 @@ class KegiatanController extends Controller
         $kegiatan = Kegiatan::where('id', $id)->first();
         $tim = Tim::all();
         $satuan = Satuan::all();
-        $butir = Kredit::all();
+        $butir = Kredit::all(['id','kode_perka','name','kegiatan']);
 
         return view('ckp.kegiatan.edit', [
             'title' => 'Edit Kegiatan',
@@ -88,8 +88,8 @@ class KegiatanController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'tim_id' => 'required',
-            'tgl_mulai' => 'required',
-            'tgl_selesai' => 'required',
+            'tgl_mulai' => 'nullable',
+            'tgl_selesai' => 'nullable',
             'satuan_id' => 'required',
             'jml_target' => 'required',
             'jml_realisasi' => 'required',
@@ -146,18 +146,31 @@ class KegiatanController extends Controller
             ->where('ckp_id', $request->ckp_id)
             ->groupBy('ckp_id')
             ->first();
-        // dd($hitung);
-        DB::table('ckps')
-            ->where('id', $request->ckp_id)
-            ->update(
-                [
-                    'jml_kegiatan' => $hitung->jml_kegiatan,
-                    'avg_kuantitas' => $hitung->avg_kuantitas,
-                    'avg_kualitas' => $hitung->avg_kualitas,
-                    'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
-                    'angka_kredit' => $hitung->sum_angka_kredit,
-                ]
-            );
+        if ($hitung != null) {
+            DB::table('ckps')
+                ->where('id', $request->ckp_id)
+                ->update(
+                    [
+                        'jml_kegiatan' => $hitung->jml_kegiatan,
+                        'avg_kuantitas' => $hitung->avg_kuantitas,
+                        'avg_kualitas' => $hitung->avg_kualitas,
+                        'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
+                        'angka_kredit' => $hitung->sum_angka_kredit,
+                    ]
+                );
+        } else{
+            DB::table('ckps')
+                ->where('id', $request->ckp_id)
+                ->update(
+                    [
+                        'jml_kegiatan' => 0,
+                        'avg_kuantitas' => 0,
+                        'avg_kualitas' => 0,
+                        'nilai_akhir' => 0,
+                        'angka_kredit' => 0,
+                    ]
+                );
+        }
 
         if ($res) {
             alert()->success('Sukses', 'Berhasil menghapus Kegiatan');

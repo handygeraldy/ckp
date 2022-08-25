@@ -18,7 +18,7 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('kegiatan.update', $kegiatan->id) }}" method="post">                 
+                    <form action="{{ route('kegiatan.update', $kegiatan->id) }}" method="post">
                         @method('patch')
                         @csrf
                         {{-- ckp_id --}}
@@ -37,7 +37,7 @@
                                     </div>
                                 @enderror
                             </div>
-                        </div>                            
+                        </div>
                         {{-- tim --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -47,11 +47,13 @@
                                 <select class="form-control select2" name="tim_id" required>
                                     <option value="" disabled selected>== Pilih Tim ==</option>
                                     @foreach ($tim as $t)
-                                        <option value="{{ $t->id }}" {{ $t->id == ($kegiatan->tim_id) ? 'selected' : '' }}>{{ $t->name }}</option>
+                                        <option value="{{ $t->id }}"
+                                            {{ $t->id == $kegiatan->tim_id ? 'selected' : '' }}>{{ $t->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>                     
+                        </div>
                         {{-- tgl_mulai --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -59,7 +61,7 @@
                             </div>
                             <div class="col-md-10">
                                 <input type="date" name="tgl_mulai" value="{{ $kegiatan->tgl_mulai }}"
-                                    class="form-control" required>
+                                    class="form-control">
                                 @error('tgl_mulai')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -74,14 +76,14 @@
                             </div>
                             <div class="col-md-10">
                                 <input type="date" name="tgl_selesai" value="{{ $kegiatan->tgl_selesai }}"
-                                    class="form-control" required>
+                                    class="form-control">
                                 @error('tgl_selesai')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-                        </div>                            
+                        </div>
                         {{-- satuan --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -91,7 +93,9 @@
                                 <select class="form-control select2" name="satuan_id" required>
                                     <option value="" disabled selected>== Pilih Satuan ==</option>
                                     @foreach ($satuan as $s)
-                                        <option value="{{ $s->id }}" {{ $s->id == ($kegiatan->satuan_id) ? 'selected' : '' }}>{{ $s->name }}</option>
+                                        <option value="{{ $s->id }}"
+                                            {{ $s->id == $kegiatan->satuan_id ? 'selected' : '' }}>{{ $s->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -102,8 +106,7 @@
                                 <label class="col-form-label" for="jml_target">Jumlah Target</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="number" name="jml_target"
-                                    class="form-control" required
+                                <input type="number" id="jml_target" name="jml_target" class="form-control" required
                                     value="{{ $kegiatan->jml_target ?? '' }}">
                             </div>
                         </div>
@@ -113,8 +116,7 @@
                                 <label class="col-form-label" for="jml_realisasi">Jumlah Realisasi</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="number" name="jml_realisasi"
-                                    class="form-control" required
+                                <input type="number" id="jml_realisasi" name="jml_realisasi" class="form-control" required
                                     value="{{ $kegiatan->jml_realisasi ?? '' }}">
                             </div>
                         </div>
@@ -127,7 +129,10 @@
                                 <select class="form-control select2" name="kredit_id">
                                     <option value="" disabled selected>== Pilih Butir ==</option>
                                     @foreach ($butir as $b)
-                                        <option value="{{ $b->id }}" {{ $b->id == ($kegiatan->kredit_id) ? 'selected' : '' }}>{{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
+                                        <option value="{{ $b->id }}"
+                                            {{ $b->id == $kegiatan->kredit_id ? 'selected' : '' }}>
+                                            {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -138,8 +143,7 @@
                                 <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="number" name="angka_kredit"
-                                    class="form-control" required
+                                <input type="number" name="angka_kredit" class="form-control" required
                                     value="{{ $kegiatan->angka_kredit ?? 0 }}" min="0" step=".0001">
                             </div>
                         </div>
@@ -149,15 +153,17 @@
                                 <label class="col-form-label" for="keterangan">Keterangan</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="keterangan" value="{{ $kegiatan->keterangan }}">
-                                   
+                                <input type="text" class="form-control" name="keterangan"
+                                    value="{{ $kegiatan->keterangan }}">
+
                             </div>
                         </div>
                         {{-- submit --}}
                         <div class="row mt-5">
                             <div class="col">
-                                <a href="{{ URL::previous() }}" class="btn btn-primary">Kembali</a>
-                                <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i> Simpan</button>
+                                <a href="{{ URL::previous() }}" class="btn btn-secondary">Kembali</a>
+                                <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i>
+                                    Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -165,4 +171,11 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    document.getElementById('jml_realisasi').max = $("#jml_target").val();
+        $(document).on('change', '#jml_target', function() {
+            var x = $("#jml_target").val();
+            document.getElementById('jml_realisasi').max = x;
+        });
+    </script>
 @endsection

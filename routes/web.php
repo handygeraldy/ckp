@@ -31,6 +31,9 @@ Route::delete('tim/delete', [TimController::class, 'softDelete'])->name('tim.del
 Route::delete('ckp/delete', [CkpController::class, 'softDelete'])->name('ckp.delete');
 Route::delete('kegiatan/delete', [KegiatanController::class, 'delete'])->name('kegiatan.delete');
 
+Route::post('ckp/ajukan', [CkpController::class, 'ajukan'])->name('ckp.ajukan');
+
+
 Route::resource('kredit', KreditController::class);
 Route::resource('golongan', GolonganController::class);
 Route::resource('fungsional', FungsionalController::class);
@@ -40,4 +43,11 @@ Route::resource('user', UserController::class);
 Route::resource('tim', TimController::class);
 Route::resource('ckp', CkpController::class);
 Route::resource('kegiatan', KegiatanController::class);
-Route::resource('nilai', Penilaian::class);
+
+Route::get('nilai', [Penilaian::class, 'index'])->name('nilai.index');
+Route::get('nilai/show/{id}', [Penilaian::class, 'show'])->name('nilai.show');
+Route::get('nilai/input/{id}', [Penilaian::class, 'inputNilai'])->name('nilai.edit');
+Route::post('nilai/input', [Penilaian::class, 'inputNilaiPost'])->name('nilai.edit.post');
+Route::post('nilai/reject', [Penilaian::class, 'reject'])->name('nilai.reject');
+Route::post('nilai/approve', [Penilaian::class, 'approve'])->name('nilai.approve');
+Route::post('nilai/delete', [Penilaian::class, 'delete'])->name('nilai.delete');

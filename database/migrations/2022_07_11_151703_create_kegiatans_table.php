@@ -19,8 +19,8 @@ class CreateKegiatansTable extends Migration
             $table->unsignedBigInteger('tim_id');
             $table->unsignedBigInteger('kegiatan_tim_id')->nullable();
             $table->string('name');
-            $table->date('tgl_mulai');
-            $table->date('tgl_selesai');
+            $table->date('tgl_mulai')->nullable();
+            $table->date('tgl_selesai')->nullable();
             $table->unsignedBigInteger('satuan_id');
             $table->integer('jml_target');
             $table->integer('jml_realisasi');

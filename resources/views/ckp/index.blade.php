@@ -26,12 +26,13 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Bulan</th>
+                                    <th style="min-width: 80px">Bulan</th>
                                     <th>Jumlah Kegiatan</th>
                                     <th>Nilai Kuantitas</th>
                                     <th>Nilai Kualitas</th>
                                     <th>Nilai Akhir</th>
                                     <th>Angka Kredit</th>
+                                    <th style="min-width: 150px">Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -45,17 +46,35 @@
                                         <td>{{ $d->avg_kualitas }}</td>
                                         <td>{{ $d->nilai_akhir }}</td>
                                         <td>{{ $d->angka_kredit }}</td>
-                                        <td style="min-width: 100px;">
-                                            <div class="row">
-                                                <a href="{{ route($route_ . '.show',  $d->id) }}" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-eye"></i></a>
-                                                <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
-                                                        class="fas fa-trash-alt"></i></a>
-                                            </div>
+                                        <td>
+                                            @if ($d->status == 1)
+                                            Belum diajukan
+                                            @elseif ($d->status == 2)
+                                            Diperiksa ketua tim
+                                            @elseif ($d->status == 3)
+                                            Diperiksa Direktur
+                                            @else
+                                            Disetujui
+                                            @endif
                                         </td>
+                                            <td style="min-width: 100px;">
+                                                <div class="row">
+                                                    <a href="{{ route($route_ . '.show', $d->id) }}"
+                                                        class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-eye"></i></a>
+                                                        
+                                                    @if ($d->status == 1)
+                                                    <a href="{{ route($route_ . '.edit', $d->id) }}"
+                                                        class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
+                                                        data-id="{{ $d->id }}" data-toggle="modal"><i
+                                                            class="fas fa-trash-alt"></i></a>
+                                                    @elseif ($d->status >= 3)
+                                                    <a href=""
+                                                        class="btn btn-success btn-sm"><i class="fas fa-download"></i>Export</a>
+                                                    @endif
+                                                </div>
+                                            </td>
                                     </tr>
                                 @endforeach
                             </tbody>
