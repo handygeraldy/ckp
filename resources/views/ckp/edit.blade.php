@@ -81,7 +81,7 @@
                                     <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" name="tgl_mulai[]" value="{{ $k->tgl_mulai }}"
+                                    <input type="date" name="tgl_mulai[]" value="{{ $k->tgl_mulai ?? '' }}"
                                         class="form-control">
                                     @error('tgl_mulai')
                                         <div class="invalid-feedback">
@@ -96,7 +96,7 @@
                                     <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" name="tgl_selesai[]" value="{{ $k->tgl_selesai }}"
+                                    <input type="date" name="tgl_selesai[]" value="{{ $k->tgl_selesai ?? '' }}"
                                         class="form-control">
                                     @error('tgl_selesai')
                                         <div class="invalid-feedback">
@@ -146,7 +146,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <select class="form-control select2" name="kredit_id[]">
-                                        <option value="" disabled selected>== Pilih Butir ==</option>
+                                        <option value="">== Pilih Butir ==</option>
                                         @foreach ($butir as $b)
                                             <option value="{{ $b->id }}" {{ $b->id == $k->kredit_id ? 'selected' : '' }}>>{{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                         @endforeach
@@ -159,7 +159,7 @@
                                     <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" name="angka_kredit[]" value="{{ $k->angka_kredit }}"
+                                    <input type="number" name="angka_kredit[]" value="{{ $k->angka_kredit ?? 0 }}"
                                         class="form-control" required min="0" step=".0001">
                                 </div>
                             </div>
@@ -169,7 +169,7 @@
                                     <label class="col-form-label" for="keterangan">Keterangan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="keterangan[]" value="{{ $k->keterangan }}">    
+                                    <input type="text" class="form-control" name="keterangan[]" value="{{ $k->keterangan ?? '' }}">    
                                 </div>
                             </div>
                             <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
@@ -235,7 +235,7 @@
                             <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="date" name="tgl_mulai[]"
+                            <input type="date" name="tgl_mulai[]" value=""
                                 class="form-control">
                             @error('tgl_mulai')
                                 <div class="invalid-feedback">
@@ -249,7 +249,7 @@
                             <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="date" name="tgl_selesai[]"
+                            <input type="date" name="tgl_selesai[]" value=""
                                 class="form-control">
                             @error('tgl_selesai')
                                 <div class="invalid-feedback">
@@ -297,7 +297,7 @@
                         </div>
                         <div class="col-md-10">
                             <select class="form-control select2" name="kredit_id[]">
-                                <option value="" disabled selected>== Pilih Butir ==</option>
+                                <option value="" selected>== Pilih Butir ==</option>
                                 @foreach ($butir as $b)
                                     <option value="{{ $b->id }}">{{$b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                 @endforeach
@@ -318,7 +318,7 @@
                             <label class="col-form-label" for="keterangan">Keterangan</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="keterangan[]">
+                            <input type="text" class="form-control" name="keterangan[]" value="">
                                
                         </div>
                     </div>

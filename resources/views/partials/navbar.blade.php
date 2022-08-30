@@ -45,4 +45,10 @@
             Penilaian
         </a>
     </li>
+    <li class="nav-item {{ Request::is('approval*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('approval.index') }}">
+            <i class="fa-solid fa-clipboard-check"></i>
+            Approval
+        </a>
+    </li>
 </ul>

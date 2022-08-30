@@ -128,22 +128,56 @@
                             </table>
                         @endif
                     </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col">
-                        <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>
-                    </div>
-                    <div class="col">
-                        @if ($route_ == 'kegiatan' && $ckp->status == 1)
-                            <form action="{{ route('ckp.ajukan') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="ckp_id" value="{{ $ckp->id }}">
-                                <button type="submit" class="btn btn-primary float-right mx-3">
-                                    <i class="fa fa-check"></i> Ajukan CKP
-                                </button>
-                            </form>
-                        @endif
-                    </div>
+
+                    @if ($route_ == 'kegiatan' && $ckp->status <= 1)
+                        <div class="row mt-5">
+                            <div class="col">
+                                <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>
+                            </div>
+                            <div class="col mr-3">
+                                <form action="{{ route('ckp.ajukan') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="ckp_id" value="{{ $ckp->id }}">
+                                    <button type="submit" class="btn btn-primary float-right">
+                                        <i class="fa fa-check"></i> Ajukan CKP
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @elseif ($route_ == 'approval' && $ckp->status == 3)
+                        <form id="formApprove" action="{{ route('approval.approve.reject') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="ckp_id" value="{{ $ckp->id }}">
+                            <div id="selain-reject" class="row mt-5">
+                                <div class="col">
+                                    <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>
+                                </div>
+                                <div class="col mr-3 text-right">
+                                    <button type="button" id="rejectBtn1" class="btn btn-warning mr-2">
+                                        <i class="fa fa-undo"></i> Reject</button>
+                                    <button form="formApprove" type="submit" class="btn btn-primary" name="action"
+                                        value="approve">
+                                        <i class="fa fa-check"></i> Approve</button>
+                                </div>
+                            </div>
+                            <div id="rejectDiv" style="display:none">
+                                <div class="row my-3 mx-3">
+                                    <div class="col">
+                                        <textarea id="catatan" name="catatan" class="form-control" placeholder="Isikan catatan" rows="5"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row my-3 mx-3">
+                                    <div class="col text-right">
+                                        <button type="button" id="batalReject" class="btn btn-secondary mr-2">
+                                            Batal</button>
+                                        <button form="formApprove" type="submit" class="btn btn-warning mr-2"
+                                            name="action" id="rejectBtn2" value="reject">
+                                            <i class="fa fa-undo"></i> Reject</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -151,7 +185,7 @@
     <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
-                <form action="{{ route($route_ . '.delete') }}" method="POST" class="d-inline">
+                <form action="{{ route('kegiatan.delete') }}" method="POST" class="d-inline">
                     @method('delete')
                     @csrf
                     <div class="modal-body">
@@ -173,6 +207,24 @@
             $(".modal-body #value_id").val(value_id);
             var ckp_id = $(this).data('ckp');
             $(".modal-body #ckp_id").val(ckp_id);
+        });
+
+        $("#rejectBtn1").click(function() {
+            $("#rejectDiv").show();
+            $("#selain-reject").hide();
+        });
+
+        $("#batalReject").click(function() {
+            $("#rejectDiv").hide();
+            $("#selain-reject").show();
+        });
+
+        $("#rejectBtn2").click(function() {
+            var empty = $('textarea#catatan').val()
+            if (empty == '') {
+                alert("Masukkan catatan jika akan me-reject CKP");
+                return false;
+            }
         });
     </script>
 @endsection

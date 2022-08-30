@@ -6,6 +6,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
             <li class="breadcrumb-item text-gray-800">CKP</li>
+            <li class="breadcrumb-item text-gray-800">Penilaian</li>
         </ol>
     </div>
 
@@ -39,15 +40,15 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $d->bulan . '-' . $d->tahun }}</td>
-                                        <td>{{ $d->user->name }}</td>
+                                        <td>{{ $d->user_name }}</td>
                                         <td>{{ $d->avg_kuantitas }}</td>
                                         <td>{{ $d->avg_kualitas }}</td>
                                         <td>{{ $d->nilai_akhir }}</td>
-                                        <td></td>
+                                        <td>{{ $d->jml_kegiatan }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.show',  $d->id) }}" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-eye"></i></a>
+                                                    <i class="fa fa-eye"></i></a>
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                     class="btn btn-success btn-sm"><i class="fa-solid fa-file-pen"></i> Beri Nilai</a>
                                             </div>

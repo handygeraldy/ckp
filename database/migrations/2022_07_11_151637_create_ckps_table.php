@@ -24,7 +24,7 @@ class CreateCkpsTable extends Migration
             $table->float('avg_kualitas', 5, 2)->nullable();
             $table->float('nilai_akhir', 5, 2)->nullable();
             $table->float('angka_kredit', 5, 2)->nullable();
-            $table->enum('status', ['1', '2', '3', '4'])->default('1');
+            $table->enum('status', [0,1,2,3,4])->default(1);
             $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
 

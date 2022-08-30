@@ -71,7 +71,6 @@ class CkpController extends Controller
         $q = DB::table('ckps')
             ->where('bulan', $bulan)
             ->where('tahun', $tahun);
-
         $ckp_lama = $q->first();
         if ($ckp_lama == null) {
             $ckp = new Ckp();
@@ -91,45 +90,33 @@ class CkpController extends Controller
                 $kegiatan = new Kegiatan();
                 $kegiatan->name = $request->kegiatan[$i];
                 $kegiatan->tim_id = $request->tim_id[$i];
-                if ($request->tgl_mulai != null) {
-                    $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
-                }
-                if ($request->tgl_selesai != null) {
-                    $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
-                }
+                $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
+                $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
                 $kegiatan->satuan_id = $request->satuan_id[$i];
                 $kegiatan->jml_target = $request->jml_target[$i];
                 $kegiatan->jml_realisasi = $request->jml_realisasi[$i];
-                if ($request->kredit_id != null) {
-                    $kegiatan->kredit_id = $request->kredit_id[$i];
-                }
-                if ($request->keterangan != null) {
-                    $kegiatan->keterangan = $request->keterangan[$i];
-                }
+                $kegiatan->kredit_id = $request->kredit_id[$i];
+                $kegiatan->keterangan = $request->keterangan[$i];
                 $kegiatan->angka_kredit = $request->angka_kredit[$i];
                 $ckp->kegiatan()->save($kegiatan);
             }
         } else {
+            if ((int)$ckp_lama->status > 1) {
+                alert()->error('GAGAL', 'CKP yang telah diajukan tidak bisa diubah');
+                return redirect()->route('ckp.index');
+            }
             for ($i = 0; $i < $jml_kegiatan; $i++) {
                 $kegiatan = new Kegiatan();
                 $kegiatan->ckp_id = $ckp_lama->id;
                 $kegiatan->name = $request->kegiatan[$i];
                 $kegiatan->tim_id = $request->tim_id[$i];
-                if ($request->tgl_mulai != null) {
-                    $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
-                }
-                if ($request->tgl_selesai != null) {
-                    $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
-                }
+                $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
+                $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
                 $kegiatan->satuan_id = $request->satuan_id[$i];
                 $kegiatan->jml_target = $request->jml_target[$i];
                 $kegiatan->jml_realisasi = $request->jml_realisasi[$i];
-                if ($request->kredit_id != null) {
-                    $kegiatan->kredit_id = $request->kredit_id[$i];
-                }
-                if ($request->keterangan != null) {
-                    $kegiatan->keterangan = $request->keterangan[$i];
-                }
+                $kegiatan->kredit_id = $request->kredit_id[$i];
+                $kegiatan->keterangan = $request->keterangan[$i];
                 $kegiatan->angka_kredit = $request->angka_kredit[$i];
                 $kegiatan->save();
             }
@@ -140,26 +127,25 @@ class CkpController extends Controller
                 ->groupBy('ckp_id')
                 ->first();
 
-                if ($hitung->avg_kualitas == null) {
-                    $q->update(
-                        [
-                            'jml_kegiatan' => $hitung->jml_kegiatan,
-                            'avg_kuantitas' => $hitung->avg_kuantitas,
-                            'angka_kredit' => $hitung->sum_angka_kredit,
-                        ]
-                    );
-                } else {
-                    $q->update(
-                        [
-                            'jml_kegiatan' => $hitung->jml_kegiatan,
-                            'avg_kuantitas' => $hitung->avg_kuantitas,
-                            'avg_kualitas' => $hitung->avg_kualitas,
-                            'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
-                            'angka_kredit' => $hitung->sum_angka_kredit,
-                        ]
-                    );
-                }
-           
+            if ($hitung->avg_kualitas == null) {
+                $q->update(
+                    [
+                        'jml_kegiatan' => $hitung->jml_kegiatan,
+                        'avg_kuantitas' => $hitung->avg_kuantitas,
+                        'angka_kredit' => $hitung->sum_angka_kredit,
+                    ]
+                );
+            } else {
+                $q->update(
+                    [
+                        'jml_kegiatan' => $hitung->jml_kegiatan,
+                        'avg_kuantitas' => $hitung->avg_kuantitas,
+                        'avg_kualitas' => $hitung->avg_kualitas,
+                        'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
+                        'angka_kredit' => $hitung->sum_angka_kredit,
+                    ]
+                );
+            }
         }
 
         alert()->success('Sukses', 'ckp berhasil diinput');
@@ -194,6 +180,10 @@ class CkpController extends Controller
     public function edit($id)
     {
         $ckp = Ckp::where('id', $id)->first();
+        if ((int)$ckp->status > 1){
+            alert()->error('Nakal yaa', 'CKP yang telah diajukan tidak bisa diubah');
+            return redirect()->route('ckp.index');
+        }
         $kegiatan = Kegiatan::where('ckp_id', $id)
             ->get();
         $tim = Tim::all();
@@ -220,27 +210,18 @@ class CkpController extends Controller
     {
         Kegiatan::where('ckp_id', $id)->delete();
         $jml_kegiatan = count($request->kegiatan);
-
         for ($i = 0; $i < $jml_kegiatan; $i++) {
             $kegiatan = new Kegiatan();
             $kegiatan->ckp_id = $id;
             $kegiatan->name = $request->kegiatan[$i];
             $kegiatan->tim_id = $request->tim_id[$i];
-            if ($request->tgl_mulai != null) {
-                $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
-            }
-            if ($request->tgl_selesai != null) {
-                $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
-            }
+            $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
+            $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
             $kegiatan->satuan_id = $request->satuan_id[$i];
             $kegiatan->jml_target = $request->jml_target[$i];
             $kegiatan->jml_realisasi = $request->jml_realisasi[$i];
-            if ($request->kredit_id != null) {
-                $kegiatan->kredit_id = $request->kredit_id[$i];
-            }
-            if ($request->keterangan != null) {
-                $kegiatan->keterangan = $request->keterangan[$i];
-            }
+            $kegiatan->kredit_id = $request->kredit_id[$i];
+            $kegiatan->keterangan = $request->keterangan[$i];
             $kegiatan->angka_kredit = $request->angka_kredit[$i];
             $kegiatan->save();
         }
@@ -318,11 +299,23 @@ class CkpController extends Controller
         Ckp::where('id', $ckp_id)
             ->update(
                 [
-                    'status' => 2
+                    'status' => '2'
                 ]
             );
 
         alert()->success('Sukses', 'ckp berhasil diajukan');
         return redirect()->route('ckp.index');
+    }
+
+    public function showCatatan($id)
+    {
+        $catatan = DB::table('catatan_ckps')
+            ->leftjoin('users', 'catatan_ckps.user_id', '=', 'users.id')
+            ->select('catatan_ckps.catatan as catatan', 'users.name as name')
+            ->where('catatan_ckps.ckp_id', $id)
+            ->get();
+        return response()->json([
+            'catatan' => $catatan
+        ]);
     }
 }

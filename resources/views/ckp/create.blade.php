@@ -77,7 +77,7 @@
                                     <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" name="tgl_mulai[]" class="form-control">
+                                    <input type="date" name="tgl_mulai[]" class="form-control" value="">
                                     @error('tgl_mulai')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -91,7 +91,7 @@
                                     <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" name="tgl_selesai[]" class="form-control">
+                                    <input type="date" name="tgl_selesai[]" class="form-control" value="">
                                     @error('tgl_selesai')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <select class="form-control select2" name="kredit_id[]">
-                                        <option value="" disabled selected>== Pilih Butir ==</option>
+                                        <option value="" selected>== Pilih Butir ==</option>
                                         @foreach ($butir as $b)
                                             <option value="{{ $b->id }}">
                                                 {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
@@ -164,7 +164,7 @@
                                     <label class="col-form-label" for="keterangan">Keterangan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="keterangan[]">
+                                    <input type="text" class="form-control" name="keterangan[]" value="">
 
                                 </div>
                             </div>
@@ -228,7 +228,7 @@
                             <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="date" name="tgl_mulai[]"
+                            <input type="date" name="tgl_mulai[]" value=""
                                 class="form-control">
                             @error('tgl_mulai')
                                 <div class="invalid-feedback">
@@ -242,7 +242,7 @@
                             <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="date" name="tgl_selesai[]"
+                            <input type="date" name="tgl_selesai[]" value=""
                                 class="form-control">
                             @error('tgl_selesai')
                                 <div class="invalid-feedback">
@@ -290,7 +290,7 @@
                         </div>
                         <div class="col-md-10">
                             <select class="form-control select2" name="kredit_id[]">
-                                <option value="" disabled selected>== Pilih Butir ==</option>
+                                <option value="" selected>== Pilih Butir ==</option>
                                 @foreach ($butir as $b)
                                     <option value="{{ $b->id }}">{{$b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                 @endforeach
@@ -311,7 +311,7 @@
                             <label class="col-form-label" for="keterangan">Keterangan</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="keterangan[]">
+                            <input type="text" class="form-control" name="keterangan[]" value="">
                                
                         </div>
                     </div>

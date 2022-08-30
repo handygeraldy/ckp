@@ -4,7 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ckp\CkpController;
 use App\Http\Controllers\ckp\KegiatanController;
-use App\Http\Controllers\tim\ckp\Penilaian;
+use App\Http\Controllers\ckp\Penilaian;
 use App\Http\Controllers\admin\TimController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\KreditController;
@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\SatkerController;
 use App\Http\Controllers\admin\SatuanController;
 use App\Http\Controllers\admin\GolonganController;
 use App\Http\Controllers\admin\FungsionalController;
+use App\Http\Controllers\ckp\Approval;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,8 @@ Route::delete('tim/delete', [TimController::class, 'softDelete'])->name('tim.del
 Route::delete('ckp/delete', [CkpController::class, 'softDelete'])->name('ckp.delete');
 Route::delete('kegiatan/delete', [KegiatanController::class, 'delete'])->name('kegiatan.delete');
 
+Route::get('ckp/catatan/{id}', [CkpController::class, 'showCatatan'])->name('ckp.catatan');
 Route::post('ckp/ajukan', [CkpController::class, 'ajukan'])->name('ckp.ajukan');
-
 
 Route::resource('kredit', KreditController::class);
 Route::resource('golongan', GolonganController::class);
@@ -48,6 +49,8 @@ Route::get('nilai', [Penilaian::class, 'index'])->name('nilai.index');
 Route::get('nilai/show/{id}', [Penilaian::class, 'show'])->name('nilai.show');
 Route::get('nilai/input/{id}', [Penilaian::class, 'inputNilai'])->name('nilai.edit');
 Route::post('nilai/input', [Penilaian::class, 'inputNilaiPost'])->name('nilai.edit.post');
-Route::post('nilai/reject', [Penilaian::class, 'reject'])->name('nilai.reject');
-Route::post('nilai/approve', [Penilaian::class, 'approve'])->name('nilai.approve');
-Route::post('nilai/delete', [Penilaian::class, 'delete'])->name('nilai.delete');
+
+Route::get('approval', [Approval::class, 'index'])->name('approval.index');
+Route::get('approval/show/{id}', [Approval::class, 'show'])->name('approval.show');
+Route::post('approval/approve-reject', [Approval::class, 'approveReject'])->name('approval.approve.reject');
+Route::post('approval/approve-checked', [Approval::class, 'approveChecked'])->name('approval.approve.checked');

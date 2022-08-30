@@ -124,20 +124,36 @@
                             @endif
                         </div>
                     </div>
-                    <div class="row my-3 mx-3">
-                        <div class="col">
-                            <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Kembali</a>
-
-                            <button form="formNilai" type="submit" class="btn btn-primary float-right" id="approveBtn"
-                                name="action" value="send">
-                                <i class="fa fa-check"></i> Simpan & Setujui</button>
-                            <button form="formNilai" type="submit" class="btn btn-success float-right mr-2"
-                                name="action" value="save">
-                                <i class="fa fa-save"></i> Simpan</button>
-                            <button form="formNilai" type="submit" class="btn btn-warning float-right mr-2"
-                                name="action" value="reject">
-                                <i class="fa fa-undo"></i> Reject</button>
-
+                    <div id="selain-reject">
+                        <div class="row my-3 mx-3">
+                            <div class="col">
+                                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Kembali</a>
+                            </div>
+                            <div class="col text-right">
+                                <button type="button" id="rejectBtn1" class="btn btn-warning mr-2">
+                                    <i class="fa fa-undo"></i> Reject</button>
+                                <button form="formNilai" type="submit" class="btn btn-success mr-2" name="action"
+                                    value="save">
+                                    <i class="fa fa-save"></i> Simpan</button>
+                                <button form="formNilai" type="submit" class="btn btn-primary" id="approveBtn"
+                                    name="action" value="send">
+                                    <i class="fa fa-check"></i> Simpan & Setujui</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rejectDiv" style="display:none">
+                        <div class="row my-3 mx-3">
+                            <div class="col">
+                                <textarea id="catatan" name="catatan" class="form-control" placeholder="Isikan catatan" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row my-3 mx-3">
+                            <div class="col text-right">
+                                <button type="button" id="batalReject" class="btn btn-secondary mr-2"> Batal</button>
+                                <button form="formNilai" type="submit" class="btn btn-warning mr-2" name="action"
+                                    id="rejectBtn2" value="reject">
+                                    <i class="fa fa-undo"></i> Reject</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -177,13 +193,30 @@
             hitungNilaiAkhir();
         });
 
-
         $("#approveBtn").click(function() {
             var empty = $(this).parent().parent().parent().find("input").filter(function() {
                 return this.value === "";
             });
             if (empty.length) {
                 alert("Semua kegiatan harus dinilai sebelum menyetujui");
+                return false;
+            }
+        });
+
+        $("#rejectBtn1").click(function() {
+            $("#rejectDiv").show();
+            $("#selain-reject").hide();
+        });
+
+        $("#batalReject").click(function() {
+            $("#rejectDiv").hide();
+            $("#selain-reject").show();
+        });
+
+        $("#rejectBtn2").click(function() {
+            var empty = $('textarea#catatan').val()
+            if (empty == '') {
+                alert("Masukkan catatan jika akan me-reject CKP");
                 return false;
             }
         });
