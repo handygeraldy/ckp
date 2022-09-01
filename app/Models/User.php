@@ -45,6 +45,12 @@ class User extends Authenticatable
         return $this->belongsTo(Satker::class);
     }
 
+    public function tim()
+    {
+        return $this->belongsTo(Tim::class, 'tim_utama', 'id');
+    }
+
+
     public function golongan()
     {
         return $this->belongsTo(Golongan::class);

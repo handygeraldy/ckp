@@ -26,13 +26,14 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Bulan</th>
+                                    <th style="min-width: 80px">Bulan</th>
                                     <th>Jumlah Kegiatan</th>
                                     <th>Nilai Kuantitas</th>
                                     <th>Nilai Kualitas</th>
                                     <th>Nilai Akhir</th>
                                     <th>Angka Kredit</th>
-                                    <th></th>
+                                    <th style="min-width: 150px">Status</th>
+                                    <th style="min-width: 150px"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,22 +46,72 @@
                                         <td>{{ $d->avg_kualitas }}</td>
                                         <td>{{ $d->nilai_akhir }}</td>
                                         <td>{{ $d->angka_kredit }}</td>
-                                        <td style="min-width: 100px;">
-                                            <div class="row">
-                                                <a href="{{ route($route_ . '.show',  $d->id) }}" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-eye"></i></a>
-                                                <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
-                                                        class="fas fa-trash-alt"></i></a>
-                                            </div>
+                                        <td>
+                                            @if ($d->status == 0)
+                                            Dikembalikan
+                                            @elseif ($d->status == 1)
+                                            Belum diajukan
+                                            @elseif ($d->status == 2)
+                                            Diperiksa ketua tim
+                                            @elseif ($d->status == 3)
+                                            Diperiksa Direktur
+                                            @else
+                                            Disetujui
+                                            @endif
                                         </td>
+                                            <td style="min-width: 100px;">
+                                                <div class="row">
+                                                    @if ($d->status == 0)
+                                                    <a href="#catatanModal" id="Modalcatatan" class="btn btn-warning btn-sm"
+                                                        data-id="{{ $d->id }}" data-toggle="modal"
+                                                        title="catatan"><i class="fas fa-clipboard"></i></a>
+                                                    @endif
+                                                    <a href="{{ route($route_ . '.show', $d->id) }}"
+                                                        class="btn btn-primary btn-sm">
+                                                        <i class="fa fa-eye"></i></a>
+                                                        
+                                                    @if ($d->status <= 1)
+                                                    <a href="{{ route($route_ . '.edit', $d->id) }}"
+                                                        class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                    <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
+                                                        data-id="{{ $d->id }}" data-toggle="modal"><i
+                                                            class="fas fa-trash-alt"></i></a>
+                                                    @elseif ($d->status >= 3)
+                                                    <a href=""
+                                                        class="btn btn-success btn-sm"><i class="fa fa-download"></i> Export</a>
+                                                    @endif
+                                                </div>
+                                            </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="catatanModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-sm">
+                <div class="modal-head my-3 mx-3">
+                    <button type="button" class="btn btn-danger float-right" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="text-center">Catatan</h3>
+
+                </div>
+                <div class="modal-body" id="Bodycatatan">
+                    <table class="table table-striped table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width: 30%">Nama</th>
+                                <th style="width: 70%">Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addRow" class="addRow">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -84,10 +135,37 @@
         </div>
     </div>
     <script>
+        function get_catatan(obj) {
+            var ckp_id = obj;
+            $.ajax({
+                url: '{{ env('APP_URL') }}' + 'ckp/catatan/' + ckp_id,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    catatan = data.catatan;
+                    $('#addRow').empty();
+                    $.each(catatan, function(index,
+                        c) {
+                        $('#addRow').append('<tr><td>' + String(c.name) + '</td><td>' + c.catatan +
+                            '</td></tr>');
+                    })
+                }
+
+            });
+
+        }
         $(document).ready(function() {
             $('#tabel').DataTable();
         });
+        $(document).on('click', '#Modalcatatan', function(event) {
+            event.preventDefault();
+            var ckp_id = $(this).attr('data-id');
+            catatan = get_catatan(ckp_id);
 
+        });
         $(document).on("click", ".hapusModal", function() {
             var value_id = $(this).data('id');
             $(".modal-body #value_id").val(value_id);

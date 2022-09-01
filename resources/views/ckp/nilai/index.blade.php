@@ -5,8 +5,8 @@
         <h1 class="h3 mb-0">{{ $title }}</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-gray-800">Master</li>
-            <li class="breadcrumb-item text-gray-800">{{ $text_ }}</li>
+            <li class="breadcrumb-item text-gray-800">CKP</li>
+            <li class="breadcrumb-item text-gray-800">Penilaian</li>
         </ol>
     </div>
 
@@ -16,8 +16,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col text-right">
-                            <a href="{{ route('satker.create') }}" class="btn btn-primary"><i
-                                    class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
+                           
                         </div>
                     </div>
                 </div>
@@ -25,23 +24,33 @@
                     <div class="table-responsive">
                         <table id="tabel" class="table table-hover table-striped">
                             <thead>
-                                <tr>
+                                <tr class="text-center align-middle">
                                     <th>No</th>
-                                    <th scope="col">{{ $text_ }}</th>
-                                    <th>Pimpinan</th>
-                                    <th></th>
+                                    <th style="min-width: 80px">Bulan</th>
+                                    <th style="min-width: 200px">Nama Pegawai</th>
+                                    <th>Nilai Kuantitas</th>
+                                    <th>Nilai Kualitas</th>
+                                    <th>Nilai Akhir</th>
+                                    <th style="min-width: 150px">Jumlah kegiatan belum dinilai</th>
+                                    <th style="min-width: 150px"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($dt as $key => $d)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td class="text-left">{{ $d->name }}</td>
-                                        <td>{{ $d->user ? $d->user->name : '' }}</td>
+                                        <td>{{ $d->bulan . '-' . $d->tahun }}</td>
+                                        <td>{{ $d->user_name }}</td>
+                                        <td>{{ $d->avg_kuantitas }}</td>
+                                        <td>{{ $d->avg_kualitas }}</td>
+                                        <td>{{ $d->nilai_akhir }}</td>
+                                        <td>{{ $d->jml_kegiatan }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
+                                                <a href="{{ route($route_ . '.show',  $d->id) }}" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-eye"></i></a>
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                    class="btn btn-success btn-sm"><i class="fa-solid fa-file-pen"></i> Beri Nilai</a>
                                             </div>
                                         </td>
                                     </tr>

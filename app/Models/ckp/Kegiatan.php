@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ckp;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Tim;
 use App\Traits\Uuids;
+use App\Models\Kredit;
+use App\Models\Satuan;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Kegiatan extends Model
 {

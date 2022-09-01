@@ -27,6 +27,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    @if ($route_ == 'fungsional')
+                                        <th>Jabatan Fungsional</th>
+                                    @endif
                                     <th scope="col">{{ $text_ }}</th>
                                     <th></th>
                                 </tr>
@@ -35,17 +38,25 @@
                                 @foreach ($dt as $key => $d)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
+                                        @if ($route_ == 'fungsional')
+                                            <td>{{ $d->jafung->name }}</td>
+                                        @endif
                                         <td class="text-left" style="min-width: 250px;">{{ $d->name }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
-                                                {{-- <a href="{{ route($route_ . '.edit', $d->id)  }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a> --}}
-                                                <a href="#editModal" data-toggle="modal" data-id="{{ $d->id }}"
-                                                    data-name="{{ $d->name }}"
-                                                    class="btn btn-success btn-sm editModal"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
-                                                        class="fas fa-trash-alt"></i></a>
+                                                @if ($route_ == 'fungsional')
+                                                    <a href="#editModal" data-toggle="modal" data-id="{{ $d->id }}"
+                                                        data-name="{{ $d->name }}"
+                                                        data-jafung="{{ $d->jafung->id }}"
+                                                        class="btn btn-success btn-sm editModal"><i
+                                                            class="fas fa-edit"></i></a>
+                                                @else
+                                                    <a href="#editModal" data-toggle="modal" data-id="{{ $d->id }}"
+                                                        data-name="{{ $d->name }}"
+                                                        class="btn btn-success btn-sm editModal"><i
+                                                            class="fas fa-edit"></i></a>
+                                                @endif
+
                                             </div>
                                         </td>
                                     </tr>
@@ -65,6 +76,13 @@
                     <div class="modal-body">
                         <input class="form-control" type="text" id="name" name="name"
                             placeholder="Isikan nama {{ $text_ }}">
+                        @if ($route_ == 'fungsional')
+                            <select class="form-control select2 mt-2" name="jafung_id" id="jafung_id" required>
+                                <option value="" disabled selected>== Pilih Jafung ==</option>
+                                <option value="1">Statistisi</option>
+                                <option value="2">Prakom</option>
+                            </select>
+                        @endif
                     </div>
                     <div class="modal-footer justify-content-around pt-0 border-top-0">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -80,8 +98,15 @@
                 <form id="formedit" class="d-inline">
                     <div class="modal-body">
 
-                        <input type="hidden" id="id_edit" name="id_edit">
-                        <input type="text" name="name_edit" id="name_edit" class="form-control">
+                        <input type="hidden" id="id_edit" name="id">
+                        <input type="text" name="name" id="name_edit" class="form-control">
+                        @if ($route_ == 'fungsional')
+                            <select class="form-control select2 mt-2" name="jafung_id" id="jafung_edit" required>
+                                <option value="" disabled>== Pilih Jafung ==</option>
+                                <option value="1">Statistisi</option>
+                                <option value="2">Prakom</option>
+                            </select>
+                        @endif
                     </div>
                     <div class="modal-footer justify-content-around pt-0 border-top-0">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -92,24 +117,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <form action="{{ route($route_ . '.delete') }}" method="POST" class="d-inline">
-                    @method('delete')
-                    @csrf
-                    <div class="modal-body">
-                        <h3 class="text-center">Hapus {{ $route_ }} ini?</h3>
-                        <input type="hidden" id="value_id" name="value_id">
-                    </div>
-                    <div class="modal-footer justify-content-around pt-0 border-top-0">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
     <script>
         $(document).ready(function() {
             $('#tabel').DataTable();
@@ -129,9 +137,6 @@
 
                 dataType: 'json',
                 success: function(data) {
-
-                    // $('#formedit').trigger("reset");
-                    // $('#editModal').modal('hide');
                     window.location.reload(true);
                 }
             });
@@ -143,12 +148,8 @@
             $(".modal-body #id_edit").val(id_edit);
             var name_edit = $(this).data('name');
             $(".modal-body #name_edit").val(name_edit);
-        });
-
-
-        $(document).on("click", ".hapusModal", function() {
-            var value_id = $(this).data('id');
-            $(".modal-body #value_id").val(value_id);
+            var jafung_edit = $(this).data('jafung');
+            $(".modal-body #jafung_edit").val(jafung_edit).change();
         });
     </script>
 @endsection

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ckp;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class CatatanCkp extends Model
 {
-    use HasFactory;
-    public $timestamps = false;
+    
+    protected $guarded = ['id'];
+
 }

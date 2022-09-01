@@ -76,7 +76,7 @@
                         {{-- submit --}}
                         <div class="row mt-5">
                             <div class="col">
-                                <a href="{{ route('tim.index') }}" class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('tim.index') }}" class="btn btn-secondary">Kembali</a>
                                 <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i> Simpan</button>
                             </div>
                         </div>

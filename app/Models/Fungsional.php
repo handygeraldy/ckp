@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Fungsional extends Model
 {
     use HasFactory;
-
+    
+    public $timestamps = false;
     protected $guarded = ['id'];
+
+    public function jafung()
+    {
+        return $this->belongsTo(Jafung::class);
+    }
 }

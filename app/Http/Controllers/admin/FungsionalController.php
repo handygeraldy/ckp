@@ -15,7 +15,7 @@ class FungsionalController extends Controller
      */
     public function index()
     {
-        $dt = Fungsional::where('is_delete','!=','1')->get();
+        $dt = Fungsional::all();
         return view('admin.master.index', [
             'dt' => $dt,
             'title' => 'Master Fungsional',
@@ -44,6 +44,7 @@ class FungsionalController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
+            'jafung_id' => 'required',
         ]);
         Fungsional::create($validated);
         alert()->success('Sukses', 'Berhasil menambah fungsional');
@@ -82,7 +83,10 @@ class FungsionalController extends Controller
     public function update(Request $request, $id)
     {
         $res = Fungsional::where('id', $id)->update(
-            ['name'=> $request->name]);
+            [
+                'name'=> $request->name,
+                'jafung_id'=> $request->jafung_id,
+        ]);
         if ($res) {
             alert()->success('Sukses', 'Berhasil mengubah fungsional');
         } else {
@@ -100,18 +104,5 @@ class FungsionalController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function softDelete(Request $request)
-    {
-        $id = $request->value_id;
-        $res = Fungsional::where('id', $id)->update(
-            ['is_delete'=>'1']);
-        if ($res) {
-            alert()->success('Sukses', 'Berhasil menghapus fungsional');
-        } else {
-            alert()->error('ERROR', 'Gagal menghapus fungsional');
-        }
-        return redirect()->route('fungsional.index');
     }
 }

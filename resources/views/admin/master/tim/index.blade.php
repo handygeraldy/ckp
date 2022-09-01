@@ -39,7 +39,7 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $d->name }}</td>
                                         <td>{{ $d->satker->name }}</td>
-                                        <td>{{ $d->user->name }}</td>
+                                        <td>{{ $d->ketua_id ? $d->user->name : 'Belum ada ketua' }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"

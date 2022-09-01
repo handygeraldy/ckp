@@ -28,7 +28,7 @@ class TimController extends Controller
      */
     public function create()
     {
-        $satker = Satker::where('is_delete','!=','1')->get(['id','name']);
+        $satker = Satker::get(['id','name']);
         $user = User::where('is_delete','!=','1')->get(['id','name']);
         return view('admin.master.tim.create', [
             'title' => 'Tambah Tim',
@@ -75,7 +75,7 @@ class TimController extends Controller
     public function edit($id)
     {
         $tim = Tim::where('id', $id)->first();
-        $satker = Satker::where('is_delete','!=','1')->get(['id','name']);
+        $satker = Satker::get(['id','name']);
         $user = User::where('is_delete','!=','1')->get(['id','name']);
         
         return view('admin.master.tim.edit', [

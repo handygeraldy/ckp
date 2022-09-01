@@ -6,11 +6,12 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
             <li class="breadcrumb-item text-gray-800">CKP</li>
-            <li class="breadcrumb-item text-gray-800">input</li>
+            <li class="breadcrumb-item text-gray-800">Edit</li>
         </ol>
     </div>
 
-    <form action="{{ route('ckp.store') }}" method="post">
+    <form action="{{ route('ckp.update', $ckp->id) }}" method="post">
+        @method('patch')
         <div class="row">
             <div class="col-lg-12 mb-1">
                 <div class="card">
@@ -28,6 +29,7 @@
                             </div>
                             <div class="col-md-10">
                                 <input class="form-control @error('bulan') is-invalid @enderror" type="month"
+                                    value="{{ $ckp->tahun . '-' . $ckp->bulan }}"
                                     id="bulan" name="bulan" required>
                             </div>
                         </div>
@@ -39,16 +41,18 @@
             <div class="col-lg-12 mb-4">
                 <h4 class="mt-5"><b>Daftar Kegiatan</b></h4>
                 {{-- Kegiatan --}}
+                @foreach($kegiatan as $k)
                 <div class="card mt-2">
                     <div class="card-body">
-                        <div>
+                        
+                        <div class="delete_add_more_item">
                             {{-- kegiatan --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
                                     <label class="col-form-label" for="kegiatan">Kegiatan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" name="kegiatan[]"
+                                    <input type="text" name="kegiatan[]" value="{{ $k->name }}"
                                         class="form-control @error('kegiatan') is-invalid @enderror" required>
                                     @error('kegiatan')
                                         <div class="invalid-feedback">
@@ -56,7 +60,7 @@
                                         </div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div>                            
                             {{-- tim --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
@@ -66,18 +70,19 @@
                                     <select class="form-control select2" name="tim_id[]" required>
                                         <option value="" disabled selected>== Pilih Tim ==</option>
                                         @foreach ($tim as $t)
-                                            <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                            <option value="{{ $t->id }}" {{ $t->id == $k->tim_id ? 'selected' : '' }}>>{{ $t->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div>                     
                             {{-- tgl_mulai --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
                                     <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" name="tgl_mulai[]" class="form-control" value="">
+                                    <input type="date" name="tgl_mulai[]" value="{{ $k->tgl_mulai ?? '' }}"
+                                        class="form-control">
                                     @error('tgl_mulai')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -91,14 +96,15 @@
                                     <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="date" name="tgl_selesai[]" class="form-control" value="">
+                                    <input type="date" name="tgl_selesai[]" value="{{ $k->tgl_selesai ?? '' }}"
+                                        class="form-control">
                                     @error('tgl_selesai')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div>                            
                             {{-- satuan --}}
                             <div class="row mb-2">
                                 <div class="col-md-2">
@@ -108,7 +114,7 @@
                                     <select class="form-control select2" name="satuan_id[]" required>
                                         <option value="" disabled selected>== Pilih Satuan ==</option>
                                         @foreach ($satuan as $s)
-                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                            <option value="{{ $s->id }}" {{ $s->id == $k->satuan_id ? 'selected' : '' }}>>{{ $s->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -119,7 +125,8 @@
                                     <label class="col-form-label" for="jml_target">Jumlah Target</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" name="jml_target[]" class="form-control jml_target" required>
+                                    <input type="number" name="jml_target[]" value="{{ $k->jml_target }}"
+                                        class="form-control jml_target" required>
                                 </div>
                             </div>
                             {{-- Realisasi --}}
@@ -128,8 +135,8 @@
                                     <label class="col-form-label" for="jml_realisasi">Jumlah Realisasi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" name="jml_realisasi[]" class="form-control jml_realisasi"
-                                        required>
+                                    <input type="number" name="jml_realisasi[]" value="{{ $k->jml_realisasi }}"
+                                        class="form-control jml_realisasi" required>
                                 </div>
                             </div>
                             {{-- Kode Butir Kegiatan --}}
@@ -139,11 +146,9 @@
                                 </div>
                                 <div class="col-md-10">
                                     <select class="form-control select2" name="kredit_id[]">
-                                        <option value="" selected>== Pilih Butir ==</option>
+                                        <option value="">== Pilih Butir ==</option>
                                         @foreach ($butir as $b)
-                                            <option value="{{ $b->id }}">
-                                                {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
-                                            </option>
+                                            <option value="{{ $b->id }}" {{ $b->id == $k->kredit_id ? 'selected' : '' }}>>{{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -154,8 +159,8 @@
                                     <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="number" name="angka_kredit[]" value="0" class="form-control"
-                                        required min="0" step=".0001">
+                                    <input type="number" name="angka_kredit[]" value="{{ $k->angka_kredit ?? 0 }}"
+                                        class="form-control" required min="0" step=".0001">
                                 </div>
                             </div>
                             {{-- Keterangan --}}
@@ -164,13 +169,15 @@
                                     <label class="col-form-label" for="keterangan">Keterangan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="keterangan[]" value="">
-
+                                    <input type="text" class="form-control" name="keterangan[]" value="{{ $k->keterangan ?? '' }}">    
                                 </div>
                             </div>
-                        </div>
+                            <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
+                                class="fa fa-times"></i></button>
+                        </div>                       
                     </div>
                 </div>
+                @endforeach
                 <div class="add-more" style="display: none;">
                     <div id="addRow" class="addRow">
                     </div>
@@ -316,12 +323,11 @@
                         </div>
                     </div>
                 </div>
-                
                 <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
                 class="fa fa-times"></i></button>   
             </div>
         </div>
-        </div>     
+        </div>       
     </script>
     <script type="text/javascript">
         $('.select2').select2();
@@ -338,6 +344,7 @@
             var source = $("#document-template").html();
             $("#addRow").append(source);
         });
+
         $(document).on('click', '.removeaddmore', function(event) {
             $(this).closest('.delete_add_more_item').remove();
         });
