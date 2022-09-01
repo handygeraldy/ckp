@@ -165,6 +165,7 @@
     <div>
         {{-- histogram --}}
         {{-- antar ketua tim --}}
+        {{-- seluruh pegawai --}}
     </div>
     <script>
         function changeIcon(anchor) {

@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\ckp;
 
 use Carbon\Carbon;
-use App\Models\ckp\Ckp;
 use App\Models\Tim;
 use App\Models\Kredit;
 use App\Models\Satuan;
+use App\Models\ckp\Ckp;
 use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CkpController extends Controller
 {
@@ -317,5 +323,24 @@ class CkpController extends Controller
         return response()->json([
             'catatan' => $catatan
         ]);
+    }
+
+    public function export($id)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
+        
+        $writer = new Mpdf($spreadsheet);
+        $writer = IOFactory::createWriter($spreadsheet, 'Mpdf');
+        $response =  new StreamedResponse(
+            function () use ($writer) {
+                $writer->save('php://output');
+            }
+        );
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'attachment;filename="ExportScan.pdf"');
+        $response->headers->set('Cache-Control','max-age=0');
+        return $response;
     }
 }

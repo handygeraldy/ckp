@@ -34,6 +34,7 @@ Route::delete('kegiatan/delete', [KegiatanController::class, 'delete'])->name('k
 
 Route::get('ckp/catatan/{id}', [CkpController::class, 'showCatatan'])->name('ckp.catatan');
 Route::post('ckp/ajukan', [CkpController::class, 'ajukan'])->name('ckp.ajukan');
+Route::get('ckp/export/{id}', [CkpController::class, 'export'])->name('ckp.export');
 
 Route::resource('kredit', KreditController::class);
 Route::resource('golongan', GolonganController::class);

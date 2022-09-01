@@ -11,6 +11,8 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "mpdf/mpdf": "^8.1",
+        "phpoffice/phpspreadsheet": "^1.24",
         "realrashid/sweet-alert": "^5.1"
     },
     "require-dev": {
