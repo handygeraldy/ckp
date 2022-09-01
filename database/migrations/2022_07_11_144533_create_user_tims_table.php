@@ -19,7 +19,7 @@ class CreateUserTimsTable extends Migration
             $table->uuid('anggota_id');
             // constraint duplicate tim_id - anggota_id
 
-            $table->foreign('tim_id')->references('id')->on('tims');
+            $table->foreign('tim_id')->references('id')->on('periode_tims');
             $table->foreign('anggota_id')->references('id')->on('users');
         });
     }
