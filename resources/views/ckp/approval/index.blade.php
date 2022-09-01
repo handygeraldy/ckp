@@ -18,17 +18,14 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col text-right">
-                                {{-- <button id="uncheckAll" type="button" class="btn btn-outline-primary mr-2"><i
-                                        class="fa-regular fa-square"></i></button>
-                                <button id="checkAll" type="button" class="btn btn-outline-primary mr-2"><i
-                                        class="fa-regular fa-square-check"></i></button> --}}
-                                <button form="formApprove" type="submit" class="btn btn-warning mr-2" name="action"
-                                    value="reject">
-                                    <i class="fa fa-undo"></i> Reject</button>
-                                <button form="formApprove" type="submit" class="btn btn-primary" name="action" id="approveBtn"
-                                    value="approve">
-                                    <i class="fa fa-check"></i> Approve</button>
-
+                                <div id="ifChecked" style="display:none">
+                                    <button form="formApprove" type="submit" class="btn btn-warning mr-2" name="action"
+                                        value="reject">
+                                        <i class="fa fa-undo"></i> Reject</button>
+                                    <button form="formApprove" type="submit" class="btn btn-primary" name="action"
+                                        id="approveBtn" value="approve">
+                                        <i class="fa fa-check"></i> Approve</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -37,7 +34,7 @@
                             <table id="tabel" class="table table-hover table-striped">
                                 <thead>
                                     <tr class="text-center align-middle">
-                                        <th><input type="checkbox" id="checkAll"></th>
+                                        <th><input class="ckp_id" type="checkbox" id="checkAll"></th>
                                         <th>No</th>
                                         <th style="min-width: 80px">Bulan</th>
                                         <th style="min-width: 200px">Nama Pegawai</th>
@@ -50,7 +47,8 @@
                                 <tbody>
                                     @foreach ($dt as $key => $d)
                                         <tr>
-                                            <td><input type="checkbox" name="ckp_id[]" value="{{ $d->id }}"></td>
+                                            <td><input type="checkbox" class="ckp_id" name="ckp_id[]"
+                                                    value="{{ $d->id }}"></td>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $d->bulan . '-' . $d->tahun }}</td>
                                             <td>{{ $d->user_name }}</td>
@@ -76,6 +74,18 @@
     </div>
 
     <script>
+        function isChecked() {
+            var sum_kualitas = 0;
+            if ($('input[name="ckp_id[]"]:checked').length) {
+                $("#ifChecked").show();
+            } else {
+                $("#ifChecked").hide();
+            }
+        }
+        $(document).on("change", ".ckp_id", function() {
+            isChecked();
+        });
+
         $(document).ready(function() {
             $('#tabel').DataTable();
         });
