@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKegiatanTimsTable extends Migration
+class CreatePeriodeTimsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateKegiatanTimsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kegiatan_tims', function (Blueprint $table) {
+        Schema::create('periode_tims', function (Blueprint $table) {
             $table->id();
+            $table->string("tahun", 4);
             $table->unsignedBigInteger('tim_id');
-            $table->string('name')->nullable();
+            $table->uuid('ketua_id')->nullable();
             $table->timestamps();
 
             $table->foreign('tim_id')->references('id')->on('tims');
+            $table->foreign('ketua_id')->references('id')->on('users');
         });
     }
 
@@ -30,6 +32,6 @@ class CreateKegiatanTimsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kegiatan_tims');
+        Schema::dropIfExists('periode_tims');
     }
 }

@@ -17,7 +17,7 @@ class CreateKegiatansTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('ckp_id');
             $table->unsignedBigInteger('tim_id');
-            $table->unsignedBigInteger('kegiatan_tim_id')->nullable();
+            $table->uuid('kegiatan_tim_id')->nullable();
             $table->string('name');
             $table->date('tgl_mulai')->nullable();
             $table->date('tgl_selesai')->nullable();

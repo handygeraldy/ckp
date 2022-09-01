@@ -15,9 +15,8 @@ class CreateTimsTable extends Migration
     {
         Schema::create('tims', function (Blueprint $table) {
             $table->id();
-            $table->string('name',100);            
+            $table->string('name', 100);
             $table->unsignedBigInteger('satker_id');
-            $table->uuid('ketua_id')->nullable();
             $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
 
