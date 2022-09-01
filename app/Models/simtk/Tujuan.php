@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\simtk;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserTim extends Model
+class Tujuan extends Model
 {
     use HasFactory;
 }

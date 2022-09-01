@@ -27,7 +27,7 @@ class Controller extends BaseController
         });
     }
     
-    public function index()
+    public function indexCkp()
     {
         return view('ckp.dashboard', [
             "title" => "Dashboard"

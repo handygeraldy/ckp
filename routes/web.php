@@ -24,7 +24,13 @@ use App\Http\Controllers\ckp\Approval;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [Controller::class, 'index'])->name('index');
+
+// Yunus
+
+
+// Handy
+
+Route::get('/', [Controller::class, 'indexCkp'])->name('index');
 
 Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('kredit.delete');
 Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
