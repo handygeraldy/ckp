@@ -21,7 +21,7 @@ class CreateKegiatansTable extends Migration
             $table->string('name');
             $table->date('tgl_mulai')->nullable();
             $table->date('tgl_selesai')->nullable();
-            $table->unsignedBigInteger('satuan_id');
+            $table->string('satuan')->nullable();
             $table->integer('jml_target');
             $table->integer('jml_realisasi');
             $table->float('nilai_kegiatan', 5, 2)->nullable();
@@ -31,9 +31,8 @@ class CreateKegiatansTable extends Migration
             $table->timestamps();
 
             $table->foreign('ckp_id')->references('id')->on('ckps');
-            $table->foreign('tim_id')->references('id')->on('tims');
+            $table->foreign('tim_id')->references('id')->on('periode_tims');
             $table->foreign('kegiatan_tim_id')->references('id')->on('kegiatan_tims');
-            $table->foreign('satuan_id')->references('id')->on('satuans');
             $table->foreign('kredit_id')->references('id')->on('kredits');
         });
     }

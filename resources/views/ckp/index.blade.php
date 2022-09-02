@@ -76,7 +76,7 @@
                                                     <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
                                                         data-id="{{ $d->id }}" data-toggle="modal"><i
                                                             class="fas fa-trash-alt"></i></a>
-                                                    @elseif ($d->status >= 3)
+                                                    @elseif ($d->status == 4)
                                                     <a href=""
                                                         class="btn btn-success btn-sm"><i class="fa fa-download"></i> Export</a>
                                                     @endif
