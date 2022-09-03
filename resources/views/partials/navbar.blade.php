@@ -25,9 +25,13 @@
             </li>
             <li class="nav-item {{ Request::is('satker*') ? 'active' : '' }}"><a href="{{ route('satker.index') }}"
                     class="nav-link"><i class="fas fa-list"></i> <span>Satuan Kerja</span></a></li>
-            <li class="nav-item {{ Request::is('tim*') ? 'active' : '' }}"><a href="{{ route('tim.index') }}"
-                    class="nav-link"><i class="fas fa-list"></i> <span>Tim</span></a></li>
         </ul>
+    </li>
+    <li class="nav-item {{ Request::is('tim*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('tim.index') }}">
+            <i class="fa-sharp fa-solid fa-people-group"></i>
+            Tim Kerja
+        </a>
     </li>
     <li class="nav-item {{ Request::is('ckp*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('ckp.index') }}">
