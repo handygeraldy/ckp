@@ -14,7 +14,7 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $this->middleware(function($request,$next){
+        $this->middleware(function ($request, $next) {
             if (session('success')) {
                 Alert::success(session('success'));
             }
@@ -26,10 +26,17 @@ class Controller extends BaseController
             return $next($request);
         });
     }
-    
+
     public function indexCkp()
     {
         return view('ckp.dashboard', [
+            "title" => "Dashboard"
+        ]);
+    }
+
+    public function indexSimtk()
+    {
+        return view('simtk.dashboard', [
             "title" => "Dashboard"
         ]);
     }

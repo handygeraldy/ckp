@@ -26,11 +26,11 @@ use App\Http\Controllers\ckp\Approval;
 */
 
 // Yunus
-
+Route::get('/', [Controller::class, 'indexSimtk'])->name('index');
 
 // Handy
 
-Route::get('/', [Controller::class, 'indexCkp'])->name('index');
+// Route::get('/', [Controller::class, 'indexCkp'])->name('index');
 
 Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('kredit.delete');
 Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
