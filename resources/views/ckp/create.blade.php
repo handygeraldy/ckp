@@ -41,132 +41,140 @@
                 {{-- Kegiatan --}}
                 <div class="card mt-2">
                     <div class="card-body">
-                        <div>
-                            {{-- kegiatan --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="kegiatan">Kegiatan</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" name="kegiatan[]"
-                                        class="form-control @error('kegiatan') is-invalid @enderror" required>
-                                    @error('kegiatan')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                        {{-- Jenis sampel --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="jenis">Jenis Kegiatan</label>
                             </div>
-                            {{-- tim --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="tim_id">Tim</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select class="form-control select2" name="tim_id[]" required>
-                                        <option value="" disabled selected>== Pilih Tim ==</option>
-                                        @foreach ($tim as $t)
-                                            <option value="{{ $t->id }}">{{ $t->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="col-md-10">
+                                <select class="form-control select2" name="jenis[]" required>
+                                    <option value="utama" selected>Utama</option>
+                                    <option value="tambahan">Tambahan</option>
+                                </select>
                             </div>
-                            {{-- tgl_mulai --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="date" name="tgl_mulai[]" class="form-control" value="">
-                                    @error('tgl_mulai')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                        </div>
+                        {{-- kegiatan --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="kegiatan">Uraian</label>
                             </div>
-                            {{-- tgl_selesai --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="date" name="tgl_selesai[]" class="form-control" value="">
-                                    @error('tgl_selesai')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                            <div class="col-md-10">
+                                <input type="text" name="kegiatan[]"
+                                    class="form-control @error('kegiatan') is-invalid @enderror" required>
+                                @error('kegiatan')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
-                            {{-- satuan --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="satuan_id">Satuan</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select class="form-control select2" name="satuan_id[]" required>
-                                        <option value="" disabled selected>== Pilih Satuan ==</option>
-                                        @foreach ($satuan as $s)
-                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        </div>
+                        {{-- tim --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="tim_id">Tim</label>
                             </div>
-                            {{-- Target --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="jml_target">Jumlah Target</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="number" name="jml_target[]" class="form-control jml_target" required>
-                                </div>
+                            <div class="col-md-10">
+                                <select class="form-control select2" name="tim_id[]" required>
+                                    <option value="" disabled selected>== Pilih Tim ==</option>
+                                    @foreach ($tim as $t)
+                                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            {{-- Realisasi --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="jml_realisasi">Jumlah Realisasi</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="number" name="jml_realisasi[]" class="form-control jml_realisasi"
-                                        required>
-                                </div>
+                        </div>
+                        {{-- tgl_mulai --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="tgl_mulai">Tanggal Mulai</label>
                             </div>
-                            {{-- Kode Butir Kegiatan --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select class="form-control select2" name="kredit_id[]">
-                                        <option value="" selected>== Pilih Butir ==</option>
-                                        @foreach ($butir as $b)
-                                            <option value="{{ $b->id }}">
-                                                {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="col-md-10">
+                                <input type="date" name="tgl_mulai[]" class="form-control" value="">
+                                @error('tgl_mulai')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
-                            {{-- angka kredit --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="number" name="angka_kredit[]" value="0" class="form-control"
-                                        required min="0" step=".0001">
-                                </div>
+                        </div>
+                        {{-- tgl_selesai --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="tgl_selesai">Tanggal Selesai</label>
                             </div>
-                            {{-- Keterangan --}}
-                            <div class="row mb-2">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="keterangan">Keterangan</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="keterangan[]" value="">
-
-                                </div>
+                            <div class="col-md-10">
+                                <input type="date" name="tgl_selesai[]" class="form-control" value="">
+                                @error('tgl_selesai')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- Kode Butir Kegiatan --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
+                            </div>
+                            <div class="col-md-10">
+                                <select class="form-control select2 select_butir" name="kredit_id[]">
+                                    <option value="" selected>== Pilih Butir ==</option>   
+                                    <option value="0" >Lainnya</option>
+                                    @foreach ($butir as $b)
+                                        <option value="{{ $b->id }}">
+                                            {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <input type="hidden" name="satuan[]" class="form-control" value="">
+                            </div>
+                        </div>
+                        {{-- satuan --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="satuan">Satuan</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" name="satuan[]" class="form-control" required value="">
+                            </div>
+                        </div>
+                        {{-- Target --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="jml_target">Jumlah Target</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="number" name="jml_target[]" class="form-control jml_target" required>
+                            </div>
+                        </div>
+                        {{-- Realisasi --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="jml_realisasi">Jumlah Realisasi</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="number" name="jml_realisasi[]" class="form-control jml_realisasi"
+                                    required>
+                            </div>
+                        </div>
+                        {{-- angka kredit --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="angka_kredit">Angka Kredit</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="number" name="angka_kredit[]" value="0" class="form-control"
+                                    required min="0" step=".0001">
+                            </div>
+                        </div>
+                        {{-- Keterangan --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="keterangan">Keterangan</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="keterangan[]" value="">
                             </div>
                         </div>
                     </div>
@@ -195,10 +203,20 @@
         <div class="card mt-2">
             <div class="card-body">
                 <div>
-                    
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="kegiatan">Kegiatan</label>
+                            <label class="col-form-label" for="jenis">Jenis Kegiatan</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select class="form-control select2" name="jenis[]" required>
+                                <option value="utama" selected>Utama</option>
+                                <option value="tambahan">Tambahan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="kegiatan">Uraian</label>
                         </div>
                         <div class="col-md-10">
                             <input type="text" name="kegiatan[]"
@@ -253,15 +271,28 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="satuan_id">Satuan</label>
+                            <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2" name="satuan_id[]" required>
-                                <option value="" disabled selected>== Pilih Satuan ==</option>
-                                @foreach ($satuan as $s)
-                                    <option value="{{ $s->id }}">{{ $s->name }}</option>
+                            <select class="form-control select2 select_butir" name="kredit_id[]">
+                                <option value="" selected>== Pilih Butir ==</option>
+                                <option value="0" >Lainnya</option>
+                                @foreach ($butir as $b)
+                                    <option value="{{ $b->id }}">{{$b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div>
+                            <input type="hidden" name="satuan[]" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="satuan">Satuan</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" name="satuan[]" class="form-control" required value="">
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -282,19 +313,6 @@
                             <input type="number" name="jml_realisasi[]"
                                 class="form-control jml_realisasi" required
                                 value="{{ $ckp->realisasi ?? '' }}">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-2">
-                            <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
-                        </div>
-                        <div class="col-md-10">
-                            <select class="form-control select2" name="kredit_id[]">
-                                <option value="" selected>== Pilih Butir ==</option>
-                                @foreach ($butir as $b)
-                                    <option value="{{ $b->id }}">{{$b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -333,6 +351,25 @@
                 }
             });
         });
+        $(document).on('change', '.select_butir', function(e) {
+            var kredit_id = parseInt(e.target.value, 10)
+                if (kredit_id > 0){
+                    var butir = {!! json_encode($butir) !!};
+                    var as= $(butir).filter(function (i,n){return n.id === kredit_id});
+                    var satuan = as[0].satuan;
+                    $(this).parent().next().find('input').val(satuan);
+                    $(this).parent().next().find('input').attr("disabled", false);
+                    $(this).parent().parent().next().find('input').val(satuan);
+                    $(this).parent().parent().next().find('input').attr("disabled", true);
+                } else {
+                    $(this).parent().next().find('input').val("");
+                    $(this).parent().next().find('input').attr("disabled", true);
+                    $(this).parent().parent().next().find('input').val("");
+                    $(this).parent().parent().next().find('input').attr("disabled", false);
+                    $(this).parent().parent().next().find('input').attr("placeholder", "Satuan wajib diisi");
+                }
+        });
+
         $(document).on('click', '#addMore', function() {
             $('.add-more').show();
             var source = $("#document-template").html();
@@ -344,7 +381,6 @@
 
         $(document).on('change', '.jml_target', function() {
             var x = $(this).val();
-            console.log(x);
             $(this).parent().parent().next().find('input').attr('max', x);
         });
     </script>

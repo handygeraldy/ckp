@@ -127,7 +127,7 @@
             <div class="col-xl-3 col-md-6 mt-3">
                 <div class="card">
                     <div class="card-header mb-0" id="headingFour">
-                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"  onclick="changeIcon(this)">
+                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" onclick="changeIcon(this)">
                             <h4 class="mb-0">
                                 DISETUJUI <i class="fas fa-plus float-right"></i>
                             </h4>

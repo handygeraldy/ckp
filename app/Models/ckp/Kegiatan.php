@@ -27,11 +27,6 @@ class Kegiatan extends Model
         return $this->belongsTo(Tim::class);
     }
 
-    public function satuan()
-    {
-        return $this->belongsTo(Satuan::class);
-    }
-
     public function kredit()
     {
         return $this->belongsTo(Kredit::class);

@@ -41,6 +41,7 @@
                                         <th>Nilai Kuantitas</th>
                                         <th>Nilai Kualitas</th>
                                         <th>Nilai Akhir</th>
+                                        <th>Jumlah Kegiatan</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -55,6 +56,7 @@
                                             <td>{{ $d->avg_kuantitas }}</td>
                                             <td>{{ $d->avg_kualitas }}</td>
                                             <td>{{ $d->nilai_akhir }}</td>
+                                            <td>{{ $d->jml_kegiatan }}</td>
                                             <td style="min-width: 100px;">
                                                 <div class="row">
                                                     <a href="{{ route($route_ . '.show', $d->id) }}"

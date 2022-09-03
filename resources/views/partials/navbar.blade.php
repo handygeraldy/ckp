@@ -27,10 +27,6 @@
                     class="nav-link"><i class="fas fa-list"></i> <span>Satuan Kerja</span></a></li>
             <li class="nav-item {{ Request::is('tim*') ? 'active' : '' }}"><a href="{{ route('tim.index') }}"
                     class="nav-link"><i class="fas fa-list"></i> <span>Tim</span></a></li>
-            <li class="nav-item {{ Request::is('satuan*') ? 'active' : '' }}"><a href="{{ route('satuan.index') }}"
-                    class="nav-link"><i class="fas fa-list"></i> <span>Satuan Kegiatan</span></a></li>
-            <li class="nav-item {{ Request::is('user*') ? 'active' : '' }}"><a href="{{ route('user.index') }}"
-                    class="nav-link"><i class="fas fa-users"></i> <span>User</span></a></li>
         </ul>
     </li>
     <li class="nav-item {{ Request::is('ckp*') ? 'active' : '' }}">
@@ -49,6 +45,12 @@
         <a class="nav-link" href="{{ route('approval.index') }}">
             <i class="fa-solid fa-clipboard-check"></i>
             Approval
+        </a>
+    </li>
+    <li class="nav-item {{ Request::is('user*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('user.index') }}">
+            <i class="fas fa-users"></i>
+            User
         </a>
     </li>
 </ul>
