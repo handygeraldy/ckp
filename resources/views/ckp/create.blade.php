@@ -116,7 +116,7 @@
                                 <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="kredit_id[]">
+                                <select class="form-control select2 select_butir" name="kredit_id[]" required>
                                     <option value="" selected>== Pilih Butir ==</option>   
                                     <option value="0" >Lainnya</option>
                                     @foreach ($butir as $b)
@@ -175,6 +175,18 @@
                             </div>
                             <div class="col-md-10">
                                 <input type="text" class="form-control" name="keterangan[]" value="">
+                            </div>
+                        </div>
+                         {{-- Usulan Nilai --}}
+                         <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="nilai_inputan">Usulan Nilai</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="number" name="nilai_inputan[]" class="form-control nilai_inputan" min=0 max=100 step="0.5">
+                            </div>
+                            <div>
+                                <input type="hidden" name="nilai_kegiatan[]" class="form-control" value="-1">
                             </div>
                         </div>
                     </div>
@@ -274,7 +286,7 @@
                             <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2 select_butir" name="kredit_id[]">
+                            <select class="form-control select2 select_butir" name="kredit_id[]" required>
                                 <option value="" selected>== Pilih Butir ==</option>
                                 <option value="0" >Lainnya</option>
                                 @foreach ($butir as $b)
@@ -333,6 +345,14 @@
                                
                         </div>
                     </div>
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="nilai_kegiatan">Usulan Nilai</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="number" name="nilai_kegiatan[]" class="form-control" min=0 max=100 step="0.5">
+                        </div>
+                    </div>
                 </div>
                 
                 <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
@@ -367,6 +387,15 @@
                     $(this).parent().parent().next().find('input').val("");
                     $(this).parent().parent().next().find('input').attr("disabled", false);
                     $(this).parent().parent().next().find('input').attr("placeholder", "Satuan wajib diisi");
+                }
+        });
+
+        $(document).on('change', '.nilai_inputan', function(e) {
+            var nilai = parseInt(e.target.value, 10)
+                if (nilai > 0){
+                    $(this).parent().next().find('input').val(nilai);
+                } else {
+                    $(this).parent().next().find('input').val(-1);
                 }
         });
 

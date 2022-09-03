@@ -10,6 +10,7 @@ use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\simtk\PeriodeTim;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
@@ -43,7 +44,7 @@ class CkpController extends Controller
      */
     public function create()
     {
-        $tim = Tim::all();
+        $tim = PeriodeTim::with(['tims'])->get();
         $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         return view('ckp.create', [
             "title" => "Input CKP",
@@ -103,6 +104,9 @@ class CkpController extends Controller
                 }
                 $kegiatan->keterangan = $request->keterangan[$i];
                 $kegiatan->angka_kredit = $request->angka_kredit[$i];
+                if ($request->nilai_kegiatan[$i] != -1 ){
+                    $kegiatan->nilai_kegiatan = $request->nilai_kegiatan[$i];
+                }
                 $ckp->kegiatan()->save($kegiatan);
             }
         } else {
@@ -126,6 +130,9 @@ class CkpController extends Controller
                 }
                 $kegiatan->keterangan = $request->keterangan[$i];
                 $kegiatan->angka_kredit = $request->angka_kredit[$i];
+                if ($request->nilai_kegiatan[$i] != -1 ){
+                    $kegiatan->nilai_kegiatan = $request->nilai_kegiatan[$i];
+                }
                 $kegiatan->save();
             }
             // hitung nilai
@@ -194,8 +201,9 @@ class CkpController extends Controller
             return redirect()->route('ckp.index');
         }
         $kegiatan = Kegiatan::where('ckp_id', $id)
+            ->orderBy('urut')
             ->get();
-        $tim = Tim::all();
+        $tim = PeriodeTim::all();
         $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         return view('ckp.edit', [
             "title" => "Edit CKP",
@@ -220,6 +228,8 @@ class CkpController extends Controller
         for ($i = 0; $i < $jml_kegiatan; $i++) {
             $kegiatan = new Kegiatan();
             $kegiatan->ckp_id = $id;
+            $kegiatan->jenis = $request->jenis[$i];
+            $kegiatan->urut = $i + 1;
             $kegiatan->name = $request->kegiatan[$i];
             $kegiatan->tim_id = $request->tim_id[$i];
             $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
@@ -232,6 +242,9 @@ class CkpController extends Controller
             }
             $kegiatan->keterangan = $request->keterangan[$i];
             $kegiatan->angka_kredit = $request->angka_kredit[$i];
+            if ($request->nilai_kegiatan[$i] != -1 ){
+                $kegiatan->nilai_kegiatan = $request->nilai_kegiatan[$i];
+            }
             $kegiatan->save();
         }
         // hitung nilai

@@ -126,7 +126,7 @@
                                         <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                                     </div>
                                     <div class="col-md-10">
-                                        <select class="form-control select2 select_butir" name="kredit_id[]">
+                                        <select class="form-control select2 select_butir" name="kredit_id[]" required>
                                             <option value="">== Pilih Butir ==</option>
                                             <option value="0">Lainnya</option>
                                             @foreach ($butir as $b)
@@ -293,7 +293,7 @@
                                 <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="kredit_id[]">
+                                <select class="form-control select2 select_butir" name="kredit_id[]" required>
                                     <option value="" selected>== Pilih Butir ==</option>
                                     <option value="0" >Lainnya</option>
                                     @foreach ($butir as $b)
