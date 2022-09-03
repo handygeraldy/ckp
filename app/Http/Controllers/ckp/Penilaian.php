@@ -26,8 +26,8 @@ class Penilaian extends Controller
                                 AND nilai_kegiatan IS NULL
                                 GROUP BY ckps.id) as jml_kegiatan')
         )
-        ->leftjoin('users', 'ckps.user_id', '=', 'users.id')
-        ->where('ckps.is_delete', '!=', '1')
+            ->leftjoin('users', 'ckps.user_id', '=', 'users.id')
+            ->where('ckps.is_delete', '!=', '1')
             ->where('ckps.status', '2')
             ->orderBy('tahun')
             ->orderBy('bulan')
@@ -44,6 +44,7 @@ class Penilaian extends Controller
     {
         $ckp = Ckp::where('id', $id)->first();
         $kegiatan = Kegiatan::where('ckp_id', $id)
+            ->orderBy('urut')
             ->get();
         return view('ckp.show', [
             "title" => "Lihat CKP",
@@ -94,16 +95,16 @@ class Penilaian extends Controller
             ]
         );
 
-        if ($status_value == 'reject'){
+        if ($status_value == 'reject') {
             CatatanCkp::create([
                 'ckp_id' => $ckp_id,
                 'user_id' => '2b653b00-efdc-442e-8c96-b82e49f5b698', //sementara
                 'catatan' => $request->catatan,
             ]);
             alert()->success('Sukses', 'Berhasil me-reject CKP');
-        } elseif ($status_value == 'save'){
+        } elseif ($status_value == 'save') {
             alert()->success('Sukses', 'Berhasil menyimpan nilai CKP');
-        } elseif ($status_value == 'send'){
+        } elseif ($status_value == 'send') {
             alert()->success('Sukses', 'Berhasil menilai dan menyetujui CKP');
         } else {
             alert()->error('ERROR', 'Gagal memberi nilai CKP');

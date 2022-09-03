@@ -83,7 +83,7 @@
                                             <td>{{ $d->tgl_selesai }}</td>
                                             <td>{{ $d->tim->name }}</td>
                                             <td>{{ $d->name }}</td>
-                                            <td>{{ $d->satuan->name }}</td>
+                                            <td>{{ $d->satuan }}</td>
                                             <td class="text-right">{{ $d->jml_target }}</td>
                                             <td class="text-right">{{ $d->jml_realisasi }}</td>
                                             <td class="text-right">{{ ($d->jml_realisasi / $d->jml_target) * 100 }}</td>

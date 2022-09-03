@@ -4,7 +4,6 @@ namespace App\Http\Controllers\ckp;
 
 use App\Models\Tim;
 use App\Models\Kredit;
-use App\Models\Satuan;
 use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,14 +63,12 @@ class KegiatanController extends Controller
     {
         $kegiatan = Kegiatan::where('id', $id)->first();
         $tim = Tim::all();
-        $satuan = Satuan::all();
-        $butir = Kredit::all(['id','kode_perka','name','kegiatan']);
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan','satuan']);
 
         return view('ckp.kegiatan.edit', [
             'title' => 'Edit Kegiatan',
             'kegiatan' => $kegiatan,
             'tim' => $tim,
-            'satuan' => $satuan,
             'butir' => $butir,
         ]);
     }
@@ -90,13 +87,16 @@ class KegiatanController extends Controller
             'tim_id' => 'required',
             'tgl_mulai' => 'nullable',
             'tgl_selesai' => 'nullable',
-            'satuan_id' => 'required',
+            'satuan' => 'required',
             'jml_target' => 'required',
             'jml_realisasi' => 'required',
             'kredit_id' => 'nullable',
             'keterangan' => 'nullable',
             'angka_kredit' => 'required',
         ]);
+        if ((int)$validated['kredit_id'] == 0) {
+            $validated['kredit_id'] = null;
+        }
         $res = Kegiatan::where('id', $id)->update($validated);
 
         // hitung ckp

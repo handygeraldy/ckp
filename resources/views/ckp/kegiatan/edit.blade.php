@@ -84,20 +84,30 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- satuan --}}
+                        {{-- Kode Butir Kegiatan --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
-                                <label class="col-form-label" for="satuan_id">Satuan</label>
+                                <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2" name="satuan_id" required>
-                                    <option value="" disabled selected>== Pilih Satuan ==</option>
-                                    @foreach ($satuan as $s)
-                                        <option value="{{ $s->id }}"
-                                            {{ $s->id == $kegiatan->satuan_id ? 'selected' : '' }}>{{ $s->name }}
+                                <select class="form-control select2" name="kredit_id">
+                                    <option value="" disabled selected>== Pilih Butir ==</option>
+                                    @foreach ($butir as $b)
+                                        <option value="{{ $b->id }}"
+                                            {{ $b->id == $kegiatan->kredit_id ? 'selected' : '' }}>
+                                            {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
                                         </option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        {{-- satuan --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="satuan">Satuan</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" name="satuan" class="form-control" required value="">
                             </div>
                         </div>
                         {{-- Target --}}
@@ -118,23 +128,6 @@
                             <div class="col-md-10">
                                 <input type="number" id="jml_realisasi" name="jml_realisasi" class="form-control" required
                                     value="{{ $kegiatan->jml_realisasi ?? '' }}">
-                            </div>
-                        </div>
-                        {{-- Kode Butir Kegiatan --}}
-                        <div class="row mb-2">
-                            <div class="col-md-2">
-                                <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
-                            </div>
-                            <div class="col-md-10">
-                                <select class="form-control select2" name="kredit_id">
-                                    <option value="" disabled selected>== Pilih Butir ==</option>
-                                    @foreach ($butir as $b)
-                                        <option value="{{ $b->id }}"
-                                            {{ $b->id == $kegiatan->kredit_id ? 'selected' : '' }}>
-                                            {{ $b->kode_perka . ' - ' . $b->name . ($b->kegiatan ? ' - ' . $b->kegiatan : '') }}
-                                        </option>
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
                         {{-- angka kredit --}}

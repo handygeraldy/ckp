@@ -5,16 +5,13 @@ namespace App\Http\Controllers\ckp;
 use Carbon\Carbon;
 use App\Models\Tim;
 use App\Models\Kredit;
-use App\Models\Satuan;
 use App\Models\ckp\Ckp;
 use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -47,12 +44,10 @@ class CkpController extends Controller
     public function create()
     {
         $tim = Tim::all();
-        $satuan = Satuan::all();
-        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan']);
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         return view('ckp.create', [
             "title" => "Input CKP",
             "tim" => $tim,
-            "satuan" => $satuan,
             "butir" => $butir,
         ]);
     }
@@ -94,14 +89,18 @@ class CkpController extends Controller
             $ckp->save();
             for ($i = 0; $i < $jml_kegiatan; $i++) {
                 $kegiatan = new Kegiatan();
+                $kegiatan->jenis = $request->jenis[$i];
+                $kegiatan->urut = $i + 1;
                 $kegiatan->name = $request->kegiatan[$i];
                 $kegiatan->tim_id = $request->tim_id[$i];
                 $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
                 $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
-                $kegiatan->satuan_id = $request->satuan_id[$i];
+                $kegiatan->satuan = $request->satuan[$i];
                 $kegiatan->jml_target = $request->jml_target[$i];
                 $kegiatan->jml_realisasi = $request->jml_realisasi[$i];
-                $kegiatan->kredit_id = $request->kredit_id[$i];
+                if ((int)$request->kredit_id[$i] > 0) {
+                    $kegiatan->kredit_id = $request->kredit_id[$i];
+                }
                 $kegiatan->keterangan = $request->keterangan[$i];
                 $kegiatan->angka_kredit = $request->angka_kredit[$i];
                 $ckp->kegiatan()->save($kegiatan);
@@ -113,15 +112,18 @@ class CkpController extends Controller
             }
             for ($i = 0; $i < $jml_kegiatan; $i++) {
                 $kegiatan = new Kegiatan();
+                $kegiatan->urut = $i + 1;
                 $kegiatan->ckp_id = $ckp_lama->id;
                 $kegiatan->name = $request->kegiatan[$i];
                 $kegiatan->tim_id = $request->tim_id[$i];
                 $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
                 $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
-                $kegiatan->satuan_id = $request->satuan_id[$i];
+                $kegiatan->satuan = $request->satuan[$i];
                 $kegiatan->jml_target = $request->jml_target[$i];
                 $kegiatan->jml_realisasi = $request->jml_realisasi[$i];
-                $kegiatan->kredit_id = $request->kredit_id[$i];
+                if ((int)$request->kredit_id[$i] > 0) {
+                    $kegiatan->kredit_id = $request->kredit_id[$i];
+                }
                 $kegiatan->keterangan = $request->keterangan[$i];
                 $kegiatan->angka_kredit = $request->angka_kredit[$i];
                 $kegiatan->save();
@@ -168,6 +170,7 @@ class CkpController extends Controller
     {
         $ckp = Ckp::where('id', $id)->first();
         $kegiatan = Kegiatan::where('ckp_id', $id)
+            ->orderBy('urut')
             ->get();
         return view('ckp.show', [
             "title" => "Lihat CKP",
@@ -193,14 +196,12 @@ class CkpController extends Controller
         $kegiatan = Kegiatan::where('ckp_id', $id)
             ->get();
         $tim = Tim::all();
-        $satuan = Satuan::all();
-        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan']);
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         return view('ckp.edit', [
             "title" => "Edit CKP",
             "ckp" => $ckp,
             "kegiatan" => $kegiatan,
             "tim" => $tim,
-            "satuan" => $satuan,
             "butir" => $butir
         ]);
     }
@@ -223,10 +224,12 @@ class CkpController extends Controller
             $kegiatan->tim_id = $request->tim_id[$i];
             $kegiatan->tgl_mulai = $request->tgl_mulai[$i];
             $kegiatan->tgl_selesai = $request->tgl_selesai[$i];
-            $kegiatan->satuan_id = $request->satuan_id[$i];
+            $kegiatan->satuan = $request->satuan[$i];
             $kegiatan->jml_target = $request->jml_target[$i];
             $kegiatan->jml_realisasi = $request->jml_realisasi[$i];
-            $kegiatan->kredit_id = $request->kredit_id[$i];
+            if ((int)$request->kredit_id[$i] > 0) {
+                $kegiatan->kredit_id = $request->kredit_id[$i];
+            }
             $kegiatan->keterangan = $request->keterangan[$i];
             $kegiatan->angka_kredit = $request->angka_kredit[$i];
             $kegiatan->save();
@@ -360,7 +363,7 @@ class CkpController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->getColumnDimension('A')->setWidth(50);
 
-        
+
 
 
         $sheet->setCellValue('A1', 'Hello World AKUADA ADAKADAJADA JADAD AJADAAJ ADAADADAJAJAJJAJA ADAD AAJ ADAD AJAJ ADA DJAJDA AJ!');
@@ -383,7 +386,7 @@ class CkpController extends Controller
             }
         );
 
-        
+
         $response->headers->set('Content-Type', 'application/pdf');
         $response->headers->set('Content-Disposition', 'attachment;filename="ExportScan.pdf"');
         // $response->headers->set('Content-Type', 'application/application/vnd.ms-excel');

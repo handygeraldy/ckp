@@ -15,6 +15,8 @@ class CreateKegiatansTable extends Migration
     {
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->enum('jenis', ['utama','tambahan'])->default('utama');
+            $table->integer('urut');
             $table->uuid('ckp_id');
             $table->unsignedBigInteger('tim_id');
             $table->uuid('kegiatan_tim_id')->nullable();
