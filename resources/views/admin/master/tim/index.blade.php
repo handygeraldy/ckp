@@ -28,6 +28,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>Tahun</th>
                                     <th>Satker</th>
                                     <th>Ketua</th>
                                     <th></th>
@@ -38,8 +39,9 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $d->name }}</td>
-                                        <td>{{ $d->satker->name }}</td>
-                                        <td>{{ $d->ketua_id ? $d->user->name : 'Belum ada ketua' }}</td>
+                                        <td>{{ $d->tahun }}</td>
+                                        <td>{{ $d->satker }}</td>
+                                        <td>{{ $d->ketua ? $d->ketua : 'Belum ada ketua' }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
