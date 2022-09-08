@@ -47,7 +47,7 @@
                                         <td>{{ $d->jml_kegiatan }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
-                                                <a href="{{ route($route_ . '.show',  $d->id) }}" class="btn btn-primary btn-sm">
+                                                <a href="{{ route($route_ . '.tampil',  $d->id) }}" class="btn btn-primary btn-sm">
                                                     <i class="fa fa-eye"></i></a>
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                     class="btn btn-success btn-sm"><i class="fa-solid fa-file-pen"></i> Beri Nilai</a>
