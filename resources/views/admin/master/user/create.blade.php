@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <form action="{{ route('user.store') }}" method="post">
-                        @csrf                       
+                        @csrf
                         {{-- nama --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -40,8 +40,9 @@
                                 <label class="col-form-label" for="nip">NIP</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" id="nip" name="nip" value="{{ old('nip') }}" minlength="18" maxlength="18"
-                                    class="form-control @error('nip') is-invalid @enderror" required>
+                                <input type="text" id="nip" name="nip" value="{{ old('nip') }}"
+                                    minlength="18" maxlength="18" class="form-control @error('nip') is-invalid @enderror"
+                                    required>
                                 @error('nip')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -85,17 +86,20 @@
                                 <label class="col-form-label" for="satker_id">Satker</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('satker_id') is-invalid @enderror" name="satker_id" id="satker_id" required>
+                                <select class="form-control select2 @error('satker_id') is-invalid @enderror"
+                                    name="satker_id" id="satker_id" required>
                                     <option value="" disabled selected>== Pilih Satker ==</option>
                                     @foreach ($satker as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == old('satker_id') ? 'selected' : '' }}>{{ $i->name }}</option>
+                                        <option value="{{ $i->id }}"
+                                            {{ $i->id == old('satker_id') ? 'selected' : '' }}>{{ $i->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('satker_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- Tim Utama --}}
@@ -104,17 +108,20 @@
                                 <label class="col-form-label" for="tim_utama">Tim Utama</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('tim_utama') is-invalid @enderror" name="tim_utama" id="satker_id" required>
+                                <select class="form-control select2 @error('tim_utama') is-invalid @enderror"
+                                    name="tim_utama" id="satker_id" required>
                                     <option value="" disabled selected>== Pilih Tim Utama ==</option>
                                     @foreach ($tim as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == old('tim_utama') ? 'selected' : '' }}>{{ $i->name }}</option>
+                                        <option value="{{ $i->id }}"
+                                            {{ $i->id == old('tim_utama') ? 'selected' : '' }}>{{ $i->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('tim_utama')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- Golongan --}}
@@ -123,17 +130,20 @@
                                 <label class="col-form-label" for="golongan_id">Golongan</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('golongan_id') is-invalid @enderror" name="golongan_id" id="golongan_id" required>
+                                <select class="form-control select2 @error('golongan_id') is-invalid @enderror"
+                                    name="golongan_id" id="golongan_id" required>
                                     <option value="" disabled selected>== Pilih Golongan ==</option>
                                     @foreach ($golongan as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == old('golongan_id') ? 'selected' : '' }}>{{ $i->name }}</option>
+                                        <option value="{{ $i->id }}"
+                                            {{ $i->id == old('golongan_id') ? 'selected' : '' }}>{{ $i->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('golongan_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- Fungsional --}}
@@ -142,17 +152,20 @@
                                 <label class="col-form-label" for="fungsional_id">Fungsional</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('fungsional_id') is-invalid @enderror" name="fungsional_id" id="fungsional_id" required>
+                                <select class="form-control select2 @error('fungsional_id') is-invalid @enderror"
+                                    name="fungsional_id" id="fungsional_id" required>
                                     <option value="" disabled selected>== Pilih Fungsional ==</option>
                                     @foreach ($fungsional as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == old('fungsional_id') ? 'selected' : '' }}>{{ $i->name }}</option>
+                                        <option value="{{ $i->id }}"
+                                            {{ $i->id == old('fungsional_id') ? 'selected' : '' }}>{{ $i->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('fungsional_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- Role --}}
@@ -161,24 +174,27 @@
                                 <label class="col-form-label" for="role_id">Role</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('role_id') is-invalid @enderror" name="role_id" id="role_id" required>
-                                    <option value="" disabled selected>== Pilih Fungsional ==</option>
+                                <select class="form-control select2 @error('role_id') is-invalid @enderror" name="role_id"
+                                    id="role_id" required>
+                                    <option value="" disabled selected>== Pilih Role ==</option>
                                     @foreach ($role as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == old('role_id') ? 'selected' : '' }}>{{ $i->name }}</option>
+                                        <option value="{{ $i->id }}"
+                                            {{ $i->id == old('role_id') ? 'selected' : '' }}>{{ $i->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('role_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- submit --}}
                         <div class="row mt-5">
                             <div class="col">
                                 <a href="{{ route('user.index') }}" class="btn btn-secondary">Kembali</a>
-                                <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i> Simpan</button>
+                                <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i>
+                                    Simpan</button>
                             </div>
                         </div>
                     </form>

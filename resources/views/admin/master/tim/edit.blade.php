@@ -17,17 +17,18 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('tim.update', $tim->id) }}" method="post">                 
+                    <form action="{{ route('tim.update', $periodetim->id) }}" method="post">
                         @method('patch')
-                        @csrf                       
+                        @csrf
                         {{-- nama --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
                                 <label class="col-form-label" for="name">Nama</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" id="name" name="name" value="{{ old('name') ?? $tim->name }}"
-                                    class="form-control @error('name') is-invalid @enderror" required>
+                                <input type="text" id="name" name="name"
+                                    value="{{ old('name') ?? $periodetim->tim->name }}"
+                                    class="form-control @error('name') is-invalid @enderror" disabled required>
                                 @error('name')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -35,49 +36,49 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- Satker --}}
+                        {{-- Periode Tim --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
-                                <label class="col-form-label" for="satker_id">Satker</label>
+                                <label class="col-form-label" for="tahun">Periode Tim</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('satker_id') is-invalid @enderror" name="satker_id" id="satker_id" required>
-                                    <option value="" disabled selected>== Pilih Satker ==</option>
-                                    @foreach ($satker as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == (old('satker_id') ?? $tim->satker_id) ? 'selected' : '' }}>{{ $i->name }}</option>
-                                    @endforeach
-                                </select>
+                                <input class="form-control @error('tahun') is-invalid @enderror" type="number"
+                                    min="2022" value="{{ $periodetim->tahun }}" id="tahun" name="tahun" required>
                                 @error('satker_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- User --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
-                                <label class="col-form-label" for="user_id">Ketua Tim</label>
+                                <label class="col-form-label" for="ketua_id">Ketua Tim</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 @error('user_id') is-invalid @enderror" name="user_id" id="user_id" required>
+                                <select class="form-control select2 @error('ketua_id') is-invalid @enderror" name="ketua_id"
+                                    id="ketua_id" required>
                                     <option value="" disabled selected>== Pilih Ketua Tim ==</option>
                                     @foreach ($user as $i)
-                                        <option value="{{ $i->id }}" {{ $i->id == (old('user_id') ?? $tim->user_id) ? 'selected' : '' }}>{{ $i->name }}</option>
+                                        <option value="{{ $i->id }}"
+                                            {{ $i->id == (old('ketua_id') ?? $periodetim->ketua_id) ? 'selected' : '' }}>
+                                            {{ $i->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('user_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                @error('ketua_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- submit --}}
                         <div class="row mt-5">
                             <div class="col">
                                 <a href="{{ route('tim.index') }}" class="btn btn-secondary">Kembali</a>
-                                <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i> Simpan</button>
+                                <button type="submit" class="btn btn-success float-right"><i class="fa fa-save"></i>
+                                    Simpan</button>
                             </div>
                         </div>
                     </form>

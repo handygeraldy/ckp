@@ -19,7 +19,7 @@ class TimController extends Controller
             ->leftjoin('users', 'periode_tims.ketua_id', '=', 'users.id')
             ->leftjoin('satkers', 'tims.satker_id', '=', 'satkers.id')
             ->select('periode_tims.id as id', 'periode_tims.tahun as tahun', 'satkers.name as satker', 'tims.name as name', 'users.name as ketua',)
-            // ->where('catatan_ckps.ckp_id', $id)
+            ->where('tims.is_delete', '0')
             ->get();
         return view('admin.master.tim.index', [
             'dt' => $dt,
@@ -103,14 +103,14 @@ class TimController extends Controller
      */
     public function edit($id)
     {
-        $tim = Tim::where('id', $id)->first();
-        $satker = Satker::get(['id', 'name']);
+        $periodetim = PeriodeTim::with(['tim'])->where('id', $id)->first();
+        // $satker = Satker::get(['id', 'name']);
         $user = User::where('is_delete', '!=', '1')->get(['id', 'name']);
 
         return view('admin.master.tim.edit', [
             'title' => 'Edit Tim',
-            'tim' => $tim,
-            'satker' => $satker,
+            'periodetim' => $periodetim,
+            // 'satker' => $satker,
             'user' => $user,
         ]);
     }
@@ -125,11 +125,10 @@ class TimController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required',
-            'satker_id' => 'required',
-            'user_id' => 'required',
+            'ketua_id' => 'required',
+            'tahun' => 'required'
         ]);
-        $res = Tim::where('id', $id)->update($validated);
+        $res = PeriodeTim::where('id', $id)->update($validated);
         if ($res) {
             alert()->success('Sukses', 'Berhasil mengubah tim');
         } else {
@@ -151,9 +150,7 @@ class TimController extends Controller
     public function softDelete(Request $request)
     {
         $id = $request->value_id;
-        $res = Tim::where('id', $id)->update(
-            ['is_delete' => '1']
-        );
+        $res = PeriodeTim::where('id', $id)->delete();
         if ($res) {
             alert()->success('Sukses', 'Berhasil menghapus tim');
         } else {
