@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -27,13 +28,7 @@ class Controller extends BaseController
         });
     }
 
-    public function indexCkp()
-    {
-        return view('ckp.dashboard', [
-            "title" => "Dashboard"
-        ]);
-    }
-
+    
     public function indexSimtk()
     {
         return view('simtk.dashboard', [

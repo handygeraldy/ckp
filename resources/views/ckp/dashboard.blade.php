@@ -14,15 +14,15 @@
                     <div class="card-header mb-0" id="headingOne">
                         <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
                             onclick="changeIcon(this)">
-                            <h4 class="mb-0">
+                            <p class="mb-0">
                                 BELUM DIAJUKAN <i class="fas fa-plus float-right"></i>
-                            </h4>
+                            </p>
                         </a>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col">
-                                <span class="h2 font-weight-bold mb-0">1</span>
+                                <span class="h2 font-weight-bold mb-0">{{ $sum_status['0'] + $sum_status['1'] }}</span>
                             </div>
                             <div class="col-auto">
                                 <div class="icon icon-shape bg-gradient-light text-white rounded-circle shadow">
@@ -36,9 +36,12 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <h4>Handy</h4>
-                                        </td>
+                                        @foreach ($rekap_pegawai[0] as $p)
+                                            <td>{{ $p }}</td>
+                                        @endforeach
+                                        @foreach ($rekap_pegawai[1] as $p)
+                                            <td>{{ $p }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
@@ -52,15 +55,15 @@
                     <div class="card-header mb-0" id="headingTwo">
                         <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                             onclick="changeIcon(this)">
-                            <h4 class="mb-0">
+                            <p class="mb-0">
                                 DIPERIKSA KETUA TIM <i class="fas fa-plus float-right"></i>
-                            </h4>
+                            </p>
                         </a>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col">
-                                <span class="h2 font-weight-bold mb-0">1</span>
+                                <span class="h2 font-weight-bold mb-0">{{ $sum_status['2'] }}</span>
                             </div>
                             <div class="col-auto">
                                 <div class="icon icon-shape bg-gradient-blue text-white rounded-circle shadow">
@@ -74,9 +77,9 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <h4>Handy</h4>
-                                        </td>
+                                        @foreach ($rekap_pegawai[2] as $p)
+                                            <td>{{ $p }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
@@ -90,15 +93,15 @@
                     <div class="card-header mb-0" id="headingThree">
                         <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
                             onclick="changeIcon(this)">
-                            <h4 class="mb-0">
+                            <p class="mb-0">
                                 DIPERIKSA DIREKTUR <i class="fas fa-plus float-right"></i>
-                            </h4>
+                            </p>
                         </a>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col">
-                                <span class="h2 font-weight-bold mb-0">1</span>
+                                <span class="h2 font-weight-bold mb-0">{{ $sum_status['3'] }}</span>
                             </div>
                             <div class="col-auto">
                                 <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
@@ -112,9 +115,9 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <h4>Handy</h4>
-                                        </td>
+                                        @foreach ($rekap_pegawai[3] as $p)
+                                            <td>{{ $p }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
@@ -127,16 +130,17 @@
             <div class="col-xl-3 col-md-6 mt-3">
                 <div class="card">
                     <div class="card-header mb-0" id="headingFour">
-                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" onclick="changeIcon(this)">
-                            <h4 class="mb-0">
+                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                            onclick="changeIcon(this)">
+                            <p class="mb-0">
                                 DISETUJUI <i class="fas fa-plus float-right"></i>
-                            </h4>
+                            </p>
                         </a>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col">
-                                <span class="h2 font-weight-bold mb-0">1</span>
+                                <span class="h2 font-weight-bold mb-0">{{ $sum_status['4'] }}</span>
                             </div>
                             <div class="col-auto">
                                 <div class="icon icon-shape bg-gradient-success text-white rounded-circle shadow">
@@ -150,9 +154,9 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <h4>Handy</h4>
-                                        </td>
+                                        @foreach ($rekap_pegawai[4] as $p)
+                                            <td>{{ $p }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>

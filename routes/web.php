@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\SatkerController;
 use App\Http\Controllers\admin\GolonganController;
 use App\Http\Controllers\admin\FungsionalController;
 use App\Http\Controllers\ckp\Approval;
+use App\Http\Controllers\ckp\DashboardCkp;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,8 @@ Route::get('/', [Controller::class, 'indexSimtk'])->name('index');
 
 // Handy
 
-// Route::get('/', [Controller::class, 'indexCkp'])->name('index');
+// Route::get('/', [DashboardCkp::class, 'indexCkp'])->name('index');
+Route::get('/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->name('index.filter');
 
 Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('kredit.delete');
 Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');

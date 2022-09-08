@@ -45,7 +45,7 @@
                         <div class="card-body">
 
                             <div class="delete_add_more_item">
-                                {{-- Jenis sampel --}}
+                                {{-- Jenis kegiatan --}}
                                 <div class="row mb-2">
                                     <div class="col-md-2">
                                         <label class="col-form-label" for="jenis">Jenis Kegiatan</label>
@@ -84,7 +84,7 @@
                                             <option value="" disabled selected>== Pilih Tim ==</option>
                                             @foreach ($tim as $t)
                                                 <option value="{{ $t->id }}"
-                                                    {{ $t->id == $k->tim_id ? 'selected' : '' }}>{{ $t->name }}
+                                                    {{ $t->id == $k->tim_id ? 'selected' : '' }}>{{ $t->tim->name }} ({{ $t->tahun }})
                                                 </option>
                                             @endforeach
                                         </select>
@@ -128,7 +128,7 @@
                                     <div class="col-md-10">
                                         <select class="form-control select2 select_butir" name="kredit_id[]" required>
                                             <option value="">== Pilih Butir ==</option>
-                                            <option value="0">Lainnya</option>
+                                            <option value="0" {{ $k->kredit_id ? '' : 'selected' }}>Lainnya</option>
                                             @foreach ($butir as $b)
                                                 <option value="{{ $b->id }}"
                                                     {{ $b->id == $k->kredit_id ? 'selected' : '' }}>
@@ -190,6 +190,18 @@
                                     <div class="col-md-10">
                                         <input type="text" class="form-control" name="keterangan[]"
                                             value="{{ $k->keterangan ?? '' }}">
+                                    </div>
+                                </div>
+                                {{-- Usulan Nilai --}}
+                                <div class="row mb-2">
+                                    <div class="col-md-2">
+                                        <label class="col-form-label" for="nilai_inputan">Usulan Nilai</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="number" name="nilai_inputan[]" class="form-control nilai_inputan" min=0 max=100 step="0.5" value="{{ $k->nilai_kegiatan ?? '' }}">
+                                    </div>
+                                    <div>
+                                        <input type="hidden" name="nilai_kegiatan[]" class="form-control" value="{{ $k->nilai_kegiatan ?? '-1' }}">
                                     </div>
                                 </div>
                                 <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
@@ -255,7 +267,7 @@
                                 <select class="form-control select2" name="tim_id[]" required>
                                     <option value="" disabled selected>== Pilih Tim ==</option>
                                     @foreach ($tim as $t)
-                                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                        <option value="{{ $t->id }}">{{ $t->tim->name }} ({{ $t->tahun }})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -350,6 +362,17 @@
                                 <input type="text" class="form-control" name="keterangan[]" value="">
                             </div>
                         </div>
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="nilai_inputan">Usulan Nilai</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="number" name="nilai_inputan[]" class="form-control nilai_inputan" min=0 max=100 step="0.5" value="">
+                            </div>
+                            <div>
+                                <input type="hidden" name="nilai_kegiatan[]" class="form-control" value="-1">
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-sm btn-danger removeaddmore float-right" type="button">Hapus <i
                     class="fa fa-times"></i></button>   
@@ -387,6 +410,16 @@
                 $(this).parent().parent().next().find('input').attr("placeholder", "Satuan wajib diisi");
             }
         });
+
+        $(document).on('change', '.nilai_inputan', function(e) {
+            var nilai = parseInt(e.target.value, 10)
+                if (nilai > 0){
+                    $(this).parent().next().find('input').val(nilai);
+                } else {
+                    $(this).parent().next().find('input').val(-1);
+                }
+        });
+
         $(document).on('click', '#addMore', function() {
             $('.add-more').show();
             var source = $("#document-template").html();
@@ -399,7 +432,6 @@
 
         $(document).on('change', '.jml_target', function() {
             var x = $(this).val();
-            console.log(x);
             $(this).parent().parent().next().find('input').attr('max', x);
         });
     </script>

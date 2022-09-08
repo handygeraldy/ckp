@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ckp;
 
 use App\Models\Tim;
 use App\Models\Kredit;
+use App\Models\PeriodeTim;
 use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -62,7 +63,7 @@ class KegiatanController extends Controller
     public function edit($id)
     {
         $kegiatan = Kegiatan::where('id', $id)->first();
-        $tim = Tim::all();
+        $tim = PeriodeTim::with(['tim'])->get();
         $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan','satuan']);
 
         return view('ckp.kegiatan.edit', [
@@ -83,37 +84,42 @@ class KegiatanController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
+            'jenis' => 'required',
             'name' => 'required',
             'tim_id' => 'required',
             'tgl_mulai' => 'nullable',
             'tgl_selesai' => 'nullable',
+            'kredit_id' => 'required',
             'satuan' => 'required',
             'jml_target' => 'required',
             'jml_realisasi' => 'required',
-            'kredit_id' => 'nullable',
             'keterangan' => 'nullable',
             'angka_kredit' => 'required',
+            'nilai_kegiatan' => 'required',
         ]);
         if ((int)$validated['kredit_id'] == 0) {
             $validated['kredit_id'] = null;
+        }
+        if ($validated['nilai_kegiatan'] == '-1') {
+            $validated['nilai_kegiatan'] = null;
         }
         $res = Kegiatan::where('id', $id)->update($validated);
 
         // hitung ckp
         $hitung = DB::table('kegiatans')
-            ->select(DB::raw('COUNT(id) as jml_kegiatan, AVG(jml_realisasi / jml_target * 100) as avg_kuantitas, AVG(nilai_kegiatan) as avg_kualitas, SUM(angka_kredit) AS sum_angka_kredit'))
+            ->select(DB::raw('COUNT(id) as jml_kegiatan, AVG(jml_realisasi / jml_target * 100) as avg_kuantitas, SUM(nilai_kegiatan) as sum_kualitas, SUM(angka_kredit) AS sum_angka_kredit'))
             ->where('ckp_id', $request->ckp_id)
             ->groupBy('ckp_id')
             ->first();
-
+        $avg_kualitas = $hitung->sum_kualitas / $hitung->jml_kegiatan;
         DB::table('ckps')
             ->where('id', $request->ckp_id)
             ->update(
                 [
                     'jml_kegiatan' => $hitung->jml_kegiatan,
                     'avg_kuantitas' => $hitung->avg_kuantitas,
-                    'avg_kualitas' => $hitung->avg_kualitas,
-                    'nilai_akhir' => ($hitung->avg_kuantitas + $hitung->avg_kualitas) / 2,
+                    'avg_kualitas' => $avg_kualitas,
+                    'nilai_akhir' => ($hitung->avg_kuantitas + $avg_kualitas) / 2,
                     'angka_kredit' => $hitung->sum_angka_kredit,
                 ]
             );

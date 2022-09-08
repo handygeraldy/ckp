@@ -41,7 +41,7 @@
                 {{-- Kegiatan --}}
                 <div class="card mt-2">
                     <div class="card-body">
-                        {{-- Jenis sampel --}}
+                        {{-- Jenis kegiatan --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
                                 <label class="col-form-label" for="jenis">Jenis Kegiatan</label>
@@ -77,7 +77,7 @@
                                 <select class="form-control select2" name="tim_id[]" required>
                                     <option value="" disabled selected>== Pilih Tim ==</option>
                                     @foreach ($tim as $t)
-                                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                        <option value="{{ $t->id }}">{{ $t->tim->name }} ({{ $t->tahun }})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -248,7 +248,7 @@
                             <select class="form-control select2" name="tim_id[]" required>
                                 <option value="" disabled selected>== Pilih Tim ==</option>
                                 @foreach ($tim as $t)
-                                    <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                    <option value="{{ $t->id }}">{{ $t->tim->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -350,7 +350,10 @@
                             <label class="col-form-label" for="nilai_kegiatan">Usulan Nilai</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="number" name="nilai_kegiatan[]" class="form-control" min=0 max=100 step="0.5">
+                            <input type="number" name="nilai_inputan[]" class="form-control nilai_inputan" min=0 max=100 step="0.5">
+                        </div>
+                        <div>
+                            <input type="hidden" name="nilai_kegiatan[]" class="form-control" value="-1">
                         </div>
                     </div>
                 </div>
