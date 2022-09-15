@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ckp;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -34,12 +35,19 @@ class DashboardCkp extends Controller
             3 => count($rekap_pegawai[3]),
             4 => count($rekap_pegawai[4])
         ]);
-       
 
+        $next = Carbon::createFromFormat('Y-m-d', "$tahun-$bulan-1")->addMonth();
+        $prev = Carbon::createFromFormat('Y-m-d', "$tahun-$bulan-1")->subMonth();
         return view('ckp.dashboard', [
             "title" => "Dashboard",
             "rekap_pegawai" => $rekap_pegawai,
             "sum_status" => $sum_status,
+            "bulan" => $bulan,
+            "tahun" => $tahun,
+            "next_month" => $next->format('m'),
+            "next_year" => $next->format('Y'),
+            "prev_month" => $prev->format('m'),
+            "prev_year" => $prev->format('Y'),
         ]);
     }
 
@@ -68,11 +76,18 @@ class DashboardCkp extends Controller
             4 => count($rekap_pegawai[4])
         ]);
        
-
+        $next = Carbon::createFromFormat('Y-m-d', "$tahun-$bulan-1")->addMonth();
+        $prev = Carbon::createFromFormat('Y-m-d', "$tahun-$bulan-1")->subMonth();
         return view('ckp.dashboard', [
             "title" => "Dashboard",
             "rekap_pegawai" => $rekap_pegawai,
             "sum_status" => $sum_status,
+            "bulan" => $bulan,
+            "tahun" => $tahun,
+            "next_month" => $next->format('m'),
+            "next_year" => $next->format('Y'),
+            "prev_month" => $prev->format('m'),
+            "prev_year" => $prev->format('Y'),
         ]);
     }
 }

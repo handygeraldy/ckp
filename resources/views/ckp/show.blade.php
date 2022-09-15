@@ -129,12 +129,13 @@
                         @endif
                     </div>
 
-                    @if ($route_ == 'kegiatan' && $ckp->status <= 1)
+                    @if ($route_ == 'kegiatan' | $route_ ==  'arsip')
                         <div class="row mt-5">
                             <div class="col">
                                 <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>
                             </div>
                             <div class="col mr-3">
+                                @if ($ckp->status <= 1)
                                 <form action="{{ route('ckp.ajukan') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="ckp_id" value="{{ $ckp->id }}">
@@ -142,6 +143,7 @@
                                         <i class="fa fa-check"></i> Ajukan CKP
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </div>
                     @elseif ($route_ == 'approval' && $ckp->status == 3)

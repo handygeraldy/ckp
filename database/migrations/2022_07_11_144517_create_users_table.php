@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('golongan_id');
             $table->unsignedBigInteger('fungsional_id');
             $table->string('password');
+            $table->string('ttd');
             $table->enum('is_delete', ['1', '0'])->default('0');
             $table->unsignedBigInteger('role_id');
             $table->timestamps();

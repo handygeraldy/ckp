@@ -33,6 +33,7 @@ class Penilaian extends Controller
             ->orderBy('bulan')
             ->orderBy('user_name')
             ->get();
+        // dd($dt);
         return view('ckp.nilai.index', [
             'dt' => $dt,
             'title' => 'Penilaian',

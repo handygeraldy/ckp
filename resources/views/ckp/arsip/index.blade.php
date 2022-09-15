@@ -6,7 +6,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
             <li class="breadcrumb-item text-gray-800">CKP</li>
-            <li class="breadcrumb-item text-gray-800">Penilaian</li>
+            <li class="breadcrumb-item text-gray-800">Arsip</li>
         </ol>
     </div>
 
@@ -16,7 +16,13 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col text-right">
-                           
+                            <span>
+                                <a href="{{ route('arsip.filter', ['tahun' => $prev_year, 'bulan' => $prev_month]) }}"><i
+                                        class="fa-solid fa-caret-left"></i></a>
+                                {{ getMonth($bulan) . ' ' . $tahun }}
+                                <a href="{{ route('arsip.filter', ['tahun' => $next_year, 'bulan' => $next_month]) }}"><i
+                                        class="fa-solid fa-caret-right"></i></a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -31,7 +37,6 @@
                                     <th>Nilai Kuantitas</th>
                                     <th>Nilai Kualitas</th>
                                     <th>Nilai Akhir</th>
-                                    <th style="min-width: 150px">Jumlah kegiatan belum dinilai</th>
                                     <th style="min-width: 150px"></th>
                                 </tr>
                             </thead>
@@ -44,13 +49,13 @@
                                         <td>{{ $d->avg_kuantitas }}</td>
                                         <td>{{ $d->avg_kualitas }}</td>
                                         <td>{{ $d->nilai_akhir }}</td>
-                                        <td>{{ $d->jml_kegiatan ? $d->jml_kegiatan : 0 }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
-                                                <a href="{{ route($route_ . '.tampil',  $d->id) }}" class="btn btn-primary btn-sm">
+                                                <a href="{{ route($route_ . '.tampil', $d->id) }}"
+                                                    class="btn btn-primary btn-sm">
                                                     <i class="fa fa-eye"></i></a>
-                                                <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fa-solid fa-file-pen"></i> Beri Nilai</a>
+                                                <a href="{{ route('ckp.export', $d->id) }}"
+                                                    class="btn btn-success btn-sm"><i class="fa fa-download"></i> Export</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -62,7 +67,7 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         $(document).ready(function() {
             $('#tabel').DataTable();

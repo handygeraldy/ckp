@@ -194,14 +194,20 @@
         });
 
         $("#approveBtn").click(function() {
-            var empty = $(this).parent().parent().parent().find("input").filter(function() {
-                return this.value === "";
+            var count_kualitas = 1
+            $(".nilai_kegiatan").each(function() {
+                if ($(this).val() !== "")
+                    count_kualitas += 1
             });
-            if (empty.length) {
+            if (count_kualitas == $(".nilai_kegiatan").length) {
+                alert("Semua kegiatan harus tleah disetujui");
+                return false;
+            } else {
                 alert("Semua kegiatan harus dinilai sebelum menyetujui");
                 return false;
             }
         });
+
 
         $("#rejectBtn1").click(function() {
             $("#rejectDiv").show();

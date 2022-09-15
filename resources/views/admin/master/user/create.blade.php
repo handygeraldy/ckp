@@ -15,9 +15,18 @@
         <div class="col-lg-12 mb-4">
             <div class="card">
                 <div class="card-header">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('user.store') }}" method="post">
+                    <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         {{-- nama --}}
                         <div class="row mb-2">
@@ -109,7 +118,7 @@
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control select2 @error('tim_utama') is-invalid @enderror"
-                                    name="tim_utama" id="satker_id" required>
+                                    name="tim_utama" id="tim_utama" required>
                                     <option value="" disabled selected>== Pilih Tim Utama ==</option>
                                     @foreach ($tim as $i)
                                         <option value="{{ $i->id }}"
@@ -189,6 +198,23 @@
                                 @enderror
                             </div>
                         </div>
+                        {{-- TTD --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="ttd">TTD</label>
+                            </div>
+                            <div class="col-md-10">
+                                <img id="tampil_ttd" class="rounded" width="200px"
+                                    src="{{ asset('storage/unnamed.png') }}" >
+                                <input type="file" class="form-control-file @error('ttd') is-invalid @enderror"
+                                id="ttd" name="ttd" accept="image/png, image/jpeg" required>
+                            </div>
+                            @error('ttd')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
                         {{-- submit --}}
                         <div class="row mt-5">
                             <div class="col">
@@ -202,4 +228,13 @@
             </div>
         </div>
     </div>
+    <script>
+        $('#ttd').change(function() {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                $('#tampil_ttd').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+    </script>
 @endsection

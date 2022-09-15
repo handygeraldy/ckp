@@ -104,7 +104,7 @@
                                 <label class="col-form-label" for="kredit_id">Kode Butir Kegiatan</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2" name="kredit_id">
+                                <select class="form-control select2 select_butir" name="kredit_id">
                                     <option value="" disabled selected>== Pilih Butir ==</option>
                                     <option value="0" {{ $kegiatan->kredit_id ? '' : 'selected' }}>Lainnya</option>
                                     @foreach ($butir as $b)
@@ -116,7 +116,7 @@
                                 </select>
                             </div>
                             <div>
-                                <input type="hidden" name="satuan[]" class="form-control"
+                                <input type="text" name="satuan" class="form-control"
                                     value="{{ $kegiatan->satuan }}" {{ $kegiatan->kredit_id ? '' : 'disabled' }}>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                 <label class="col-form-label" for="satuan">Satuan</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" name="satuan" class="form-control" required value="{{ $kegiatan->satuan }}" {{ $kegiatan->kredit_id ? 'disabled' : '' }}>
+                                <input type="hidden" name="satuan" class="form-control" required value="{{ $kegiatan->satuan }}" {{ $kegiatan->kredit_id ? 'disabled' : '' }}>
                             </div>
                         </div>
                         {{-- Target --}}
@@ -195,12 +195,6 @@
         </div>
     </div>
     <script type="text/javascript">
-    // document.getElementById('jml_realisasi').max = $("#jml_target").val();
-    //     $(document).on('change', '#jml_target', function() {
-    //         var x = $("#jml_target").val();
-    //         document.getElementById('jml_realisasi').max = x;
-    //     });
-
         $(document).on('change', '.select_butir', function(e) {
             var kredit_id = parseInt(e.target.value, 10)
             if (kredit_id > 0) {

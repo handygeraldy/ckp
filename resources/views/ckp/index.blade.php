@@ -76,7 +76,7 @@
                                                         data-id="{{ $d->id }}" data-toggle="modal"><i
                                                             class="fas fa-trash-alt"></i></a>
                                                     @elseif ($d->status == 4)
-                                                    <a href=""
+                                                    <a href="{{ route('ckp.export', $d->id) }}"
                                                         class="btn btn-success btn-sm"><i class="fa fa-download"></i> Export</a>
                                                     @endif
                                                 </div>
