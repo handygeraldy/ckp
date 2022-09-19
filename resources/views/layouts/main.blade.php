@@ -40,8 +40,8 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
-                                    <a href="{{ route('ganti.password') }}" class="btn btn-sm dropdown-item"><i
-                                        class="fas fa-key fa-sm fa-fw mr-2"></i> Ganti Password</a>
+                                    {{-- <a href="{{ route('ganti.password') }}" class="btn btn-sm dropdown-item"><i
+                                        class="fas fa-key fa-sm fa-fw mr-2"></i> Ganti Password</a> --}}
                                     <form action="{{ route('logout') }}" method="post">
                                         @csrf
                                         <button type="submit" class="dropdown-item"><i

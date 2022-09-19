@@ -39,12 +39,14 @@
             </a>
         </li>
     @endif
+    @if (auth()->user()->role_id > 11)
     <li class="nav-item {{ Request::is('ckp*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('ckp.index') }}">
             <i class="fas fa-walking"></i>
             Kegiatan Saya
         </a>
     </li>
+    @endif
     @if (auth()->user()->role_id == 11)
         <li class="nav-item {{ Request::is('nilai*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('nilai.index') }}">
@@ -66,12 +68,10 @@
             Arsip
         </a>
     </li>
-    @if (auth()->user()->role_id <= 8)
         <li class="nav-item {{ Request::is('user*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('user.index') }}">
                 <i class="fas fa-users"></i>
                 User
             </a>
         </li>
-    @endif
 </ul>

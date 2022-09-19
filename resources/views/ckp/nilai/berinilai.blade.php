@@ -41,7 +41,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            @if ($kegiatan->isEmpty())
+                            @if ($kegiatan_utama->isEmpty() & $kegiatan_tambahan->isEmpty())
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -56,11 +56,6 @@
                                     <thead class="text-center">
                                         <tr>
                                             <th class="align-middle" rowspan="2">No</th>
-                                            <th class="align-middle" rowspan="2" style="min-width: 150px">Tanggal Mulai
-                                            </th>
-                                            <th class="align-middle" rowspan="2" style="min-width: 150px">Tanggal Selesai
-                                            </th>
-                                            <th class="align-middle" rowspan="2">Tim</th>
                                             <th class="align-middle" rowspan="2" style="min-width: 500px">Uraian Kegiatan
                                             </th>
                                             <th class="align-middle" rowspan="2" style="min-width: 200px">Satuan</th>
@@ -77,12 +72,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kegiatan as $key => $d)
+                                        <tr>
+                                            <td class="align-middle" colspan="10"><b>Utama</b></td>
+                                        </tr>
+                                        @foreach ($kegiatan_utama as $key => $d)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $d->tgl_mulai }}</td>
-                                                <td>{{ $d->tgl_selesai }}</td>
-                                                <td>{{ $d->tim->name }}</td>
                                                 <td>{{ $d->name }}</td>
                                                 <td>{{ $d->satuan }}</td>
                                                 <td class="text-right">{{ $d->jml_target }}</td>
@@ -95,29 +90,51 @@
                                                         name="nilai_kegiatan[]" value="{{ $d->nilai_kegiatan }}"
                                                         min="0" max="100" step="1">
                                                 </td>
-                                                <td>{{ $d->kredit_id ? $d->kredit->kode_perka : '-' }}</td>
+                                                <td>{{ $d->kode_perka }}</td>
                                                 <td class="text-right">{{ $d->angka_kredit }}</td>
-                                                <td>{{ $d->keterangan }}</td>
+                                                <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->tgl_mulai || $d->tgl_selesai ? ', ' . $d->keterangan : '' }}</td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td class="align-middle" colspan="10"><b>Tambahan</b></td>
+                                        </tr>
+                                        @foreach ($kegiatan_tambahan as $key => $d)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $d->name }}</td>
+                                                <td>{{ $d->satuan }}</td>
+                                                <td class="text-right">{{ $d->jml_target }}</td>
+                                                <td class="text-right">{{ $d->jml_realisasi }}</td>
+                                                <td class="text-right">{{ ($d->jml_realisasi / $d->jml_target) * 100 }}
+                                                </td>
+                                                <td class="text-right">
+                                                    <input type="hidden" name="id[]" value="{{ $d->id }}">
+                                                    <input type="number" class="form-control nilai_kegiatan"
+                                                        name="nilai_kegiatan[]" value="{{ $d->nilai_kegiatan }}"
+                                                        min="0" max="100" step="1">
+                                                </td>
+                                                <td>{{ $d->kode_perka }}</td>
+                                                <td class="text-right">{{ $d->angka_kredit }}</td>
+                                                <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->tgl_mulai || $d->tgl_selesai ? ', ' . $d->keterangan : '' }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
                                             <td colspan="8" class="text-center"><b></b></td>
-                                            <td colspan="3"></td>
                                             <td class="text-right"><b>{{ $ckp->angka_kredit }}</b></td>
-                                            <td colspan="2"></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="8" class="text-center"><b>RATA-RATA</b></td>
+                                            <td colspan="5" class="text-center"><b>RATA-RATA</b></td>
                                             <td class="text-right"><input type="number" name="avg_kuantitas"
                                                     value="{{ number_format($ckp->avg_kuantitas, 2) }}" disabled></td>
                                             <td class="text-right"><input type="number" name="avg_kualitas" disabled></td>
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="8" class="text-center"><b>CAPAIAN KINERJA PEGAWAI (CKP)</b></td>
+                                            <td colspan="5" class="text-center"><b>CAPAIAN KINERJA PEGAWAI (CKP)</b></td>
                                             <td colspan="2" class="text-center"><input type="number" name="nilai_akhir"
                                                     disabled></td>
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                         </tr>
                                     </tbody>
                                 </table>

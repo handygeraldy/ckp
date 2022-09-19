@@ -10,12 +10,21 @@ use App\Models\Golongan;
 use App\Models\Role;
 use App\Models\Satker;
 use App\Models\Tim;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $dt = User::where('is_delete', '!=', '1')->get();
+        if (Auth::user()->role_id <= 8){
+            $dt = User::where('is_delete', '!=', '1');
+        } elseif(Auth::user()->role_id <= 11){
+            $dt = User::where('is_delete', '!=', '1')
+            ->where('tim_utama',Auth::user()->tim_utama);
+        } else {
+            $dt = User::where('id', Auth::user()->id);
+        }
+        $dt = $dt->get();
         return view('admin.master.user.index', [
             'dt' => $dt,
             'title' => 'Master User',
@@ -32,10 +41,14 @@ class UserController extends Controller
     public function create()
     {
         $satker = Satker::get(['id', 'name']);
-        $tim = Tim::get(['id', 'name']);
+        if (Auth::user()->role_id <= 8){
+            $tim = Tim::get(['id', 'name']);
+        } else{
+            $tim = Tim::where('id',Auth::user()->tim_utama)->get(['id', 'name']);
+        }
         $golongan = Golongan::get(['id', 'name']);
         $fungsional = Fungsional::get(['id', 'name']);
-        $role = Role::where('id', '>', 1)->get(['id', 'name']);
+        $role = Role::where('id', '>', Auth::user()->role_id)->get(['id', 'name']);
         return view('admin.master.user.create', [
             'title' => 'Tambah User',
             'satker' => $satker,
@@ -97,10 +110,14 @@ class UserController extends Controller
     {
         $user = User::where('id', $id)->first();
         $satker = Satker::get(['id', 'name']);
-        $tim = Tim::get(['id', 'name']);
+        if (Auth::user()->role_id <= 8){
+            $tim = Tim::get(['id', 'name']);
+        } else{
+            $tim = Tim::where('id',Auth::user()->tim_utama)->get(['id', 'name']);
+        }
         $golongan = Golongan::get(['id', 'name']);
         $fungsional = Fungsional::get(['id', 'name']);
-        $role = Role::where('id', '>', 1)->get(['id', 'name']);
+        $role = Role::where('id', '>=', Auth::user()->role_id)->get(['id', 'name']);
         return view('admin.master.user.edit', [
             'title' => 'Edit User',
             'user' => $user,

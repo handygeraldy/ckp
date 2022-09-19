@@ -56,7 +56,7 @@
                                 <label class="custom-control-label" for="remember">Remember Me</label>
                             </div> --}}
                             <div class="form-group">
-                                <input type="submit" class="btn btn-primary float-right" value="Login">
+                                <input type="submit" class="btn btn-primary float-right" value="Sign In">
                             </div>
                         </form>
                     </div>

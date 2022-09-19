@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();            
             $table->unsignedBigInteger('satker_id');
-            $table->unsignedBigInteger('tim_utama');
+            $table->unsignedBigInteger('tim_utama')->nullable();
             $table->unsignedBigInteger('golongan_id');
             $table->unsignedBigInteger('fungsional_id');
             $table->string('password');

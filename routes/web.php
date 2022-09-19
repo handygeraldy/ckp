@@ -55,8 +55,8 @@ Route::get('/login',  [LoginController::class, 'index'])->name('login')->middlew
 Route::post('/login',  [LoginController::class, 'authenticate'])->name('login.post')->middleware('guest');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/gantipassword', [LoginController::class, 'gantiPassword'])->name('ganti.password');
-    Route::post('/gantipassword', [LoginController::class, 'postGantiPassword'])->name('post.ganti.password');
+    // Route::get('/gantipassword', [LoginController::class, 'gantiPassword'])->name('ganti.password');
+    // Route::post('/gantipassword', [LoginController::class, 'postGantiPassword'])->name('post.ganti.password');
 
     Route::post('/logout',  [LoginController::class, 'logout'])->name('logout');
 
@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
     Route::get('arsip', [ArsipController::class, 'index'])->name('arsip.index');
     Route::get('/arsip/filter/{tahun}/{bulan}', [ArsipController::class, 'filterIndex'])->name('arsip.filter');
     Route::get('arsip/show/{id}', [ArsipController::class, 'show'])->name('arsip.tampil');
+    Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
+    Route::resource('user', UserController::class);
 });
 
 Route::middleware(['role:5'])->group(function () {
@@ -85,11 +87,11 @@ Route::middleware(['role:5'])->group(function () {
     Route::resource('golongan', GolonganController::class);
     Route::resource('fungsional', FungsionalController::class);
     Route::resource('satker', SatkerController::class);
+    
 });
 
 Route::middleware(['role:8'])->group(function () {
-    Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
-    Route::resource('user', UserController::class);
+    
 
     Route::get('approval', [Approval::class, 'index'])->name('approval.index');
     Route::get('approval/show/{id}', [Approval::class, 'show'])->name('approval.tampil');

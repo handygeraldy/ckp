@@ -38,7 +38,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        @if ($kegiatan->isEmpty())
+                        @if ($kegiatan_utama->isEmpty() & $kegiatan_tambahan->isEmpty())
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -53,10 +53,6 @@
                                 <thead class="text-center">
                                     <tr>
                                         <th class="align-middle" rowspan="2">No</th>
-                                        <th class="align-middle" rowspan="2" style="min-width: 150px">Tanggal Mulai</th>
-                                        <th class="align-middle" rowspan="2" style="min-width: 150px">Tanggal Selesai
-                                        </th>
-                                        <th class="align-middle" rowspan="2">Tim</th>
                                         <th class="align-middle" rowspan="2" style="min-width: 500px">Uraian Kegiatan
                                         </th>
                                         <th class="align-middle" rowspan="2" style="min-width: 200px">Satuan</th>
@@ -76,21 +72,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($kegiatan as $key => $d)
+                                    <tr>
+                                        @if ($ckp->status == 1)
+                                            <td class="align-middle" colspan="11"><b>Utama</b></td>
+                                        @else
+                                            <td class="align-middle" colspan="10"><b>Utama</b></td>
+                                        @endif
+                                    </tr>
+                                    @foreach ($kegiatan_utama as $key => $d)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $d->tgl_mulai }}</td>
-                                            <td>{{ $d->tgl_selesai }}</td>
-                                            <td>{{ $d->tim->name }}</td>
                                             <td>{{ $d->name }}</td>
                                             <td>{{ $d->satuan }}</td>
                                             <td class="text-right">{{ $d->jml_target }}</td>
                                             <td class="text-right">{{ $d->jml_realisasi }}</td>
                                             <td class="text-right">{{ ($d->jml_realisasi / $d->jml_target) * 100 }}</td>
                                             <td class="text-right">{{ $d->nilai_kegiatan }}</td>
-                                            <td>{{ $d->kredit_id ? $d->kredit->kode_perka : '-' }}</td>
+                                            <td>{{ $d->kode_perka }}</td>
                                             <td class="text-right">{{ $d->angka_kredit }}</td>
-                                            <td>{{ $d->keterangan }}</td>
+                                            <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->tgl_mulai || $d->tgl_selesai ? ', ' . $d->keterangan : '' }}
+                                            </td>
                                             @if ($ckp->status == 1)
                                                 <td class="text-right" style="min-width: 100px;">
                                                     <div class="row">
@@ -108,41 +109,83 @@
                                         </tr>
                                     @endforeach
                                     <tr>
-                                        <td colspan="8" class="text-center"><b></b></td>
-                                        <td colspan="3"></td>
+                                        @if ($ckp->status == 1)
+                                            <td class="align-middle" colspan="11"><b>Tambahan</b></td>
+                                        @else
+                                            <td class="align-middle" colspan="10"><b>Tambahan</b></td>
+                                        @endif
+                                    </tr>
+                                    @foreach ($kegiatan_tambahan as $key => $d)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $d->name }}</td>
+                                            <td>{{ $d->satuan }}</td>
+                                            <td class="text-right">{{ $d->jml_target }}</td>
+                                            <td class="text-right">{{ $d->jml_realisasi }}</td>
+                                            <td class="text-right">{{ ($d->jml_realisasi / $d->jml_target) * 100 }}</td>
+                                            <td class="text-right">{{ $d->nilai_kegiatan }}</td>
+                                            <td>{{ $d->kode_perka }}</td>
+                                            <td class="text-right">{{ $d->angka_kredit }}</td>
+                                            <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->tgl_mulai || $d->tgl_selesai ? ', ' . $d->keterangan : '' }}</td>
+                                            @if ($ckp->status == 1)
+                                                <td class="text-right" style="min-width: 100px;">
+                                                    <div class="row">
+                                                        @if ($d->kegiatan_tim_id == null)
+                                                            <a href="{{ route($route_ . '.edit', $d->id) }}"
+                                                                class="btn btn-success btn-sm"><i
+                                                                    class="fas fa-edit"></i></a>
+                                                        @endif
+                                                        <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
+                                                            data-id="{{ $d->id }}" data-ckp="{{ $d->ckp_id }}"
+                                                            data-toggle="modal"><i class="fas fa-trash-alt"></i></a>
+                                                    </div>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="8" class="text-center"></td>
                                         <td class="text-right"><b>{{ $ckp->angka_kredit }}</b></td>
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="8" class="text-center"><b>RATA-RATA</b></td>
+                                        <td colspan="6" class="text-center"><b>RATA-RATA</b></td>
                                         <td class="text-right"><b>{{ $ckp->avg_kuantitas }}</b></td>
                                         <td class="text-right"><b>{{ $ckp->avg_kualitas }}</b></td>
-                                        <td colspan="4"></td>
+                                        @if ($ckp->status == 1)
+                                            <td colspan="3"></td>
+                                        @else
+                                            <td colspan="2"></td>
+                                        @endif
                                     </tr>
                                     <tr>
-                                        <td colspan="8" class="text-center"><b>CAPAIAN KINERJA PEGAWAI (CKP)</b></td>
+                                        <td colspan="6" class="text-center"><b>CAPAIAN KINERJA PEGAWAI (CKP)</b></td>
                                         <td colspan="2" class="text-center"><b>{{ $ckp->nilai_akhir }}</b></td>
-                                        <td colspan="4"></td>
+                                        @if ($ckp->status == 1)
+                                        <td colspan="3"></td>
+                                    @else
+                                        <td colspan="2"></td>
+                                    @endif
                                     </tr>
                                 </tbody>
                             </table>
                         @endif
                     </div>
 
-                    @if ($route_ == 'kegiatan' | $route_ ==  'arsip')
+                    @if (($route_ == 'kegiatan') | ($route_ == 'arsip'))
                         <div class="row mt-5">
                             <div class="col">
                                 <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>
                             </div>
                             <div class="col mr-3">
                                 @if ($ckp->status <= 1)
-                                <form action="{{ route('ckp.ajukan') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="ckp_id" value="{{ $ckp->id }}">
-                                    <button type="submit" class="btn btn-primary float-right">
-                                        <i class="fa fa-check"></i> Ajukan CKP
-                                    </button>
-                                </form>
+                                    <form action="{{ route('ckp.ajukan') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="ckp_id" value="{{ $ckp->id }}">
+                                        <button type="submit" class="btn btn-primary float-right">
+                                            <i class="fa fa-check"></i> Ajukan CKP
+                                        </button>
+                                    </form>
                                 @endif
                             </div>
                         </div>

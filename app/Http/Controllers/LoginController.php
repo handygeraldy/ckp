@@ -21,15 +21,18 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
-        $remember = $request->remember ? true : false;
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
+            if (auth()->user()->is_delete == 1) {
+                auth()->logout();
+                alert()->error('Login error', 'User tidak aktif');
+                return back();
+            }
             $request->session()->regenerate();
             return redirect()->route('index');
         } else {
             alert()->error('Login error', 'Periksa email dan password');
             return redirect(env("APP_URL") . 'login');
         }
-        
     }
 
     public function logout(Request $request)
@@ -54,7 +57,7 @@ class LoginController extends Controller
     public function postGantiPassword(Request $request)
     {
         $validatedData = $request->validate([
-            'pass_lama' => 'min:6',
+            'pass_lama' => 'required',
             'pass_baru' => 'min:6',
             'confirm_pass_baru' => 'min:6',
         ]);

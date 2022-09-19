@@ -5,9 +5,10 @@ namespace App\Http\Controllers\ckp;
 use App\Models\ckp\Ckp;
 use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
+use App\Models\ckp\CatatanCkp;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\ckp\CatatanCkp;
+use Illuminate\Support\Facades\Auth;
 
 class Penilaian extends Controller
 {
@@ -29,11 +30,11 @@ class Penilaian extends Controller
             ->leftjoin('users', 'ckps.user_id', '=', 'users.id')
             ->where('ckps.is_delete', '!=', '1')
             ->where('ckps.status', '2')
+            ->where('users.tim_utama', Auth::user()->tim_utama)
             ->orderBy('tahun')
             ->orderBy('bulan')
             ->orderBy('user_name')
             ->get();
-        // dd($dt);
         return view('ckp.nilai.index', [
             'dt' => $dt,
             'title' => 'Penilaian',
@@ -44,26 +45,74 @@ class Penilaian extends Controller
     public function show($id)
     {
         $ckp = Ckp::where('id', $id)->first();
-        $kegiatan = Kegiatan::where('ckp_id', $id)
+        $kegiatan = DB::table('kegiatans')
+        ->leftjoin('kredits', 'kegiatans.kredit_id', 'kredits.id')
+        ->select(
+            'kegiatans.name as name',
+            'kegiatans.jenis as jenis',
+            'kegiatans.tgl_mulai as tgl_mulai',
+            'kegiatans.tgl_selesai as tgl_selesai',
+            'kegiatans.satuan as satuan',
+            'kegiatans.jml_target as jml_target',
+            'kegiatans.jml_realisasi as jml_realisasi',
+            'kegiatans.nilai_kegiatan as nilai_kegiatan',
+            'kegiatans.angka_kredit as angka_kredit',
+            'kegiatans.keterangan as keterangan',
+            'kredits.kode_perka as kode_perka',
+        )
+            ->where('ckp_id', $id)
             ->orderBy('urut')
             ->get();
+
+        $kegiatan_utama = $kegiatan->filter(function ($k) {
+            return $k->jenis == 'utama';
+        });
+        $kegiatan_tambahan = $kegiatan->filter(function ($k) {
+            return $k->jenis == 'tambahan';
+        });
         return view('ckp.show', [
             "title" => "Lihat CKP",
             "route_" => "nilai",
             "ckp" => $ckp,
-            "kegiatan" => $kegiatan,
+            "kegiatan_utama" => $kegiatan_utama,
+            "kegiatan_tambahan" => $kegiatan_tambahan,
         ]);
     }
 
     public function inputNilai($id)
     {
         $ckp = Ckp::where('id', $id)->first();
-        $kegiatan = Kegiatan::where('ckp_id', $id)
+        $kegiatan = DB::table('kegiatans')
+        ->leftjoin('kredits', 'kegiatans.kredit_id', 'kredits.id')
+        ->select(
+            'kegiatans.id as id',
+            'kegiatans.name as name',
+            'kegiatans.jenis as jenis',
+            'kegiatans.tgl_mulai as tgl_mulai',
+            'kegiatans.tgl_selesai as tgl_selesai',
+            'kegiatans.satuan as satuan',
+            'kegiatans.jml_target as jml_target',
+            'kegiatans.jml_realisasi as jml_realisasi',
+            'kegiatans.nilai_kegiatan as nilai_kegiatan',
+            'kegiatans.angka_kredit as angka_kredit',
+            'kegiatans.keterangan as keterangan',
+            'kredits.kode_perka as kode_perka',
+        )
+            ->where('ckp_id', $id)
+            ->orderBy('urut')
             ->get();
+
+        $kegiatan_utama = $kegiatan->filter(function ($k) {
+            return $k->jenis == 'utama';
+        });
+        $kegiatan_tambahan = $kegiatan->filter(function ($k) {
+            return $k->jenis == 'tambahan';
+        });
         return view('ckp.nilai.berinilai', [
             "title" => "Beri Nilai",
             "ckp" => $ckp,
-            "kegiatan" => $kegiatan
+            "kegiatan_utama" => $kegiatan_utama,
+            "kegiatan_tambahan" => $kegiatan_tambahan,
         ]);
     }
 
@@ -99,7 +148,7 @@ class Penilaian extends Controller
         if ($status_value == 'reject') {
             CatatanCkp::create([
                 'ckp_id' => $ckp_id,
-                'user_id' => '2b653b00-efdc-442e-8c96-b82e49f5b698', //sementara
+                'user_id' => Auth::user()->id,
                 'catatan' => $request->catatan,
             ]);
             alert()->success('Sukses', 'Berhasil me-reject CKP');

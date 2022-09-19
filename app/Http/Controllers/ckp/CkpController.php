@@ -10,6 +10,7 @@ use App\Models\ckp\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -22,7 +23,7 @@ class CkpController extends Controller
     public function index()
     {
         $dt = Ckp::where('is_delete', '!=', '1')
-            // ->where('users_id',Auth::user()->id)
+            ->where('user_id',Auth::user()->id)
             ->orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
             ->get();
@@ -60,17 +61,17 @@ class CkpController extends Controller
         $tahun = Carbon::createFromFormat('Y-m-d', $validated['bulan'] . '-01')->format('Y');
         $jml_kegiatan = count($request->kegiatan);
 
-        // sementara, nanti where user id
         $q = DB::table('ckps')
             ->where('bulan', $bulan)
-            ->where('tahun', $tahun);
+            ->where('tahun', $tahun)
+            ->where('user_id',Auth::user()->id);
         $ckp_lama = $q->first();
         if ($ckp_lama == null) {
             $ckp = new Ckp();
             $ckp->bulan = $bulan;
             $ckp->tahun = $tahun;
-            $ckp->satker_id = 3100; // sementara
-            $ckp->user_id = '2b653b00-efdc-442e-8c96-b82e49f5b698'; //sementara
+            $ckp->satker_id = Auth::user()->satker_id;
+            $ckp->user_id = Auth::user()->id;
             $ckp->jml_kegiatan = $jml_kegiatan;
             $ckp->avg_kuantitas = array_sum(array_map(function ($a, $b) {
                 return round($a / $b * 100, 2);
@@ -180,14 +181,37 @@ class CkpController extends Controller
     public function show($id)
     {
         $ckp = Ckp::where('id', $id)->first();
-        $kegiatan = Kegiatan::where('ckp_id', $id)
+        $kegiatan = DB::table('kegiatans')
+        ->leftjoin('kredits', 'kegiatans.kredit_id', 'kredits.id')
+        ->select(
+            'kegiatans.name as name',
+            'kegiatans.jenis as jenis',
+            'kegiatans.tgl_mulai as tgl_mulai',
+            'kegiatans.tgl_selesai as tgl_selesai',
+            'kegiatans.satuan as satuan',
+            'kegiatans.jml_target as jml_target',
+            'kegiatans.jml_realisasi as jml_realisasi',
+            'kegiatans.nilai_kegiatan as nilai_kegiatan',
+            'kegiatans.angka_kredit as angka_kredit',
+            'kegiatans.keterangan as keterangan',
+            'kredits.kode_perka as kode_perka',
+        )
+            ->where('ckp_id', $id)
             ->orderBy('urut')
             ->get();
+
+        $kegiatan_utama = $kegiatan->filter(function ($k) {
+            return $k->jenis == 'utama';
+        });
+        $kegiatan_tambahan = $kegiatan->filter(function ($k) {
+            return $k->jenis == 'tambahan';
+        });
         return view('ckp.show', [
             "title" => "Lihat CKP",
             "route_" => "kegiatan",
             "ckp" => $ckp,
-            "kegiatan" => $kegiatan,
+            "kegiatan_utama" => $kegiatan_utama,
+            "kegiatan_tambahan" => $kegiatan_tambahan,
         ]);
     }
 
@@ -201,7 +225,11 @@ class CkpController extends Controller
     {
         $ckp = Ckp::where('id', $id)->first();
         if ((int)$ckp->status > 1) {
-            alert()->error('Nakal yaa', 'CKP yang telah diajukan tidak bisa diubah');
+            alert()->error('Nakal ya', 'CKP yang telah diajukan tidak bisa diubah');
+            return redirect()->route('ckp.index');
+        }
+        if ($ckp->user_id != Auth::user()->id){
+            alert()->error('Nakal ya', 'Ini bukan CKP anda');
             return redirect()->route('ckp.index');
         }
         $kegiatan = Kegiatan::where('ckp_id', $id)
@@ -263,10 +291,8 @@ class CkpController extends Controller
         ]);
         $bulan = Carbon::createFromFormat('Y-m-d', $validated['bulan'] . '-01')->format('m');
         $tahun = Carbon::createFromFormat('Y-m-d', $validated['bulan'] . '-01')->format('Y');
-        // sementara, nanti where user id
         if ($hitung->sum_kualitas == null) {
-            Ckp::where('bulan', $bulan)
-                ->where('tahun', $tahun)
+            Ckp::where('id', $id)
                 ->update(
                     [
                         'jml_kegiatan' => $jml_kegiatan,
@@ -276,8 +302,7 @@ class CkpController extends Controller
                 );
         } else {
             $avg_kualitas = $hitung->sum_kualitas / $jml_kegiatan;
-            Ckp::where('bulan', $bulan)
-                ->where('tahun', $tahun)
+            Ckp::where('id', $id)
                 ->update(
                     [
                         'jml_kegiatan' => $jml_kegiatan,
