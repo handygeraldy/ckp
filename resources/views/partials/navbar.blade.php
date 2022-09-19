@@ -39,7 +39,7 @@
             </a>
         </li>
     @endif
-    @if (auth()->user()->role_id > 11)
+    @if (auth()->user()->role_id > 11 | auth()->user()->role_id < 8)
     <li class="nav-item {{ Request::is('ckp*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('ckp.index') }}">
             <i class="fas fa-walking"></i>
@@ -47,14 +47,15 @@
         </a>
     </li>
     @endif
-    @if (auth()->user()->role_id == 11)
+    @if (auth()->user()->role_id == 11 | auth()->user()->role_id < 8)
         <li class="nav-item {{ Request::is('nilai*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('nilai.index') }}">
                 <i class="fa-solid fa-file-pen"></i>
                 Penilaian
             </a>
         </li>
-    @elseif (auth()->user()->role_id == 8)
+    @endif
+    @if (auth()->user()->role_id <= 8)
         <li class="nav-item {{ Request::is('approval*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('approval.index') }}">
                 <i class="fa-solid fa-clipboard-check"></i>
