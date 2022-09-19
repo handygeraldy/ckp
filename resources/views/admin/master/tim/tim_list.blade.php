@@ -40,7 +40,7 @@
                             </h5>
                         </div>
                         <div class="col text-right mr-5">
-                            <a href="{{ route('projek.create') }}" class="btn btn-primary"><i
+                            <a href="{{ route('projek.tambah', $id) }}" class="btn btn-primary"><i
                                     class="fa fa-plus-circle mr-2"></i>Tambah Proyek</a>
                         </div>
 

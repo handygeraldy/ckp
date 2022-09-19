@@ -106,9 +106,9 @@
                             <div class="col-md-10">
                                 <select class="form-control select2 select_butir" name="kredit_id[]" required>
                                     <option value="" selected>== Penanggung Jawab ==</option>   
-                                    @foreach ($iku as $i)
+                                    @foreach ($list_anggota as $i)
                                         <option value="{{ $i->id }}">
-                                            {{ $i->sasaran}}
+                                            {{ $i->name}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -224,6 +224,24 @@
                         </div>
                     </div>
                     
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="kredit_id">Penanggung Jawab</label>
+                        </div>
+                        <div class="col-md-10">
+                            <select class="form-control select2 select_butir" name="kredit_id[]" required>
+                                <option value="" selected>== Penanggung Jawab ==</option>   
+                                @foreach ($list_anggota as $i)
+                                    <option value="{{ $i->id }}">
+                                        {{ $i->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <input type="hidden" name="satuan[]" class="form-control" value="">
+                        </div>
+                    </div>
                     
                     <div class="row mb-2">
                         <div class="col-md-2">

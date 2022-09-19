@@ -7,6 +7,7 @@ use App\Models\Kredit;
 use App\Models\PeriodeTim;
 use App\Models\simtk\Ind_kinerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjekController extends Controller
 {
@@ -20,22 +21,38 @@ class ProjekController extends Controller
         //
     }
 
+    public function create()
+    {
+        //
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+
+    public function create_proyek($id)
     {
         $tim = PeriodeTim::with(['tim'])->get();
         $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
+
+        $list_anggota = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.name as name',
+                'users.id as id'
+            )
+            ->where('user_tims.tim_id', $id)
+            ->get();
 
         return view('admin.master.tim.create_proyek', [
             "title" => "Tambah Proyek",
             "tim" => $tim,
             "butir" => $butir,
             'iku' => $iku,
+            'list_anggota' => $list_anggota
         ]);
     }
 
