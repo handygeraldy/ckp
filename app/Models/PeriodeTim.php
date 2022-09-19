@@ -14,4 +14,9 @@ class PeriodeTim extends Model
     {
         return $this->belongsTo(Tim::class, 'tim_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'ketua_id', 'id');
+    }
 }

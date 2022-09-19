@@ -15,14 +15,14 @@ class CreateKegiatanTimsTable extends Migration
     {
         Schema::create('kegiatan_tims', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->unsignedBigInteger('tim_id');
+            $table->unsignedBigInteger('projek_id');
             $table->string('name')->nullable();
             $table->unsignedBigInteger('iku_id');
             $table->date('periode_awal')->nullable();
             $table->date('periode_akhir')->nullable();
             $table->timestamps();
 
-            $table->foreign('tim_id')->references('id')->on('periode_tims');
+            $table->foreign('projek_id')->references('id')->on('projeks');
             $table->foreign('iku_id')->references('id')->on('ind_kinerjas');
         });
     }

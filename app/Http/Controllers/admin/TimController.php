@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Satker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Kredit;
 use App\Models\PeriodeTim;
 use Illuminate\Support\Facades\DB;
 
@@ -92,7 +93,23 @@ class TimController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $dt = DB::table('periode_tims')
+            ->leftJoin('projeks', 'periode_tims.id', 'projeks.periode_tim_id')
+            ->select(
+                'projeks.name as projek_name',
+                'projeks.id as id'
+            )
+            ->where('periode_tims.id', $id)
+            ->get();
+
+        $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
+        return view('admin.master.tim.tim_list', [
+            'title' => $periodetim->tim->name,
+            'periodetim' => $periodetim,
+            'dt' => $dt,
+            'route_' => 'tim'
+        ]);
     }
 
     /**

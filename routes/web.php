@@ -8,11 +8,13 @@ use App\Http\Controllers\ckp\Penilaian;
 use App\Http\Controllers\admin\TimController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\KreditController;
-use App\Http\Controllers\admin\SatkerController;    
+use App\Http\Controllers\admin\SatkerController;
 use App\Http\Controllers\admin\GolonganController;
 use App\Http\Controllers\admin\FungsionalController;
 use App\Http\Controllers\ckp\Approval;
 use App\Http\Controllers\ckp\DashboardCkp;
+use App\Http\Controllers\tim\ProjekController;
+use App\Models\Tim;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +32,8 @@ Route::get('/', [Controller::class, 'indexSimtk'])->name('index');
 
 // Handy
 
-// Route::get('/', [DashboardCkp::class, 'indexCkp'])->name('index');
-Route::get('/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->name('index.filter');
+Route::get('/sickp', [DashboardCkp::class, 'indexCkp'])->name('index');
+Route::get('/sickp/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->name('index.filter');
 
 Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('kredit.delete');
 Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
@@ -51,6 +53,7 @@ Route::resource('user', UserController::class);
 Route::resource('tim', TimController::class);
 Route::resource('ckp', CkpController::class);
 Route::resource('kegiatan', KegiatanController::class);
+Route::resource('projek', ProjekController::class);
 
 Route::get('nilai', [Penilaian::class, 'index'])->name('nilai.index');
 Route::get('nilai/show/{id}', [Penilaian::class, 'show'])->name('nilai.show');

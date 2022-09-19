@@ -16,11 +16,6 @@ class Tim extends Model
         return $this->belongsTo(Satker::class);
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'ketua_id', 'id');
-    }
-
     public function periodetim()
     {
         return $this->hasMany(PeriodeTim::class);
