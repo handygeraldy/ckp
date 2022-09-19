@@ -19,10 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();            
             $table->unsignedBigInteger('satker_id');
-            $table->unsignedBigInteger('tim_utama');
+            $table->unsignedBigInteger('tim_utama')->nullable();
             $table->unsignedBigInteger('golongan_id');
             $table->unsignedBigInteger('fungsional_id');
             $table->string('password');
+            $table->string('ttd');
             $table->enum('is_delete', ['1', '0'])->default('0');
             $table->unsignedBigInteger('role_id');
             $table->timestamps();

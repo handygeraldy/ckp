@@ -66,10 +66,9 @@
                                                         data-id="{{ $d->id }}" data-toggle="modal"
                                                         title="catatan"><i class="fas fa-clipboard"></i></a>
                                                     @endif
-                                                    <a href="{{ route($route_ . '.show', $d->id) }}"
+                                                    <a href="{{ route($route_ . '.tampil', $d->id) }}"
                                                         class="btn btn-primary btn-sm">
                                                         <i class="fa fa-eye"></i></a>
-                                                        
                                                     @if ($d->status <= 1)
                                                     <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                         class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Edit</a>
@@ -77,7 +76,7 @@
                                                         data-id="{{ $d->id }}" data-toggle="modal"><i
                                                             class="fas fa-trash-alt"></i></a>
                                                     @elseif ($d->status == 4)
-                                                    <a href=""
+                                                    <a href="{{ route('ckp.export', $d->id) }}"
                                                         class="btn btn-success btn-sm"><i class="fa fa-download"></i> Export</a>
                                                     @endif
                                                 </div>
@@ -119,7 +118,7 @@
     <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
-                <form action="{{ route($route_ . '.delete') }}" method="POST" class="d-inline">
+                <form action="{{ route('ckp.delete') }}" method="POST" class="d-inline">
                     @method('delete')
                     @csrf
                     <div class="modal-body">

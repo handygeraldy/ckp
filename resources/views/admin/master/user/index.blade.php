@@ -16,8 +16,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col text-right">
-                            <a href="{{ route('user.create') }}" class="btn btn-primary"><i
-                                    class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
+                            @if (Auth::user()->role_id < 14)
+                                <a href="{{ route('user.create') }}" class="btn btn-primary"><i
+                                        class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -45,7 +47,7 @@
                                         <td class="text-left">{{ $d->nip }}</td>
                                         <td>{{ $d->email }}</td>
                                         <td>{{ $d->satker->name }}</td>
-                                        <td>{{ $d->tim->name }}</td>
+                                        <td>{{ $d->tim ? $d->tim->name : '-' }}</td>
                                         <td>{{ $d->golongan->name }}</td>
                                         <td>{{ $d->fungsional->name }}</td>
                                         <td style="min-width: 100px;">

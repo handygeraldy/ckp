@@ -5,7 +5,15 @@
         <h1 class="h3 mb-0">Dashboard</h1>
 
     </div>
-
+    <div class="text-right">
+        <span>
+            <a href="{{ route('index.ckp.filter', ['tahun' => $prev_year, 'bulan' => $prev_month]) }}"><i
+                    class="fa-solid fa-caret-left"></i></a>
+            {{ getMonth($bulan) . ' ' . $tahun }}
+            <a href="{{ route('index.ckp.filter', ['tahun' => $next_year, 'bulan' => $next_month]) }}"><i
+                    class="fa-solid fa-caret-right"></i></a>
+        </span>
+    </div>
     <div class="accordion" id="accordionEx">
         <div class="row">
             {{-- belum diajukan --}}

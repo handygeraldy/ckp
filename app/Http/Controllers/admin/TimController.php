@@ -6,10 +6,10 @@ use App\Models\Tim;
 use App\Models\User;
 use App\Models\Satker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Kredit;
-use App\Models\PeriodeTim;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TimController extends Controller
 {
@@ -20,8 +20,11 @@ class TimController extends Controller
             ->leftjoin('users', 'periode_tims.ketua_id', '=', 'users.id')
             ->leftjoin('satkers', 'tims.satker_id', '=', 'satkers.id')
             ->select('periode_tims.id as id', 'periode_tims.tahun as tahun', 'satkers.name as satker', 'tims.name as name', 'users.name as ketua',)
-            ->where('tims.is_delete', '0')
-            ->get();
+            ->where('tims.is_delete', '0');
+        if (Auth::user()->role_id > 8) {
+            $dt->where('tims.id', Auth::user()->tim_utama);
+        }
+        $dt = $dt->get();
         return view('admin.master.tim.index', [
             'dt' => $dt,
             'title' => 'Master Tim',
