@@ -4,18 +4,18 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0">{{ $title }}</h1>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-gray-800">CKP</li>
-            <li class="breadcrumb-item text-gray-800">input</li>
+            <li class="breadcrumb-item">Tim Kerja</li>
+            <li class="breadcrumb-item text-gray-800">{{ $title }}</li>
         </ol>
     </div>
 
-    <form action="{{ route('ckp.store') }}" method="post">
+    <form action="{{ route('projek.store') }}" method="post">
         <div class="row">
             <div class="col-lg-12 mb-1">
                 <div class="card">
                     <div class="card-body">
                         @csrf
+                        <input type="hidden" name="periode_tim_id" value="{{ $id }}">
                         {{-- Nama Proyek --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -39,10 +39,10 @@
                         {{-- Kode Sasaran Kinerja --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
-                                <label class="col-form-label" for="kredit_id">Sasaran Kinerja</label>
+                                <label class="col-form-label" for="sasaran">Sasaran Kinerja</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="kredit_id[]" required>
+                                <select class="form-control select2 select_butir" name="sasaran[]" required>
                                     <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
                                     @foreach ($iku as $i)
                                         <option value="{{ $i->id }}">
@@ -50,9 +50,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
-                            <div>
-                                <input type="hidden" name="satuan[]" class="form-control" value="">
                             </div>
                         </div>
                         {{-- kegiatan --}}
@@ -99,7 +96,7 @@
                             </div>
                         </div>
                         {{-- Kode Penanggung Jawab --}}
-                        <div class="row mb-2">
+                        {{-- <div class="row mb-2">
                             <div class="col-md-2">
                                 <label class="col-form-label" for="kredit_id">Penanggung Jawab</label>
                             </div>
@@ -116,7 +113,7 @@
                             <div>
                                 <input type="hidden" name="satuan[]" class="form-control" value="">
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- satuan --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -150,7 +147,7 @@
         {{-- submit --}}
         <div class="row">
             <div class="col-12">
-                <a href="{{ route('ckp.index') }}" class="btn btn-secondary">Batalkan</a>
+                <a href="{{ route('tim.show', $id) }}" class="btn btn-secondary">Batalkan</a>
                 <button type="submit" class="btn btn-success float-right"> <i class="fa fa-save"></i> Simpan</button>
             </div>
         </div>
@@ -164,10 +161,10 @@
                 <div>
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="kredit_id">Sasaran Kinerja</label>
+                            <label class="col-form-label" for="sasaran">Sasaran Kinerja</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2 select_butir" name="kredit_id[]" required>
+                            <select class="form-control select2 select_butir" name="sasaran[]" required>
                                 <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
                                 @foreach ($iku as $i)
                                     <option value="{{ $i->id }}">
@@ -175,9 +172,6 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div>
-                            <input type="hidden" name="satuan[]" class="form-control" value="">
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -224,24 +218,6 @@
                         </div>
                     </div>
                     
-                    <div class="row mb-2">
-                        <div class="col-md-2">
-                            <label class="col-form-label" for="kredit_id">Penanggung Jawab</label>
-                        </div>
-                        <div class="col-md-10">
-                            <select class="form-control select2 select_butir" name="kredit_id[]" required>
-                                <option value="" selected>== Penanggung Jawab ==</option>   
-                                @foreach ($list_anggota as $i)
-                                    <option value="{{ $i->id }}">
-                                        {{ $i->name}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <input type="hidden" name="satuan[]" class="form-control" value="">
-                        </div>
-                    </div>
                     
                     <div class="row mb-2">
                         <div class="col-md-2">
@@ -278,24 +254,6 @@
                     return false;
                 }
             });
-        });
-        $(document).on('change', '.select_butir', function(e) {
-            var kredit_id = parseInt(e.target.value, 10)
-                if (kredit_id > 0){
-                    var butir = {!! json_encode($butir) !!};
-                    var as= $(butir).filter(function (i,n){return n.id === kredit_id});
-                    var satuan = as[0].satuan;
-                    $(this).parent().next().find('input').val(satuan);
-                    $(this).parent().next().find('input').attr("disabled", false);
-                    $(this).parent().parent().next().find('input').val(satuan);
-                    $(this).parent().parent().next().find('input').attr("disabled", true);
-                } else {
-                    $(this).parent().next().find('input').val("");
-                    $(this).parent().next().find('input').attr("disabled", true);
-                    $(this).parent().parent().next().find('input').val("");
-                    $(this).parent().parent().next().find('input').attr("disabled", false);
-                    $(this).parent().parent().next().find('input').attr("placeholder", "Satuan wajib diisi");
-                }
         });
 
         $(document).on('change', '.nilai_inputan', function(e) {

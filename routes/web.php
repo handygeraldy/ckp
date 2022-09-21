@@ -119,6 +119,7 @@ Route::resource('golongan', GolonganController::class);
 Route::resource('fungsional', FungsionalController::class);
 Route::resource('satker', SatkerController::class);
 Route::resource('user', UserController::class);
+Route::get('kelola-tim/{id}', [TimController::class, 'kelolatim'])->name('tim.kelola');
 Route::resource('tim', TimController::class);
 Route::resource('ckp', CkpController::class);
 Route::resource('kegiatan', KegiatanController::class);

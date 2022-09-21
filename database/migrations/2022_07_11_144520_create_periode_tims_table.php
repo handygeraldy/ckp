@@ -18,6 +18,7 @@ class CreatePeriodeTimsTable extends Migration
             $table->string("tahun", 4);
             $table->unsignedBigInteger('tim_id');
             $table->uuid('ketua_id')->nullable();
+            $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
 
             $table->foreign('tim_id')->references('id')->on('tims');

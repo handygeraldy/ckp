@@ -8,7 +8,9 @@ use App\Models\Satker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Kredit;
 use App\Models\PeriodeTim;
+use App\Models\simtk\Ind_kinerja;
 use Illuminate\Support\Facades\Auth;
 
 class TimController extends Controller
@@ -20,7 +22,7 @@ class TimController extends Controller
             ->leftjoin('users', 'periode_tims.ketua_id', '=', 'users.id')
             ->leftjoin('satkers', 'tims.satker_id', '=', 'satkers.id')
             ->select('periode_tims.id as id', 'periode_tims.tahun as tahun', 'satkers.name as satker', 'tims.name as name', 'users.name as ketua',)
-            ->where('tims.is_delete', '0');
+            ->where('periode_tims.is_delete', '0');
 
         $dt = $dt->get();
         return view('admin.master.tim.index', [
@@ -97,20 +99,19 @@ class TimController extends Controller
     {
 
         $dt = DB::table('periode_tims')
-            ->leftJoin('projeks', 'periode_tims.id', 'projeks.periode_tim_id')
+            ->rightJoin('projeks', 'periode_tims.id', 'projeks.periode_tim_id')
             ->select(
                 'projeks.name as projek_name',
                 'projeks.id as id'
             )
             ->where('periode_tims.id', $id)
             ->get();
-
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
-        return view('admin.master.tim.tim_list', [
+        return view('admin.master.tim.list_projek', [
             'title' => $periodetim->tim->name,
             'periodetim' => $periodetim,
             'dt' => $dt,
-            'route_' => 'tim',
+            'route_' => 'projek',
             'id' => $id
         ]);
     }
@@ -135,6 +136,30 @@ class TimController extends Controller
         ]);
     }
 
+    public function kelolatim($id)
+    {
+        $tim = PeriodeTim::with(['tim'])->get();
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
+        $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
+
+        $list_anggota = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.name as name',
+                'users.id as id'
+            )
+            ->where('user_tims.tim_id', $id)
+            ->get();
+
+        return view('admin.master.tim.kelola_tim', [
+            "title" => "Kelola Anggota Tim",
+            "tim" => $tim,
+            "butir" => $butir,
+            'iku' => $iku,
+            'list_anggota' => $list_anggota,
+            'id' => $id
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -170,7 +195,9 @@ class TimController extends Controller
     public function softDelete(Request $request)
     {
         $id = $request->value_id;
-        $res = PeriodeTim::where('id', $id)->delete();
+        $res = PeriodeTim::where('id', $id)->update(
+            ['is_delete' => '1']
+        );
         if ($res) {
             alert()->success('Sukses', 'Berhasil menghapus tim');
         } else {

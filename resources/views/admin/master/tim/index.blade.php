@@ -4,9 +4,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0">{{ $title }}</h1>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-gray-800">Master</li>
-            <li class="breadcrumb-item text-gray-800">{{ $text_ }}</li>
+            <li class="breadcrumb-item">Tim Kerja</li>
         </ol>
     </div>
 
@@ -50,7 +48,7 @@
                                             <div class="row">
                                                 <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                     class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
+                                                <a href="#deleteModal" class="btn btn-danger btn-sm ml-2 hapusModal"
                                                     data-id="{{ $d->id }}" data-toggle="modal"><i
                                                         class="fas fa-trash-alt"></i></a>
                                             </div>

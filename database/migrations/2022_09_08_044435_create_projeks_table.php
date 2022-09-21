@@ -17,6 +17,7 @@ class CreateProjeksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('periode_tim_id');
             $table->string('name')->nullable;
+            $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
 
             $table->foreign('periode_tim_id')->references('id')->on('periode_tims');
