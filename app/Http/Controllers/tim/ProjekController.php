@@ -59,6 +59,32 @@ class ProjekController extends Controller
         ]);
     }
 
+    public function tambah_kegiatan($id)
+    {
+        $tim = PeriodeTim::with(['tim'])->get();
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
+        $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
+
+        $list_anggota = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.name as name',
+                'users.id as id'
+            )
+            ->where('user_tims.tim_id', $id)
+            ->get();
+        $projek = Projek::where('id', $id)->first();
+        return view('admin.master.tim.tambah_kegiatan', [
+            'title' => $projek->name,
+            'projek' => $projek,
+            "tim" => $tim,
+            "butir" => $butir,
+            'iku' => $iku,
+            'list_anggota' => $list_anggota,
+            'id' => $id
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -72,7 +98,6 @@ class ProjekController extends Controller
             'sasaran' => 'required',
             'kegiatan' => 'required',
             'satuan' => 'required',
-            'jml_target' => 'required',
             'periode_tim_id' => 'required'
         ]);
         $jml_kegiatan = count($request->kegiatan);
@@ -125,7 +150,7 @@ class ProjekController extends Controller
                 'kegiatan_tims.id as id',
                 'ind_kinerjas.sasaran as sasaran'
             )
-            ->where('projeks.id', $id)
+            ->where('projeks.id', $id)->where('kegiatan_tims.is_delete', '0')
             ->get();
 
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $infoprojek[0]->id_tim)->first();
@@ -182,11 +207,12 @@ class ProjekController extends Controller
         $res = Projek::where('id', $id)->update(
             ['is_delete' => '1']
         );
+        $variabel = Projek::where('id', $id)->get(['periode_tim_id']);
         if ($res) {
-            alert()->success('Sukses', 'Berhasil menghapus Proyek');
+            alert()->success('Sukses', 'Berhasil menghapus proyek');
         } else {
-            alert()->error('ERROR', 'Gagal menghapus Proyek');
+            alert()->error('ERROR', 'Gagal menghapus proyek');
         }
-        return redirect()->route('tim.index');
+        return redirect()->route('tim.show', $variabel[0]->periode_tim_id);
     }
 }

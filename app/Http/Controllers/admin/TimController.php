@@ -104,7 +104,7 @@ class TimController extends Controller
                 'projeks.name as projek_name',
                 'projeks.id as id'
             )
-            ->where('periode_tims.id', $id)
+            ->where('periode_tims.id', $id)->where('projeks.is_delete', '0')
             ->get();
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
         return view('admin.master.tim.list_projek', [
@@ -203,6 +203,6 @@ class TimController extends Controller
         } else {
             alert()->error('ERROR', 'Gagal menghapus tim');
         }
-        return redirect()->route('tim.index');
+        return redirect()->route('tim.show', $id);
     }
 }

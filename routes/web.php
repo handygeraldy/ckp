@@ -17,7 +17,9 @@ use App\Http\Controllers\admin\SatkerController;
 use App\Http\Controllers\admin\GolonganController;
 use App\Http\Controllers\ckp\KegiatanController;
 use App\Http\Controllers\admin\FungsionalController;
+use App\Http\Controllers\tim\KegiatanTimController;
 use App\Http\Controllers\tim\ProjekController;
+use App\Models\simtk\KegiatanTim;
 use App\Models\Tim;
 
 
@@ -107,6 +109,8 @@ Route::get('/sickp/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->
 Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('kredit.delete');
 Route::delete('user/delete', [UserController::class, 'softDelete'])->name('user.delete');
 Route::delete('tim/delete', [TimController::class, 'softDelete'])->name('tim.delete');
+Route::delete('projek/delete', [ProjekController::class, 'softDelete'])->name('projek.delete');
+Route::delete('kegiatantim/delete', [KegiatanTimController::class, 'softDelete'])->name('projek.deletekegiatantim');
 Route::delete('ckp/delete', [CkpController::class, 'softDelete'])->name('ckp.delete');
 Route::delete('kegiatan/delete', [KegiatanController::class, 'delete'])->name('kegiatan.delete');
 
@@ -124,7 +128,9 @@ Route::resource('tim', TimController::class);
 Route::resource('ckp', CkpController::class);
 Route::resource('kegiatan', KegiatanController::class);
 Route::get('projek-create/{id}', [ProjekController::class, 'create_proyek'])->name('projek.tambah');
+Route::get('projek-tambah_kegiatan/{id}', [ProjekController::class, 'tambah_kegiatan'])->name('projek.tambah_kegiatan');
 Route::resource('projek', ProjekController::class);
+Route::resource('kegiatan', KegiatanTimController::class);
 
 Route::get('nilai', [Penilaian::class, 'index'])->name('nilai.index');
 Route::get('nilai/show/{id}', [Penilaian::class, 'show'])->name('nilai.show');
