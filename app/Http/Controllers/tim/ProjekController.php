@@ -8,6 +8,7 @@ use App\Models\PeriodeTim;
 use App\Models\simtk\Projek;
 use App\Models\simtk\Ind_kinerja;
 use App\Models\simtk\KegiatanTim;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -113,6 +114,8 @@ class ProjekController extends Controller
             $kegiatan->iku_id = $request->sasaran[$i];
             $kegiatan->periode_awal = $request->tgl_mulai[$i];
             $kegiatan->periode_akhir = $request->tgl_selesai[$i];
+            $kegiatan->satuan = $request->satuan[$i];
+            $kegiatan->target = $request->jml_target[$i];
             $projek->kegiatan_tim()->save($kegiatan);
         }
 
@@ -175,7 +178,32 @@ class ProjekController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tim = PeriodeTim::with(['tim'])->first();
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
+        $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
+
+        $list_anggota = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.name as name',
+                'users.id as id'
+            )
+            ->where('user_tims.tim_id', $id)
+            ->get();
+
+        $projek = Projek::where('id', $id)->first();
+        $kegiatan = KegiatanTim::where('projek_id', $id)->get();
+        // dd($tim);
+        return view('admin.master.tim.edit_proyek', [
+            "title" => "Edit Proyek",
+            "projek" => $projek,
+            'kegiatan' => $kegiatan,
+            "tim" => $tim,
+            "butir" => $butir,
+            'iku' => $iku,
+            'list_anggota' => $list_anggota,
+            'periode_tim_id' => $projek->periode_tim_id
+        ]);
     }
 
     /**
@@ -187,7 +215,36 @@ class ProjekController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+
+            'project_id' => 'required',
+            'nama_proyek' => 'required', #name dari form
+            'periode_tim_id' => 'required'
+        ]);
+        // edit project
+        Projek::where('id', $validated['project_id'])->update(
+            [
+                'name' => $validated['nama_proyek']
+            ]
+        );
+        // edit kegiatantim
+        $jml_kegiatan = count($request->kegiatan);
+        // dd($request->idkegiatan);
+        for ($i = 0; $i < $jml_kegiatan; $i++) {
+            $res = KegiatanTim::where('id', $request->idkegiatan[$i])->update(
+                [
+                    'name' => $request->kegiatan[$i],
+                    'iku_id' => $request->sasaran[$i],
+                    'periode_awal' => $request->tgl_mulai[$i],
+                    'periode_akhir' => $request->tgl_selesai[$i],
+                    'satuan' => $request->satuan[$i],
+                    'target' => $request->jml_target[$i],
+                ]
+            );
+        }
+
+        alert()->success('Sukses', 'Projek dan Kegiatan berhasil ditambahkan');
+        return redirect()->route('tim.show', $id);
     }
 
     /**

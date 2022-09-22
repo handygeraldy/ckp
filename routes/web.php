@@ -130,7 +130,10 @@ Route::resource('kegiatan', KegiatanController::class);
 Route::get('projek-create/{id}', [ProjekController::class, 'create_proyek'])->name('projek.tambah');
 Route::get('projek-tambah_kegiatan/{id}', [ProjekController::class, 'tambah_kegiatan'])->name('projek.tambah_kegiatan');
 Route::resource('projek', ProjekController::class);
-Route::resource('kegiatan', KegiatanTimController::class);
+
+
+Route::post('kegiatantim/simpan/{id}', [KegiatanTimController::class, 'storeWithId'])->name('kegiatantim.store.withid');
+Route::resource('kegiatantim', KegiatanTimController::class);
 
 Route::get('nilai', [Penilaian::class, 'index'])->name('nilai.index');
 Route::get('nilai/show/{id}', [Penilaian::class, 'show'])->name('nilai.show');

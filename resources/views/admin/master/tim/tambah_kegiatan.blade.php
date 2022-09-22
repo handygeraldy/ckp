@@ -9,7 +9,7 @@
         </ol>
     </div>
 
-    <form action="{{ route('kegiatan.store', $projek->id) }}" method="post">
+    <form action="{{ route('kegiatantim.store.withid', $projek->id) }}" method="post">
         {{-- <div class="row"> --}}
             {{-- <div class="col-lg-12 mb-1"> --}}
                 {{-- <div class="card"> --}}

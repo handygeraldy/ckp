@@ -35,7 +35,7 @@ class KegiatanTimController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function storeWithId(Request $request, $id)
     {
         $validated = $request->validate([
             'sasaran' => 'required',
