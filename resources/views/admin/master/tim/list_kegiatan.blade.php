@@ -37,7 +37,9 @@
                                 <b>Daftar Kegiatan</b>
                             </h5>
                         </div>
-                        <div class="col text-right mr-5">
+                        <div class="col text-right mr-2">
+                            <a href="{{ route('kegiatantim.assign', $id) }}" class="btn btn-success"><i
+                                    class="fa-solid fa-list-check mr-2"></i>Assign Kegiatan</a>
                             <a href="{{ route('projek.tambah_kegiatan', $id) }}" class="btn btn-primary"><i
                                     class="fa fa-plus-circle mr-2"></i>Tambah Kegiatan</a>
                         </div>
@@ -50,6 +52,7 @@
                                     <th>No</th>
                                     <th>Nama Kegiatan</th>
                                     <th>Penanggung Jawab</th>
+                                    <th>Tindakan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,9 +71,10 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>
-                                                <a href="{{ route($route_ . '.show', $d->id) }}">
-                                                    <b>{{ $d->nama_kegiatan }}</b>
-                                                </a>
+                                                <b>{{ $d->nama_kegiatan }}</b>
+                                            </td>
+                                            <td>
+                                                <b>{{ $d->nama_kegiatan }}</b>
                                             </td>
                                             <td>
                                                 <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"

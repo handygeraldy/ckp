@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\tim;
 
 use App\Http\Controllers\Controller;
+use App\Models\simtk\Kegiatan_Tim_User;
 use App\Models\simtk\KegiatanTim;
 use App\Models\simtk\Projek;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KegiatanTimController extends Controller
 {
@@ -117,5 +119,46 @@ class KegiatanTimController extends Controller
             alert()->error('ERROR', 'Gagal menghapus kegiatan');
         }
         return redirect()->route('projek.show', $variabel[0]->projek_id);
+    }
+
+    public function assign($id)
+    {
+        $list_kegiatan = DB::table('kegiatan_tims')
+            ->where('kegiatan_tims.projek_id', $id)
+            ->get();
+
+        $projek = Projek::where('id', $id)->first();
+
+        $list_user = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.id as id',
+                'users.name as name'
+            )
+            ->where('user_tims.tim_id', $projek->periode_tim_id)
+            ->get();
+        return view('admin.master.tim.assign_kegiatan', [
+            'title' => 'Assign Kegiatan',
+            'list_kegiatan' => $list_kegiatan,
+            'list_user' => $list_user,
+            'id' => $id,
+            'projek' => $projek,
+        ]);
+    }
+
+    public function assign_post(Request $request, $id)
+    {
+        $jml_kegiatan = count($request->kegiatan);
+        $jml_anggota = count($request->anggota);
+        for ($i = 0; $i < $jml_kegiatan; $i++) {
+            for ($j = 0; $j < $jml_anggota; $j++) {
+                $kegiatan = new Kegiatan_Tim_User();
+                $kegiatan->kegiatan_tim_id = $request->kegiatan[$i];
+                $kegiatan->user_id = $request->anggota[$j];
+                $kegiatan->save();
+            }
+        }
+        alert()->success('Sukses', 'Berhasil assign kegiatan');
+        return redirect()->route('projek.show', $id);
     }
 }

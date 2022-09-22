@@ -13,10 +13,12 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col text-right">
-                            <a href="{{ route('tim.create') }}" class="btn btn-primary"><i
-                                    class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
-                        </div>
+                        @if (auth()->user()->role_id <= 11)
+                            <div class="col text-right">
+                                <a href="{{ route('tim.create') }}" class="btn btn-primary"><i
+                                        class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">

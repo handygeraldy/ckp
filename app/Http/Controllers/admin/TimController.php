@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kredit;
 use App\Models\PeriodeTim;
 use App\Models\simtk\Ind_kinerja;
+use App\Models\simtk\UserTim;
 use Illuminate\Support\Facades\Auth;
 
 class TimController extends Controller
@@ -41,7 +42,10 @@ class TimController extends Controller
     public function create()
     {
         $satker = Satker::get(['id', 'name']);
-        $user = User::where('is_delete', '!=', '1')->get(['id', 'name']);
+        $user = User::where('is_delete', '!=', '1')
+            ->where('role_id', '11')
+            ->orderBy('name', 'asc')
+            ->get(['id', 'name']);
         $tim = Tim::all();
         return view('admin.master.tim.create', [
             'title' => 'Tambah Tim',
@@ -106,10 +110,22 @@ class TimController extends Controller
             )
             ->where('periode_tims.id', $id)->where('projeks.is_delete', '0')
             ->get();
+
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
+
+        $df = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.name as nama_anggota'
+            )
+            ->where('user_tims.tim_id', $id)
+            ->where('user_tims.anggota_id', '!=', $periodetim->ketua_id)
+            ->get();
+
         return view('admin.master.tim.list_projek', [
             'title' => $periodetim->tim->name,
             'periodetim' => $periodetim,
+            'df' => $df,
             'dt' => $dt,
             'route_' => 'projek',
             'id' => $id
@@ -126,7 +142,10 @@ class TimController extends Controller
     {
         $periodetim = PeriodeTim::with(['tim'])->where('id', $id)->first();
         // $satker = Satker::get(['id', 'name']);
-        $user = User::where('is_delete', '!=', '1')->get(['id', 'name']);
+        $user = User::where('is_delete', '!=', '1')
+            ->where('role_id', '11')
+            ->orderBy('name', 'asc')
+            ->get(['id', 'name']);
 
         return view('admin.master.tim.edit', [
             'title' => 'Edit Tim',
@@ -138,28 +157,45 @@ class TimController extends Controller
 
     public function kelolatim($id)
     {
-        $tim = PeriodeTim::with(['tim'])->get();
-        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
-        $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
-
+        $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
         $list_anggota = DB::table('user_tims')
             ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
             ->select(
-                'users.name as name',
+                'users.name as nama_anggota',
                 'users.id as id'
             )
             ->where('user_tims.tim_id', $id)
+            ->orderBy('nama_anggota')
             ->get();
 
+        $sql = 'select * from users u where u.id not in (select ut.anggota_id from user_tims ut where ut.tim_id =' . $id . ') and u.role_id != 8 order by u.name';
+        $calon_anggota = DB::select($sql);
         return view('admin.master.tim.kelola_tim', [
-            "title" => "Kelola Anggota Tim",
-            "tim" => $tim,
-            "butir" => $butir,
-            'iku' => $iku,
+            "title" => $periodetim->tim->name,
+            'calon_anggota' => $calon_anggota,
+            "periodetim" => $periodetim,
             'list_anggota' => $list_anggota,
-            'id' => $id
+            'id' => $id,
+            'route_' => 'tim'
         ]);
     }
+
+    public function tambah_anggota(Request $request)
+    {
+        $jml_anggota = count($request->anggota);
+        // dd($request);
+        for ($i = 0; $i < $jml_anggota; $i++) {
+            $anggota = new UserTim();
+            $anggota->tim_id = $request->tim_id;
+            $anggota->anggota_id = $request->anggota[$i];
+            $anggota->save();
+        }
+
+        alert()->success('Sukses', 'Anggota berhasil ditambahkan');
+        return redirect()->route('tim.kelola', $request->tim_id);
+    }
+
+
     /**
      * Update the specified resource in storage.
      *

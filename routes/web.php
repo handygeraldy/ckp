@@ -19,6 +19,7 @@ use App\Http\Controllers\ckp\KegiatanController;
 use App\Http\Controllers\admin\FungsionalController;
 use App\Http\Controllers\tim\KegiatanTimController;
 use App\Http\Controllers\tim\ProjekController;
+use App\Http\Controllers\tim\UserTimController;
 use App\Models\simtk\KegiatanTim;
 use App\Models\Tim;
 
@@ -124,6 +125,7 @@ Route::resource('fungsional', FungsionalController::class);
 Route::resource('satker', SatkerController::class);
 Route::resource('user', UserController::class);
 Route::get('kelola-tim/{id}', [TimController::class, 'kelolatim'])->name('tim.kelola');
+Route::post('kelola-tim/tambah_anggota', [TimController::class, 'tambah_anggota'])->name('tim.tambah');
 Route::resource('tim', TimController::class);
 Route::resource('ckp', CkpController::class);
 Route::resource('kegiatan', KegiatanController::class);
@@ -131,7 +133,8 @@ Route::get('projek-create/{id}', [ProjekController::class, 'create_proyek'])->na
 Route::get('projek-tambah_kegiatan/{id}', [ProjekController::class, 'tambah_kegiatan'])->name('projek.tambah_kegiatan');
 Route::resource('projek', ProjekController::class);
 
-
+Route::get('kegiatantim/assign{id}', [KegiatanTimController::class, 'assign'])->name('kegiatantim.assign');
+Route::post('kegiatantim/assign{id}', [KegiatanTimController::class, 'assign_post'])->name('kegiatantim.assign.post');
 Route::post('kegiatantim/simpan/{id}', [KegiatanTimController::class, 'storeWithId'])->name('kegiatantim.store.withid');
 Route::resource('kegiatantim', KegiatanTimController::class);
 

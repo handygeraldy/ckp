@@ -24,10 +24,20 @@
                                     <td width="20%">Ketua Tim</td>
                                     <td colspan="9">: {{ $periodetim->user->name }}</td>
                                 </tr>
-                                <tr>
-                                    <td width="20%">Anggota</td>
-                                    <td colspan="9">: {{ $periodetim->user->name }}</td>
-                                </tr>
+
+                                @foreach ($df as $key => $t)
+                                    @if ($key == 0)
+                                        <tr>
+                                            <td width="20%">Anggota</td>
+                                            <td>: {{ $t->nama_anggota }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td></td>
+                                            <td> {{ $t->nama_anggota }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
