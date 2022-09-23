@@ -82,7 +82,7 @@ class UserController extends Controller
         ]);
         $extension = $request->file('ttd')->getClientOriginalExtension();
         $filename = $request->nip . '.' . $extension;
-        $request->file('ttd')->storeAs('public', $filename);
+        $request->file('ttd')->move(base_path().'/public/storage//', $filename);
         $validated['ttd'] = $filename;
         $validated['password'] = bcrypt($validated['password']);
         User::create($validated);
@@ -176,7 +176,7 @@ class UserController extends Controller
         if ($request->hasFile('ttd')) {
             $extension = $request->file('ttd')->getClientOriginalExtension();
             $filename = $request->nip . '.' . $extension;
-            $request->file('ttd')->storeAs('public', $filename);
+            $request->file('ttd')->move(base_path().'/public/storage//', $filename);
             $validated['ttd'] = $filename;
         }
 

@@ -37,14 +37,14 @@
             Pegawai
         </a>
     </li>
-    @if (auth()->user()->role_id <= 11)
+    {{-- @if (auth()->user()->role_id <= 11)
         <li class="nav-item {{ Request::is('tim*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('tim.index') }}">
                 <i class="fa-sharp fa-solid fa-people-group"></i>
                 Tim Kerja
             </a>
         </li>
-    @endif
+    @endif --}}
     @if ((auth()->user()->role_id > 11) | (auth()->user()->role_id < 8))
         <li class="nav-item {{ Request::is('ckp*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('ckp.index') }}">

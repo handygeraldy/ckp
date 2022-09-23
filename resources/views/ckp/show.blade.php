@@ -90,7 +90,7 @@
                                             <td class="text-right">{{ $d->nilai_kegiatan }}</td>
                                             <td>{{ $d->kode_perka }}</td>
                                             <td class="text-right">{{ $d->angka_kredit }}</td>
-                                            <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->tgl_mulai || $d->tgl_selesai ? ', ' . $d->keterangan : '' }}
+                                            <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->keterangan != '' && $d->tgl_mulai && $d->tgl_selesai ? ', ' . $d->keterangan : $d->keterangan }}
                                             </td>
                                             @if ($ckp->status == 1)
                                                 <td class="text-right" style="min-width: 100px;">
@@ -126,7 +126,7 @@
                                             <td class="text-right">{{ $d->nilai_kegiatan }}</td>
                                             <td>{{ $d->kode_perka }}</td>
                                             <td class="text-right">{{ $d->angka_kredit }}</td>
-                                            <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->tgl_mulai || $d->tgl_selesai ? ', ' . $d->keterangan : '' }}</td>
+                                            <td>{{ $d->tgl_mulai }}{{ $d->tgl_selesai ? ' - ' . $d->tgl_selesai : '' }}{{ $d->keterangan != '' && $d->tgl_mulai && $d->tgl_selesai ? ', ' . $d->keterangan : $d->keterangan }}</td>
                                             @if ($ckp->status == 1)
                                                 <td class="text-right" style="min-width: 100px;">
                                                     <div class="row">
@@ -172,7 +172,7 @@
                         @endif
                     </div>
 
-                    @if (($route_ == 'kegiatan') | ($route_ == 'arsip'))
+                    @if (($route_ == 'kegiatan') | ($route_ == 'arsip') | ($route_ == 'nilai'))
                         <div class="row mt-5">
                             <div class="col">
                                 <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>

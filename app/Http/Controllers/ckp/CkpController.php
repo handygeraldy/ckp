@@ -184,6 +184,9 @@ class CkpController extends Controller
         $kegiatan = DB::table('kegiatans')
         ->leftjoin('kredits', 'kegiatans.kredit_id', 'kredits.id')
         ->select(
+            'kegiatans.id as id',
+            'kegiatans.ckp_id as ckp_id',
+            'kegiatans.kegiatan_tim_id as kegiatan_tim_id',
             'kegiatans.name as name',
             'kegiatans.jenis as jenis',
             'kegiatans.tgl_mulai as tgl_mulai',
@@ -851,7 +854,7 @@ class CkpController extends Controller
         $drawing2 = new Drawing();
         $drawing2->setName('TTD Pejabat');
         $drawing2->setDescription('TTD Pejabat');
-        $drawing2->setPath('storage/pak sarpono.jpeg');
+        $drawing2->setPath('storage/pak sarpono.png');
         $sheet->mergeCells('F' . $numrow . ':H' . $numrow);
         $drawing2->setCoordinates('F' . $numrow);
         $drawing2->setHeight(80);

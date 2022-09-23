@@ -59,7 +59,7 @@
                                             <td>{{ $d->jml_kegiatan }}</td>
                                             <td style="min-width: 100px;">
                                                 <div class="row">
-                                                    <a href="{{ route($route_ . '.tampil', $d->id) }}"
+                                                    <a href="{{ route($route_ . '.show', $d->id) }}"
                                                         class="btn btn-primary btn-sm">
                                                         <i class="fa fa-eye"></i></a>
                                                 </div>

@@ -43,10 +43,11 @@
                                 @foreach ($dt as $key => $d)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td> <a href="{{ route($route_ . '.show', $d->id) }}">
+                                        <td>{{ $d->name }}</td>
+                                        {{-- <td> <a href="{{ route($route_ . '.show', $d->id) }}">
                                                 <b> {{ $d->name }} </b>
                                             </a>
-                                        </td>
+                                        </td> --}}
                                         <td class="text-left">{{ $d->nip }}</td>
                                         <td>{{ $d->email }}</td>
                                         <td>{{ $d->satker->name }}</td>
