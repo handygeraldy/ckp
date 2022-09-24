@@ -33,7 +33,7 @@
                                 <label class="col-form-label" for="sasaran">Sasaran Kinerja</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="sasaran[]" required>
+                                <select class="form-control select2" name="sasaran[]" required>
                                     <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
                                     @foreach ($iku as $i)
                                         <option value="{{ $i->id }}">
@@ -86,25 +86,6 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- Kode Penanggung Jawab --}}
-                        {{-- <div class="row mb-2">
-                            <div class="col-md-2">
-                                <label class="col-form-label" for="kredit_id">Penanggung Jawab</label>
-                            </div>
-                            <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="kredit_id[]" required>
-                                    <option value="" selected>== Penanggung Jawab ==</option>   
-                                    @foreach ($list_anggota as $i)
-                                        <option value="{{ $i->id }}">
-                                            {{ $i->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <input type="hidden" name="satuan[]" class="form-control" value="">
-                            </div>
-                        </div> --}}
                         {{-- satuan --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -155,7 +136,7 @@
                             <label class="col-form-label" for="sasaran">Sasaran Kinerja</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2 select_butir" name="sasaran[]" required>
+                            <select class="form-control select2" name="sasaran[]" required>
                                 <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
                                 @foreach ($iku as $i)
                                     <option value="{{ $i->id }}">

@@ -43,7 +43,7 @@
                                 @foreach ($dt as $key => $d)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td> <a href="{{ route($route_ . '.show', $d->id) }}">
+                                        <td> <a href="{{ route('usertim.profil', $d->id) }}">
                                                 <b> {{ $d->name }} </b>
                                             </a>
                                         </td>

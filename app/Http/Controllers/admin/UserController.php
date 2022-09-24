@@ -98,30 +98,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $dt = User::where('id', $id)->first();
-
-        $list_kegiatan = DB::table('kegiatan__tim__users')
-            ->leftJoin('kegiatan_tims', 'kegiatan__tim__users.kegiatan_tim_id', 'kegiatan_tims.id')
-            ->leftJoin('projeks', 'kegiatan_tims.projek_id', 'projeks.id')
-            ->leftJoin('periode_tims', 'projeks.periode_tim_id', 'periode_tims.id')
-            ->leftJoin('tims', 'periode_tims.tim_id', 'tims.id')
-            ->leftJoin('users', 'periode_tims.ketua_id', 'users.id')
-            ->select(
-                'projeks.name as nama_projek',
-                'kegiatan_tims.name as nama_kegiatan',
-                'tims.name as nama_tim',
-                'users.name as nama_ketua',
-            )
-            ->where('kegiatan__tim__users.user_id', $id)
-            ->get();
-
-        return view('admin.master.user.profil', [
-            'dt' => $dt,
-            'list_kegiatan' => $list_kegiatan,
-            'title' => $dt->name,
-            'text_' => 'User',
-            'route_' => 'user',
-        ]);
     }
 
     /**

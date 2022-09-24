@@ -17,7 +17,8 @@ class CreateUsersTable extends Migration
             $table->uuid('id')->primary();
             $table->char('nip', 18)->unique();
             $table->string('name')->nullable();
-            $table->string('email')->nullable();            
+            $table->string('nickname')->nullable();
+            $table->string('email')->nullable();
             $table->unsignedBigInteger('satker_id');
             $table->unsignedBigInteger('tim_utama')->nullable();
             $table->unsignedBigInteger('golongan_id');

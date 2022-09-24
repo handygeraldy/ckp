@@ -63,6 +63,12 @@
                                 @endif
                             </tbody>
                         </table>
+
+                        <div class="row mt-5">
+                            <div class="col">
+                                <a href="{{ URL::previous() }}" class="btn btn-secondary ml-3 mb-3">Kembali</a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -73,7 +79,7 @@
     <div class="modal fade" id="createModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
-                <form action="{{ route('tim.tambah') }}" method="POST" class="d-inline">
+                <form action="{{ route('usertim.store') }}" method="POST" class="d-inline">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" value="{{ $id }}" name="tim_id">
