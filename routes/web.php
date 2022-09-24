@@ -21,21 +21,6 @@ use App\Http\Controllers\tim\KegiatanTimController;
 use App\Http\Controllers\tim\ProjekController;
 use App\Http\Controllers\tim\UserTimController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Yunus
-// Route::get('/', [Controller::class, 'indexSimtk'])->name('index');
-
-// Handy
 Route::get('/flushconfig', function () {
     $output = [];
     Artisan::call('cache:clear', [], $output);
@@ -64,10 +49,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout',  [LoginController::class, 'logout'])->name('logout');
 
+    Route::get('/', [Controller::class, 'index'])->name('index');
+    Route::get('/dashboard-ckp/{tahun}/{bulan}', [Controller::class, 'filterDashboard'])->name('index.ckp.filter');
 
-    Route::get('/', [Controller::class, 'indexSimtk'])->name('index');
-    // Route::get('/', [DashboardCkp::class, 'indexCkp'])->name('index');
-    Route::get('/dashboard-ckp/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->name('index.ckp.filter');
+    // Route::get('/dashboard-simtk', [Controller::class, 'indexSimtk'])->name('simtk.index');
+    // Route::get('/dashboard-ckp', [DashboardCkp::class, 'indexCkp'])->name('ckp.index');
+    // Route::get('/dashboard-ckp/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->name('index.ckp.filter');
 
     Route::delete('ckp/delete', [CkpController::class, 'softDelete'])->name('ckp.delete');
     Route::delete('kegiatan/delete', [KegiatanController::class, 'delete'])->name('kegiatan.delete');

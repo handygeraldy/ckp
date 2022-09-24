@@ -97,13 +97,14 @@ class ProjekController extends Controller
             )
             ->where('projeks.id', $id)
             ->get();
-        $sql = "select kt.created_at, kt.projek_id, kt.id, kt.name , group_concat(u.nickname  separator '; <br>') as nick 
+        $sql = "select kt.is_delete, kt.created_at, kt.projek_id, kt.id, kt.name , group_concat(u.nickname  separator '; <br>') as nick 
         from projeks p 
         left join kegiatan_tims kt on p.id = kt.projek_id 
         left join kegiatan__tim__users ktu on kt.id = ktu.kegiatan_tim_id 
         left join users u on ktu.user_id = u.id 
-        group by kt.projek_id, kt.id, kt.name, kt.created_at
-        having kt.projek_id  = " . $id . " order by kt.created_at";
+        group by kt.is_delete, kt.projek_id, kt.id, kt.name, kt.created_at
+        having kt.projek_id  = " . $id . " and kt.is_delete = '0'
+        order by kt.created_at";
         $df = DB::select($sql);
 
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $infoprojek[0]->id_tim)->first();

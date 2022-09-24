@@ -22,6 +22,7 @@ class CreateKegiatanTimsTable extends Migration
             $table->date('periode_akhir')->nullable();
             $table->string('satuan')->nullable();
             $table->string('target', 3)->nullable();
+            $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
 
             $table->foreign('projek_id')->references('id')->on('projeks');

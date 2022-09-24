@@ -17,13 +17,15 @@ class UserController extends Controller
 {
     public function index()
     {
-        $sql = 'select u.id, u.name, u.nip, u.email, s.name as satker_name, f.name as fungsional_name, g.name as golongan_name, t.name as tim_name, count(ut.anggota_id) as jumlah_tim from users u 
+        $sql = "select u.id, u.is_delete, u.name, u.nip, u.email, s.name as satker_name, f.name as fungsional_name, g.name as golongan_name, t.name as tim_name, count(ut.anggota_id) as jumlah_tim from users u 
         left join user_tims ut on u.id = ut.anggota_id 
         left join satkers s on u.satker_id = s.id 
         left join fungsionals f on u.fungsional_id = f.id 
         left join golongans g on u.golongan_id = g.id
         left join tims t on u.tim_utama = t.id
-        group by u.id, u.name, u.nip, u.email, s.name, f.name, g.name, t.name';
+        group by u.id, u.is_delete, u.name, u.nip, u.email, s.name, f.name, g.name, t.name
+        having u.is_delete = '0'
+        order by u.nip";
 
         $dt = DB::select($sql);
 

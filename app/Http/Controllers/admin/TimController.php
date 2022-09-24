@@ -109,7 +109,8 @@ class TimController extends Controller
                 'projeks.name as projek_name',
                 'projeks.id as id'
             )
-            ->where('periode_tims.id', $id)->where('projeks.is_delete', '0')
+            ->where('periode_tims.id', $id)
+            ->where('projeks.is_delete', '0')
             ->get();
 
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
