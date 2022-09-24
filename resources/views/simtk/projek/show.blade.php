@@ -37,7 +37,7 @@
                                 <b>Daftar Kegiatan</b>
                             </h5>
                         </div>
-                        @if (auth()->user()->role_id <= 11)
+                        @if ((auth()->user()->role_id <= 8) | (auth()->user()->id == $periodetim->ketua_id))
                             <div class="col text-right mr-2">
                                 <a href="{{ route('kegiatantim.assign', $id) }}" class="btn btn-success"><i
                                         class="fa-solid fa-list-check mr-2"></i>Assign Kegiatan</a>
@@ -54,7 +54,7 @@
                                     <th>No</th>
                                     <th>Nama Kegiatan</th>
                                     <th>Anggota</th>
-                                    @if (auth()->user()->role_id <= 11)
+                                    @if ((auth()->user()->role_id <= 8) | (auth()->user()->id == $periodetim->ketua_id))
                                         <th>Tindakan</th>
                                     @endif
                                 </tr>
@@ -80,7 +80,7 @@
                                         <td>
                                             {!! $d->nick !!}
                                         </td>
-                                        @if (auth()->user()->role_id <= 11)
+                                        @if ((auth()->user()->role_id <= 8) | (auth()->user()->id == $periodetim->ketua_id))
                                             <td>
                                                 <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
                                                     data-id="{{ $d->id }}" data-toggle="modal"><i

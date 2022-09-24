@@ -64,7 +64,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout',  [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('/', [DashboardCkp::class, 'indexCkp'])->name('index');
+
+    Route::get('/', [Controller::class, 'indexSimtk'])->name('index');
+    // Route::get('/', [DashboardCkp::class, 'indexCkp'])->name('index');
     Route::get('/dashboard-ckp/{tahun}/{bulan}', [DashboardCkp::class, 'filterDashboard'])->name('index.ckp.filter');
 
     Route::delete('ckp/delete', [CkpController::class, 'softDelete'])->name('ckp.delete');

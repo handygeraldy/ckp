@@ -47,7 +47,7 @@
                                 <b>Daftar Proyek</b>
                             </h5>
                         </div>
-                        @if (auth()->user()->role_id <= 11)
+                        @if ((auth()->user()->role_id <= 8) | (auth()->user()->id == $periodetim->ketua_id))
                             <a href="{{ route('projek.tambah', $id) }}" class="btn btn-primary mr-3"><i
                                     class="fa fa-plus-circle mr-2"></i>Tambah Proyek</a>
                             <a href="{{ route('usertim.show', $id) }}" class="btn btn-warning mr-3"><i
@@ -62,7 +62,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Proyek</th>
-                                    @if (auth()->user()->role_id <= 11)
+                                    @if ((auth()->user()->role_id <= 8) | (auth()->user()->id == $periodetim->ketua_id))
                                         <th>Tindakan</th>
                                     @endif
                                 </tr>
@@ -87,7 +87,7 @@
                                                     <b>{{ $d->projek_name }}</b>
                                                 </a>
                                             </td>
-                                            @if (auth()->user()->role_id <= 11)
+                                            @if ((auth()->user()->role_id <= 8) | (auth()->user()->id == $periodetim->ketua_id))
                                                 <td>
                                                     <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                         class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>

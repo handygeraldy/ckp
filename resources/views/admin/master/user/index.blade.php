@@ -26,13 +26,14 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="tabel" class="table table-hover table-striped">
-                            <thead>
+                            <thead class="text-center">
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>NIP</th>
                                     <th>Email</th>
                                     <th>Satker</th>
+                                    <th>Jumlah Tim Kerja</th>
                                     <th>Tim Utama</th>
                                     <th>Golongan</th>
                                     <th>Fungsional</th>
@@ -49,17 +50,22 @@
                                         </td>
                                         <td class="text-left">{{ $d->nip }}</td>
                                         <td>{{ $d->email }}</td>
-                                        <td>{{ $d->satker->name }}</td>
-                                        <td>{{ $d->tim ? $d->tim->name : '-' }}</td>
-                                        <td>{{ $d->golongan->name }}</td>
-                                        <td>{{ $d->fungsional->name }}</td>
+                                        <td>{{ $d->satker_name }}</td>
+                                        <td>{{ $d->jumlah_tim }}</td>
+                                        <td>{{ $d->tim_name }}</td>
+                                        <td>{{ $d->golongan_name }}</td>
+                                        <td>{{ $d->fungsional_name }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
-                                                <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
-                                                        class="fas fa-trash-alt"></i></a>
+                                                @if ((Auth::user()->role_id <= 8) | (Auth::user()->id == $d->id))
+                                                    <a href="{{ route($route_ . '.edit', $d->id) }}"
+                                                        class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                @endif
+                                                @if (Auth::user()->role_id <= 8)
+                                                    <a href="#deleteModal" class="btn btn-danger btn-sm hapusModal"
+                                                        data-id="{{ $d->id }}" data-toggle="modal"><i
+                                                            class="fas fa-trash-alt"></i></a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

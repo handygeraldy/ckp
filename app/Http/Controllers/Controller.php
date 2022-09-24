@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PeriodeTim;
+use App\Models\simtk\KegiatanTim;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -28,11 +32,23 @@ class Controller extends BaseController
         });
     }
 
-    
+
     public function indexSimtk()
     {
+        $tahun = date('Y');
+        $daftar_pegawai = User::all();
+        $daftar_tim = PeriodeTim::all();
+        $daftar_kegiatan = KegiatanTim::all();
+        $sum_status = collect([
+            0 => count($daftar_pegawai),
+            1 => count($daftar_tim),
+            2 => count($daftar_kegiatan)
+        ]);
+
         return view('simtk.dashboard', [
-            "title" => "Dashboard"
+            "title" => "Dashboard",
+            "sum_status" => $sum_status,
+            "tahun" => $tahun,
         ]);
     }
 }
