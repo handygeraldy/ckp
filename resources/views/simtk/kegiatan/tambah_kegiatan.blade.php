@@ -10,20 +10,12 @@
     </div>
 
     <form action="{{ route('kegiatantim.store.withid', $projek->id) }}" method="post">
-        {{-- <div class="row"> --}}
-            {{-- <div class="col-lg-12 mb-1"> --}}
-                {{-- <div class="card"> --}}
-                    {{-- <div class="card-body"> --}}
-                        @csrf
-                        <input type="hidden" name="periode_tim_id" value="{{ $id }}">
-                        {{-- Nama Proyek --}}
-                    {{-- </div> --}}
-                {{-- </div> --}}
-            {{-- </div> --}}
-        {{-- </div> --}}
+        @csrf
+        <input type="hidden" name="periode_tim_id" value="{{ $id }}">
+
         <div class="row">
             <div class="col-lg-12 mb-4">
-                <h4 class="mt-5"><b>Tambah Kegiatan</b></h4>
+                <h4><b>Tambah Kegiatan</b></h4>
                 {{-- Kegiatan --}}
                 <div class="card mt-2">
                     <div class="card-body">
@@ -33,11 +25,11 @@
                                 <label class="col-form-label" for="sasaran">Sasaran Kinerja</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="sasaran[]" required>
-                                    <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
+                                <select class="form-control select2" name="sasaran[]" required>
+                                    <option value="" selected>== Pilih Sasaran Kinerja ==</option>
                                     @foreach ($iku as $i)
                                         <option value="{{ $i->id }}">
-                                            {{ $i->sasaran}}
+                                            {{ $i->sasaran }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -86,44 +78,18 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- Kode Penanggung Jawab --}}
-                        {{-- <div class="row mb-2">
+                        {{-- tugas luar --}}
+                        <div class="row mb-2">
                             <div class="col-md-2">
-                                <label class="col-form-label" for="kredit_id">Penanggung Jawab</label>
+                                <label class="col-form-label" for="tugas_luar">Tugas Luar</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control select2 select_butir" name="kredit_id[]" required>
-                                    <option value="" selected>== Penanggung Jawab ==</option>   
-                                    @foreach ($list_anggota as $i)
-                                        <option value="{{ $i->id }}">
-                                            {{ $i->name}}
-                                        </option>
-                                    @endforeach
+                                <select class="form-control select2" name="tugas_luar[]" required>
+                                    <option value="0" selected>Tidak</option>
+                                    <option value="1">Ya</option>
                                 </select>
                             </div>
-                            <div>
-                                <input type="hidden" name="satuan[]" class="form-control" value="">
-                            </div>
-                        </div> --}}
-                        {{-- satuan --}}
-                        <div class="row mb-2">
-                            <div class="col-md-2">
-                                <label class="col-form-label" for="satuan">Satuan</label>
-                            </div>
-                            <div class="col-md-10">
-                                <input type="text" name="satuan[]" class="form-control" required value="">
-                            </div>
                         </div>
-                        {{-- Target --}}
-                        <div class="row mb-2">
-                            <div class="col-md-2">
-                                <label class="col-form-label" for="jml_target">Jumlah Target</label>
-                            </div>
-                            <div class="col-md-10">
-                                <input type="number" name="jml_target[]" class="form-control jml_target" required>
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
                 <div class="add-more" style="display: none;">
@@ -155,7 +121,7 @@
                             <label class="col-form-label" for="sasaran">Sasaran Kinerja</label>
                         </div>
                         <div class="col-md-10">
-                            <select class="form-control select2 select_butir" name="sasaran[]" required>
+                            <select class="form-control select2" name="sasaran[]" required>
                                 <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
                                 @foreach ($iku as $i)
                                     <option value="{{ $i->id }}">
@@ -208,24 +174,15 @@
                             @enderror
                         </div>
                     </div>
-                    
-                    
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="satuan">Satuan</label>
+                            <label class="col-form-label" for="tugas_luar">Tugas Luar</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="satuan[]" class="form-control" required value="">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-2">
-                            <label class="col-form-label" for="jml_target">Jumlah Target</label>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="number" name="jml_target[]"
-                                class="form-control jml_target" required
-                                value="{{ $ckp->target ?? '' }}">
+                            <select class="form-control select2" name="tugas_luar[]" required>
+                                <option value="0" selected>Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -249,11 +206,11 @@
 
         $(document).on('change', '.nilai_inputan', function(e) {
             var nilai = parseInt(e.target.value, 10)
-                if (nilai > 0){
-                    $(this).parent().next().find('input').val(nilai);
-                } else {
-                    $(this).parent().next().find('input').val(-1);
-                }
+            if (nilai > 0) {
+                $(this).parent().next().find('input').val(nilai);
+            } else {
+                $(this).parent().next().find('input').val(-1);
+            }
         });
 
         $(document).on('click', '#addMore', function() {

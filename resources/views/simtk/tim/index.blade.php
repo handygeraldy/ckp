@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        @if (auth()->user()->role_id <= 11)
+                        @if (auth()->user()->role_id <= 8)
                             <div class="col text-right">
                                 <a href="{{ route('tim.create') }}" class="btn btn-primary"><i
                                         class="fa fa-plus-circle mr-2"></i>Tambah {{ $text_ }}</a>
@@ -31,7 +31,9 @@
                                     <th>Tahun</th>
                                     <th>Satker</th>
                                     <th>Ketua</th>
-                                    <th>Tindakan</th>
+                                    @if (auth()->user()->role_id <= 8)
+                                        <th>Tindakan</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,15 +48,17 @@
                                         <td>{{ $d->tahun }}</td>
                                         <td>{{ $d->satker }}</td>
                                         <td>{{ $d->ketua ? $d->ketua : 'Belum ada ketua' }}</td>
-                                        <td style="min-width: 100px;">
-                                            <div class="row">
-                                                <a href="{{ route($route_ . '.edit', $d->id) }}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                                <a href="#deleteModal" class="btn btn-danger btn-sm ml-2 hapusModal"
-                                                    data-id="{{ $d->id }}" data-toggle="modal"><i
-                                                        class="fas fa-trash-alt"></i></a>
-                                            </div>
-                                        </td>
+                                        @if (auth()->user()->role_id <= 8)
+                                            <td style="min-width: 100px;">
+                                                <div class="row">
+                                                    <a href="{{ route($route_ . '.edit', $d->id) }}"
+                                                        class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <a href="#deleteModal" class="btn btn-danger btn-sm ml-2 hapusModal"
+                                                        data-id="{{ $d->id }}" data-toggle="modal"><i
+                                                            class="fas fa-trash-alt"></i></a>
+                                                </div>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -70,6 +74,7 @@
                 <form action="{{ route($route_ . '.delete') }}" method="POST" class="d-inline">
                     @method('delete')
                     @csrf
+
                     <div class="modal-body">
                         <h3 class="text-center">Hapus {{ $route_ }} ini?</h3>
                         <input type="hidden" id="value_id" name="value_id">

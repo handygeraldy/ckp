@@ -10,35 +10,15 @@ use App\Models\simtk\Ind_kinerja;
 use App\Models\simtk\KegiatanTim;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProjekController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
 
     public function create_proyek($id)
     {
         $tim = PeriodeTim::with(['tim'])->get();
-        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
 
         $list_anggota = DB::table('user_tims')
@@ -50,36 +30,9 @@ class ProjekController extends Controller
             ->where('user_tims.tim_id', $id)
             ->get();
 
-        return view('admin.master.tim.create_proyek', [
+        return view('simtk.projek.create', [
             "title" => "Tambah Proyek",
             "tim" => $tim,
-            "butir" => $butir,
-            'iku' => $iku,
-            'list_anggota' => $list_anggota,
-            'id' => $id
-        ]);
-    }
-
-    public function tambah_kegiatan($id)
-    {
-        $tim = PeriodeTim::with(['tim'])->get();
-        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
-        $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
-
-        $list_anggota = DB::table('user_tims')
-            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
-            ->select(
-                'users.name as name',
-                'users.id as id'
-            )
-            ->where('user_tims.tim_id', $id)
-            ->get();
-        $projek = Projek::where('id', $id)->first();
-        return view('admin.master.tim.tambah_kegiatan', [
-            'title' => $projek->name,
-            'projek' => $projek,
-            "tim" => $tim,
-            "butir" => $butir,
             'iku' => $iku,
             'list_anggota' => $list_anggota,
             'id' => $id
@@ -144,23 +97,21 @@ class ProjekController extends Controller
             )
             ->where('projeks.id', $id)
             ->get();
-
-        $df = DB::table('projeks')
-            ->leftJoin('kegiatan_tims', 'projeks.id', 'kegiatan_tims.projek_id')
-            ->leftJoin('ind_kinerjas', 'kegiatan_tims.iku_id', 'ind_kinerjas.id')
-            ->select(
-                'kegiatan_tims.name as nama_kegiatan',
-                'kegiatan_tims.id as id',
-                'ind_kinerjas.sasaran as sasaran'
-            )
-            ->where('projeks.id', $id)->where('kegiatan_tims.is_delete', '0')
-            ->get();
+        $sql = "select kt.is_delete, kt.created_at, kt.projek_id, kt.id, kt.name , group_concat(u.nickname  separator '; <br>') as nick 
+        from projeks p 
+        left join kegiatan_tims kt on p.id = kt.projek_id 
+        left join kegiatan__tim__users ktu on kt.id = ktu.kegiatan_tim_id 
+        left join users u on ktu.user_id = u.id 
+        group by kt.is_delete, kt.projek_id, kt.id, kt.name, kt.created_at
+        having kt.projek_id  = " . $id . " and kt.is_delete = '0'
+        order by kt.created_at";
+        $df = DB::select($sql);
 
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $infoprojek[0]->id_tim)->first();
         $projek = Projek::where('id', $id)->first();
 
         // dd($df);
-        return view('admin.master.tim.list_kegiatan', [
+        return view('simtk.projek.show', [
             'title' => $projek->name,
             'periodetim' => $periodetim,
             'route_' => 'projek',
@@ -178,6 +129,10 @@ class ProjekController extends Controller
      */
     public function edit($id)
     {
+        if (Auth::user()->role_id > 11) {
+            alert()->error('Gagal', 'Anda tidak dapat mengedit projek');
+            return redirect()->route('tim.index');
+        }
         $tim = PeriodeTim::with(['tim'])->first();
         $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
         $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
@@ -193,8 +148,7 @@ class ProjekController extends Controller
 
         $projek = Projek::where('id', $id)->first();
         $kegiatan = KegiatanTim::where('projek_id', $id)->get();
-        // dd($tim);
-        return view('admin.master.tim.edit_proyek', [
+        return view('simtk.projek.edit', [
             "title" => "Edit Proyek",
             "projek" => $projek,
             'kegiatan' => $kegiatan,
@@ -229,7 +183,6 @@ class ProjekController extends Controller
         );
         // edit kegiatantim
         $jml_kegiatan = count($request->kegiatan);
-        // dd($request->idkegiatan);
         for ($i = 0; $i < $jml_kegiatan; $i++) {
             $res = KegiatanTim::where('id', $request->idkegiatan[$i])->update(
                 [

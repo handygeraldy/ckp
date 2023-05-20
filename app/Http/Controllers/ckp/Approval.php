@@ -44,6 +44,9 @@ class Approval extends Controller
         $kegiatan = DB::table('kegiatans')
         ->leftjoin('kredits', 'kegiatans.kredit_id', 'kredits.id')
         ->select(
+            'kegiatans.id as id',
+            'kegiatans.ckp_id as ckp_id',
+            'kegiatans.kegiatan_tim_id as kegiatan_tim_id',
             'kegiatans.name as name',
             'kegiatans.jenis as jenis',
             'kegiatans.tgl_mulai as tgl_mulai',

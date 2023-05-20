@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class Role
 {
-    public function handle($request, Closure $next, $batas_bawah)
+    public function handle($request, Closure $next, $roleIds)
     {
-        $role = Auth::check() ? Auth::user()->role_id : 99;
-        if ((int)$role <= (int)$batas_bawah ) {
-            return $next($request);
+        $roleIds = explode("|", $roleIds);
+        if (!in_array(Auth::user()->role_id, $roleIds)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized user.'], 403);
         }
-        return redirect()->intended('/');
+        return $next($request);
     }
 }

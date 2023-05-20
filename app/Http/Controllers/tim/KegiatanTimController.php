@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\tim;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kredit;
+use App\Models\PeriodeTim;
+use App\Models\simtk\Ind_kinerja;
 use App\Models\simtk\Kegiatan_Tim_User;
 use App\Models\simtk\KegiatanTim;
 use App\Models\simtk\Projek;
@@ -11,42 +14,37 @@ use Illuminate\Support\Facades\DB;
 
 class KegiatanTimController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function tambah_kegiatan($id)
     {
-        //
+        $tim = PeriodeTim::with(['tim'])->get();
+        $butir = Kredit::all(['id', 'kode_perka', 'name', 'kegiatan', 'satuan']);
+        $iku = Ind_kinerja::all(['id', 'tujuan_id', 'sasaran', 'iku']);
+
+        $list_anggota = DB::table('user_tims')
+            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
+            ->select(
+                'users.name as name',
+                'users.id as id'
+            )
+            ->where('user_tims.tim_id', $id)
+            ->get();
+        $projek = Projek::where('id', $id)->first();
+        return view('simtk.kegiatan.tambah_kegiatan', [
+            'title' => $projek->name,
+            'projek' => $projek,
+            "tim" => $tim,
+            "butir" => $butir,
+            'iku' => $iku,
+            'list_anggota' => $list_anggota,
+            'id' => $id
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function storeWithId(Request $request, $id)
     {
-        $validated = $request->validate([
-            'sasaran' => 'required',
-            'kegiatan' => 'required',
-            'satuan' => 'required',
-            'periode_tim_id' => 'required'
-        ]);
         $jml_kegiatan = count($request->kegiatan);
-        // dd($request);
         for ($i = 0; $i < $jml_kegiatan; $i++) {
             $kegiatan = new KegiatanTim();
             $kegiatan->projek_id = $id;
@@ -54,6 +52,7 @@ class KegiatanTimController extends Controller
             $kegiatan->iku_id = $request->sasaran[$i];
             $kegiatan->periode_awal = $request->tgl_mulai[$i];
             $kegiatan->periode_akhir = $request->tgl_selesai[$i];
+            $kegiatan->tugas_luar = $request->tugas_luar[$i];
             $kegiatan->save();
         }
 
@@ -137,7 +136,7 @@ class KegiatanTimController extends Controller
             )
             ->where('user_tims.tim_id', $projek->periode_tim_id)
             ->get();
-        return view('admin.master.tim.assign_kegiatan', [
+        return view('simtk.kegiatan.assign_kegiatan', [
             'title' => 'Assign Kegiatan',
             'list_kegiatan' => $list_kegiatan,
             'list_user' => $list_user,

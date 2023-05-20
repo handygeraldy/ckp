@@ -8,9 +8,7 @@ use App\Models\Satker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Kredit;
 use App\Models\PeriodeTim;
-use App\Models\simtk\Ind_kinerja;
 use App\Models\simtk\UserTim;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +24,7 @@ class TimController extends Controller
             ->where('periode_tims.is_delete', '0');
 
         $dt = $dt->get();
-        return view('admin.master.tim.index', [
+        return view('simtk.tim.index', [
             'dt' => $dt,
             'title' => 'Master Tim',
             'text_' => 'Tim',
@@ -41,13 +39,17 @@ class TimController extends Controller
      */
     public function create()
     {
+        if (Auth::user()->role_id > 8) {
+            alert()->error('Gagal', 'Anda tidak dapat menambah tim');
+            return redirect()->route('tim.index');
+        }
         $satker = Satker::get(['id', 'name']);
         $user = User::where('is_delete', '!=', '1')
             ->where('role_id', '11')
             ->orderBy('name', 'asc')
             ->get(['id', 'name']);
         $tim = Tim::all();
-        return view('admin.master.tim.create', [
+        return view('simtk.tim.create', [
             'title' => 'Tambah Tim',
             'user' => $user,
             'satker' => $satker,
@@ -101,14 +103,14 @@ class TimController extends Controller
      */
     public function show($id)
     {
-
         $dt = DB::table('periode_tims')
             ->rightJoin('projeks', 'periode_tims.id', 'projeks.periode_tim_id')
             ->select(
                 'projeks.name as projek_name',
                 'projeks.id as id'
             )
-            ->where('periode_tims.id', $id)->where('projeks.is_delete', '0')
+            ->where('periode_tims.id', $id)
+            ->where('projeks.is_delete', '0')
             ->get();
 
         $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
@@ -122,7 +124,7 @@ class TimController extends Controller
             ->where('user_tims.anggota_id', '!=', $periodetim->ketua_id)
             ->get();
 
-        return view('admin.master.tim.list_projek', [
+        return view('simtk.tim.show', [
             'title' => $periodetim->tim->name,
             'periodetim' => $periodetim,
             'df' => $df,
@@ -140,61 +142,22 @@ class TimController extends Controller
      */
     public function edit($id)
     {
+        if (Auth::user()->role_id > 8) {
+            alert()->error('Gagal', 'Anda tidak dapat menambah tim');
+            return redirect()->route('tim.index');
+        }
         $periodetim = PeriodeTim::with(['tim'])->where('id', $id)->first();
-        // $satker = Satker::get(['id', 'name']);
         $user = User::where('is_delete', '!=', '1')
             ->where('role_id', '11')
             ->orderBy('name', 'asc')
             ->get(['id', 'name']);
 
-        return view('admin.master.tim.edit', [
+        return view('simtk.tim.edit', [
             'title' => 'Edit Tim',
             'periodetim' => $periodetim,
-            // 'satker' => $satker,
             'user' => $user,
         ]);
     }
-
-    public function kelolatim($id)
-    {
-        $periodetim = PeriodeTim::with(['tim', 'user'])->where('id', $id)->first();
-        $list_anggota = DB::table('user_tims')
-            ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
-            ->select(
-                'users.name as nama_anggota',
-                'users.id as id'
-            )
-            ->where('user_tims.tim_id', $id)
-            ->orderBy('nama_anggota')
-            ->get();
-
-        $sql = 'select * from users u where u.id not in (select ut.anggota_id from user_tims ut where ut.tim_id =' . $id . ') and u.role_id != 8 order by u.name';
-        $calon_anggota = DB::select($sql);
-        return view('admin.master.tim.kelola_tim', [
-            "title" => $periodetim->tim->name,
-            'calon_anggota' => $calon_anggota,
-            "periodetim" => $periodetim,
-            'list_anggota' => $list_anggota,
-            'id' => $id,
-            'route_' => 'tim'
-        ]);
-    }
-
-    public function tambah_anggota(Request $request)
-    {
-        $jml_anggota = count($request->anggota);
-        // dd($request);
-        for ($i = 0; $i < $jml_anggota; $i++) {
-            $anggota = new UserTim();
-            $anggota->tim_id = $request->tim_id;
-            $anggota->anggota_id = $request->anggota[$i];
-            $anggota->save();
-        }
-
-        alert()->success('Sukses', 'Anggota berhasil ditambahkan');
-        return redirect()->route('tim.kelola', $request->tim_id);
-    }
-
 
     /**
      * Update the specified resource in storage.

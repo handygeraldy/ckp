@@ -62,7 +62,7 @@
                                     <option value="" disabled selected>== Pilih Tim ==</option>
                                     @foreach ($tim as $t)
                                         <option value="{{ $t->id }}"
-                                            {{ $t->id == $kegiatan->tim_id ? 'selected' : '' }}>{{ $t->name }}
+                                            {{ $t->id == $kegiatan->tim_id ? 'selected' : '' }}>{{ $t->tim->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -116,7 +116,7 @@
                                 </select>
                             </div>
                             <div>
-                                <input type="text" name="satuan" class="form-control"
+                                <input type="hidden" name="satuan" class="form-control"
                                     value="{{ $kegiatan->satuan }}" {{ $kegiatan->kredit_id ? '' : 'disabled' }}>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                 <label class="col-form-label" for="satuan">Satuan</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="hidden" name="satuan" class="form-control" required value="{{ $kegiatan->satuan }}" {{ $kegiatan->kredit_id ? 'disabled' : '' }}>
+                                <input type="text" name="satuan" class="form-control" required value="{{ $kegiatan->satuan }}" {{ $kegiatan->kredit_id ? 'disabled' : '' }}>
                             </div>
                         </div>
                         {{-- Target --}}

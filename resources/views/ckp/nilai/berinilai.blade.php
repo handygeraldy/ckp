@@ -216,11 +216,8 @@
                 if ($(this).val() !== "")
                     count_kualitas += 1
             });
-            if (count_kualitas == $(".nilai_kegiatan").length) {
+            if (count_kualitas < $(".nilai_kegiatan").length) {
                 alert("Semua kegiatan harus tleah disetujui");
-                return false;
-            } else {
-                alert("Semua kegiatan harus dinilai sebelum menyetujui");
                 return false;
             }
         });

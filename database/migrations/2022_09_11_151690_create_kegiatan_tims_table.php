@@ -20,8 +20,8 @@ class CreateKegiatanTimsTable extends Migration
             $table->unsignedBigInteger('iku_id');
             $table->date('periode_awal')->nullable();
             $table->date('periode_akhir')->nullable();
-            $table->string('satuan')->nullable();
-            $table->string('target', 3)->nullable();
+            $table->boolean('tugas_luar')->default(false);
+            $table->enum('is_delete', ['1', '0'])->default('0');
             $table->timestamps();
 
             $table->foreign('projek_id')->references('id')->on('projeks');

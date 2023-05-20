@@ -17,19 +17,22 @@ class UserController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role_id <= 8) {
-            $dt = User::where('is_delete', '!=', '1');
-        } elseif (Auth::user()->role_id <= 11) {
-            $dt = User::where('is_delete', '!=', '1')
-                ->where('tim_utama', Auth::user()->tim_utama);
-        } else {
-            $dt = User::where('id', Auth::user()->id);
-        }
-        $dt = $dt->get();
+        $sql = "select u.id, u.is_delete, u.name, u.nip, u.email, s.name as satker_name, u.tim_utama as tim_utama, f.name as fungsional_name, g.name as golongan_name, t.name as tim_name, count(ut.anggota_id) as jumlah_tim from users u 
+        left join user_tims ut on u.id = ut.anggota_id 
+        left join satkers s on u.satker_id = s.id 
+        left join fungsionals f on u.fungsional_id = f.id 
+        left join golongans g on u.golongan_id = g.id
+        left join tims t on u.tim_utama = t.id
+        group by u.id, u.is_delete, u.name, u.nip, u.email, s.name, u.tim_utama, f.name, g.name, t.name
+        having u.is_delete = '0'
+        order by u.nip";
+
+        $dt = DB::select($sql);
+
         return view('admin.master.user.index', [
             'dt' => $dt,
-            'title' => 'Master User',
-            'text_' => 'User',
+            'title' => 'Master Pegawai',
+            'text_' => 'Pegawai',
             'route_' => 'user',
         ]);
     }
@@ -82,7 +85,7 @@ class UserController extends Controller
         ]);
         $extension = $request->file('ttd')->getClientOriginalExtension();
         $filename = $request->nip . '.' . $extension;
-        $request->file('ttd')->storeAs('public', $filename);
+        $request->file('ttd')->move(base_path().'/public/storage//', $filename);
         $validated['ttd'] = $filename;
         $validated['password'] = bcrypt($validated['password']);
         User::create($validated);
@@ -98,30 +101,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $dt = User::where('id', $id)->first();
-
-        $list_kegiatan = DB::table('kegiatan__tim__users')
-            ->leftJoin('kegiatan_tims', 'kegiatan__tim__users.kegiatan_tim_id', 'kegiatan_tims.id')
-            ->leftJoin('projeks', 'kegiatan_tims.projek_id', 'projeks.id')
-            ->leftJoin('periode_tims', 'projeks.periode_tim_id', 'periode_tims.id')
-            ->leftJoin('tims', 'periode_tims.tim_id', 'tims.id')
-            ->leftJoin('users', 'periode_tims.ketua_id', 'users.id')
-            ->select(
-                'projeks.name as nama_projek',
-                'kegiatan_tims.name as nama_kegiatan',
-                'tims.name as nama_tim',
-                'users.name as nama_ketua',
-            )
-            ->where('kegiatan__tim__users.user_id', $id)
-            ->get();
-
-        return view('admin.master.user.profil', [
-            'dt' => $dt,
-            'list_kegiatan' => $list_kegiatan,
-            'title' => $dt->name,
-            'text_' => 'User',
-            'route_' => 'user',
-        ]);
     }
 
     /**
@@ -176,7 +155,7 @@ class UserController extends Controller
         if ($request->hasFile('ttd')) {
             $extension = $request->file('ttd')->getClientOriginalExtension();
             $filename = $request->nip . '.' . $extension;
-            $request->file('ttd')->storeAs('public', $filename);
+            $request->file('ttd')->move(base_path().'/public/storage//', $filename);
             $validated['ttd'] = $filename;
         }
 
