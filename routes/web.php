@@ -20,7 +20,12 @@ use App\Http\Controllers\admin\SatkerController;
 use App\Http\Controllers\ckp\KegiatanController;
 use App\Http\Controllers\admin\GolonganController;
 use App\Http\Controllers\tim\KegiatanTimController;
+<<<<<<< HEAD
 use App\Http\Controllers\admin\FungsionalController;
+=======
+use App\Http\Controllers\tim\ProjekController;
+use App\Http\Controllers\tim\UserTimController;
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
 
 Route::get('/flushconfig', function () {
     $output = [];
@@ -74,11 +79,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', UserController::class);
 });
 
+<<<<<<< HEAD
 Route::middleware('auth')->group(function () {
 
 }); 
 // master - admin
 Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT])])->group(function () {
+=======
+// master - admin
+Route::middleware(['role:5'])->group(function () {
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     Route::delete('kredit/delete', [KreditController::class, 'softDelete'])->name('kredit.delete');
     Route::resource('kredit', KreditController::class);
     Route::resource('golongan', GolonganController::class);
@@ -87,7 +97,11 @@ Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT])])->group(function
 });
 
 // approval direktur
+<<<<<<< HEAD
 Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::KEPALA_SATKER])])->group(function () {
+=======
+Route::middleware(['role:8'])->group(function () {
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     Route::get('approval', [Approval::class, 'index'])->name('approval.index');
     Route::get('approval/show/{id}', [Approval::class, 'show'])->name('approval.show');
     Route::post('approval/approve-reject', [Approval::class, 'approveReject'])->name('approval.approve.reject');
@@ -95,7 +109,11 @@ Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::KEPALA_SATKE
 });
 
 // penilaian ketua tim
+<<<<<<< HEAD
 Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::KEPALA_SATKER, Role::KETUA_TIM])])->group(function () {
+=======
+Route::middleware(['role:11'])->group(function () {
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     Route::get('nilai', [Penilaian::class, 'index'])->name('nilai.index');
     Route::get('nilai/show/{id}', [Penilaian::class, 'show'])->name('nilai.tampil');
     Route::get('nilai/input/{id}', [Penilaian::class, 'inputNilai'])->name('nilai.edit');
@@ -104,6 +122,7 @@ Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::KEPALA_SATKE
 
 
 // direktur
+<<<<<<< HEAD
 Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::ADMIN_PROV, Role::ADMIN_KAB, Role::KEPALA_SATKER])])->group(function () {
     Route::delete('tim/delete', [TimController::class, 'softDelete'])->name('tim.delete');
 });
@@ -111,6 +130,16 @@ Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::ADMIN_PROV, 
 // ketua tim
 Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::KETUA_TIM])])->group(function () {
     Route::delete('tim_user/delete', [UserTimController::class, 'softDelete'])->name('usertim.delete');
+=======
+Route::middleware(['role:8'])->group(function () {
+    Route::delete('tim/delete', [TimController::class, 'softDelete'])->name('tim.delete');
+    Route::get('tim_user/{id}', [UserTimController::class, 'show'])->name('usertim.show');
+});
+
+// ketua tim
+Route::middleware(['role:11'])->group(function () {
+
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     Route::post('tim_user/tambah_anggota', [UserTimController::class, 'store'])->name('usertim.store');
     Route::delete('projek/delete', [ProjekController::class, 'softDelete'])->name('projek.delete');
     Route::get('projek-create/{id}', [ProjekController::class, 'create_proyek'])->name('projek.tambah');
@@ -125,7 +154,10 @@ Route::middleware(['role:' . implode("|", [Role::ADMIN_PUSAT, Role::KETUA_TIM])]
 Route::middleware('auth')->group(function () {
     Route::resource('tim', TimController::class);
     Route::get('tim_user/user/{id}', [UserTimController::class, 'profil'])->name('usertim.profil');
+<<<<<<< HEAD
     Route::get('tim_user/{id}', [UserTimController::class, 'show'])->name('usertim.show');
+=======
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     Route::resource('projek', ProjekController::class);
     Route::resource('kegiatantim', KegiatanTimController::class);
 });

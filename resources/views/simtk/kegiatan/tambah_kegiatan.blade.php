@@ -26,7 +26,11 @@
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control select2" name="sasaran[]" required>
+<<<<<<< HEAD
                                     <option value="" selected>== Pilih Sasaran Kinerja ==</option>
+=======
+                                    <option value="" selected>== Pilih Sasaran Kinerja ==</option>   
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
                                     @foreach ($iku as $i)
                                         <option value="{{ $i->id }}">
                                             {{ $i->sasaran }}
@@ -78,6 +82,7 @@
                                 @enderror
                             </div>
                         </div>
+<<<<<<< HEAD
                         {{-- tugas luar --}}
                         <div class="row mb-2">
                             <div class="col-md-2">
@@ -88,6 +93,15 @@
                                     <option value="0" selected>Tidak</option>
                                     <option value="1">Ya</option>
                                 </select>
+=======
+                        {{-- satuan --}}
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="col-form-label" for="satuan">Satuan</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" name="satuan[]" class="form-control" required value="">
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
                             </div>
                         </div>
                     </div>

@@ -17,13 +17,21 @@ class UserController extends Controller
 {
     public function index()
     {
+<<<<<<< HEAD
         $sql = "select u.id, u.is_delete, u.name, u.nip, u.email, s.name as satker_name, u.tim_utama as tim_utama, f.name as fungsional_name, g.name as golongan_name, t.name as tim_name, count(ut.anggota_id) as jumlah_tim from users u 
+=======
+        $sql = "select u.id, u.is_delete, u.name, u.nip, u.email, s.name as satker_name, f.name as fungsional_name, g.name as golongan_name, t.name as tim_name, count(ut.anggota_id) as jumlah_tim from users u 
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
         left join user_tims ut on u.id = ut.anggota_id 
         left join satkers s on u.satker_id = s.id 
         left join fungsionals f on u.fungsional_id = f.id 
         left join golongans g on u.golongan_id = g.id
         left join tims t on u.tim_utama = t.id
+<<<<<<< HEAD
         group by u.id, u.is_delete, u.name, u.nip, u.email, s.name, u.tim_utama, f.name, g.name, t.name
+=======
+        group by u.id, u.is_delete, u.name, u.nip, u.email, s.name, f.name, g.name, t.name
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
         having u.is_delete = '0'
         order by u.nip";
 

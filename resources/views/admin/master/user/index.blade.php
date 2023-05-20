@@ -57,7 +57,11 @@
                                         <td>{{ $d->fungsional_name }}</td>
                                         <td style="min-width: 100px;">
                                             <div class="row">
+<<<<<<< HEAD
                                                 @if ((Auth::user()->role_id <= 8) | (Auth::user()->id == $d->id) | ((Auth::user()->role_id == 11) & ($d->tim_utama == Auth::user()->tim_utama)))
+=======
+                                                @if ((Auth::user()->role_id <= 8) | (Auth::user()->id == $d->id))
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
                                                     <a href="{{ route($route_ . '.edit', $d->id) }}"
                                                         class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
                                                 @endif

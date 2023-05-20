@@ -65,7 +65,11 @@ class UserTimController extends Controller
             ->leftJoin('users', 'user_tims.anggota_id', 'users.id')
             ->select(
                 'users.name as nama_anggota',
+<<<<<<< HEAD
                 'user_tims.id as id',
+=======
+                'users.id as id'
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
             )
             ->where('user_tims.tim_id', $id)
             ->orderBy('nama_anggota')
@@ -118,6 +122,7 @@ class UserTimController extends Controller
         //
     }
 
+<<<<<<< HEAD
     public function softDelete(Request $request)
     {
         $id = $request->value_id;
@@ -131,6 +136,8 @@ class UserTimController extends Controller
         return redirect()->route('usertim.show',  $variabel->tim_id);
     }
 
+=======
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     public function profil($id)
     {
         $dt = User::where('id', $id)->first();

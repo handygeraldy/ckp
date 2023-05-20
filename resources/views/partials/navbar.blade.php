@@ -39,6 +39,7 @@
             Pegawai
         </a>
     </li>
+<<<<<<< HEAD
     {{--  --}}
     <li class="nav-item ">
         <a class="nav-link" data-toggle="collapse" data-target="#tim_kerja"><i class="fa-regular fa-folder"></i>
@@ -101,5 +102,42 @@
                 </a>
             </li>
         </ul>
+=======
+    <li class="nav-item {{ Request::is('tim*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('tim.index') }}">
+            <i class="fa-sharp fa-solid fa-people-group"></i>
+            Tim Kerja
+        </a>
+    </li>
+    @if ((auth()->user()->role_id > 11) | (auth()->user()->role_id < 8))
+        <li class="nav-item {{ Request::is('ckp*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('ckp.index') }}">
+                <i class="fas fa-walking"></i>
+                Kegiatan Saya
+            </a>
+        </li>
+    @endif
+    @if ((auth()->user()->role_id == 11) | (auth()->user()->role_id < 8))
+        <li class="nav-item {{ Request::is('nilai*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('nilai.index') }}">
+                <i class="fa-solid fa-file-pen"></i>
+                Penilaian
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->role_id <= 8)
+        <li class="nav-item {{ Request::is('approval*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('approval.index') }}">
+                <i class="fa-solid fa-clipboard-check"></i>
+                Approval
+            </a>
+        </li>
+    @endif
+    <li class="nav-item {{ Request::is('arsip*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('arsip.index') }}">
+            <i class="fa-regular fa-folder-open"></i>
+            Arsip
+        </a>
+>>>>>>> 6885bee04f622a655064d7c0a4ebc9befdbfdfcc
     </li>
 </ul>
